@@ -1,0 +1,2632 @@
+{
+  "areas": [
+    {
+      "name": "ALGOMA",
+      "municipalities": [
+        {
+          "name": "Algoma Remote Area",
+          "communities": []
+        },
+        {
+          "name": "Blind River",
+          "communities": []
+        },
+        {
+          "name": "Bruce Mines",
+          "communities": []
+        },
+        {
+          "name": "Dubreuilville",
+          "communities": []
+        },
+        {
+          "name": "Elliot Lake",
+          "communities": []
+        },
+        {
+          "name": "First Nations",
+          "communities": []
+        },
+        {
+          "name": "Hilton",
+          "communities": []
+        },
+        {
+          "name": "Hilton Beach",
+          "communities": []
+        },
+        {
+          "name": "Hornepayne",
+          "communities": []
+        },
+        {
+          "name": "Huron Shores",
+          "communities": []
+        },
+        {
+          "name": "Jocelyn",
+          "communities": []
+        },
+        {
+          "name": "Johnson",
+          "communities": []
+        },
+        {
+          "name": "Laird",
+          "communities": []
+        },
+        {
+          "name": "Macdonald, Meredith & Aberdeen Add'l",
+          "communities": []
+        },
+        {
+          "name": "Plummer Additional",
+          "communities": []
+        },
+        {
+          "name": "Prince",
+          "communities": []
+        },
+        {
+          "name": "Sault Ste Marie",
+          "communities": []
+        },
+        {
+          "name": "Spanish",
+          "communities": []
+        },
+        {
+          "name": "St. Joseph",
+          "communities": []
+        },
+        {
+          "name": "Tarbutt & Tarbutt Additional",
+          "communities": []
+        },
+        {
+          "name": "The North Shore",
+          "communities": []
+        },
+        {
+          "name": "Thessalon",
+          "communities": []
+        },
+        {
+          "name": "Wawa",
+          "communities": []
+        },
+        {
+          "name": "White River",
+          "communities": []
+        }
+      ]
+    },
+    {
+      "name": "BRANT",
+      "municipalities": [
+        {
+          "name": "Brant",
+          "communities": [
+            "Brantford Twp",
+            "Burford",
+            "Oakland",
+            "Paris",
+            "South Dumfries"
+          ]
+        },
+        {
+          "name": "First Nations",
+          "communities": []
+        }
+      ]
+    },
+    {
+      "name": "BRANTFORD",
+      "municipalities": [
+        {
+          "name": "Brantford",
+          "communities": []
+        },
+        {
+          "name": "First Nations",
+          "communities": []
+        }
+      ]
+    },
+    {
+      "name": "BRUCE",
+      "municipalities": [
+        {
+          "name": "Arran-Elderslie",
+          "communities": ["Arran-Elderslie"]
+        },
+        {
+          "name": "Brockton",
+          "communities": ["Brockton"]
+        },
+        {
+          "name": "First Nations",
+          "communities": []
+        },
+        {
+          "name": "Huron-Kinloss",
+          "communities": ["Huron-Kinloss", "Lucknow"]
+        },
+        {
+          "name": "Kincardine",
+          "communities": ["Kincardine"]
+        },
+        {
+          "name": "Northern Bruce Peninsula",
+          "communities": ["Northern Bruce Peninsula"]
+        },
+        {
+          "name": "Saugeen Shores",
+          "communities": ["Saugeen Shores"]
+        },
+        {
+          "name": "South Bruce",
+          "communities": ["South Bruce"]
+        },
+        {
+          "name": "South Bruce Peninsula",
+          "communities": ["South Bruce Peninsula"]
+        }
+      ]
+    },
+    {
+      "name": "DURHAM",
+      "municipalities": [
+        {
+          "name": "Ajax",
+          "communities": [
+            "Central",
+            "Central East",
+            "Central West",
+            "Northeast Ajax",
+            "Northwest Ajax",
+            "South East",
+            "South West"
+          ]
+        },
+        {
+          "name": "Brock",
+          "communities": [
+            "Beaverton",
+            "Cannington",
+            "Rural Brock",
+            "Sunderland"
+          ]
+        },
+        {
+          "name": "Clarington",
+          "communities": [
+            "Bowmanville",
+            "Courtice",
+            "Newcastle",
+            "Orono",
+            "Rural Clarington"
+          ]
+        },
+        {
+          "name": "Oshawa",
+          "communities": [
+            "Beaton",
+            "Centennial",
+            "Central",
+            "Columbus",
+            "Donevan",
+            "Eastdale",
+            "Farewell",
+            "Kedron",
+            "Lakeview",
+            "McLaughlin",
+            "Northglen",
+            "Northwood",
+            "O'Neill",
+            "Pinecrest",
+            "Raglan",
+            "Rural Oshawa",
+            "Samac",
+            "Stevenson Taunton",
+            "Vanier",
+            "Windfields"
+          ]
+        },
+        {
+          "name": "Pickering",
+          "communities": [
+            "Amberlea",
+            "Bay Ridges",
+            "Brock Industrial",
+            "Brock Ridge",
+            "Duffin Heights",
+            "Dunbarton",
+            "Highbush",
+            "Liverpool",
+            "Rosebank",
+            "Rouge Park",
+            "Rougemount",
+            "Rural Pickering",
+            "Town Centre",
+            "Village East",
+            "West Shore",
+            "Woodlands"
+          ]
+        },
+        {
+          "name": "Scugog",
+          "communities": [
+            "Blackstock",
+            "Port Perry",
+            "Rural Scugog"
+          ]
+        },
+        {
+          "name": "Scugog 34",
+          "communities": ["Scugog First Nations"]
+        },
+        {
+          "name": "Uxbridge",
+          "communities": [
+            "Rural Uxbridge",
+            "Uxbridge"
+          ]
+        },
+        {
+          "name": "Whitby",
+          "communities": [
+            "Blue Grass Meadows",
+            "Brooklin",
+            "Downtown Whitby",
+            "Lynde Creek",
+            "Port Whitby",
+            "Pringle Creek",
+            "Rolling Acres",
+            "Rural Whitby",
+            "Taunton North",
+            "Whitby Industrial",
+            "Williamsburg"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GREY COUNTY",
+      "municipalities": [
+        {
+          "name": "Blue Mountains",
+          "communities": [
+            "Blue Mountain Resort Area",
+            "Blue Mountains",
+            "Rural Blue Mountains",
+            "Thornbury"
+          ]
+        },
+        {
+          "name": "Chatsworth",
+          "communities": [
+            "Chatsworth",
+            "Rural Chatsworth"
+          ]
+        },
+        {
+          "name": "Georgian Bluffs",
+          "communities": [
+            "Georgian Bluffs",
+            "Rural Georgian Bluffs"
+          ]
+        },
+        {
+          "name": "Grey Highlands",
+          "communities": [
+            "Flesherton",
+            "Grey Highlands",
+            "Markdale",
+            "Priceville",
+            "Rural Grey Highlands"
+          ]
+        },
+        {
+          "name": "Hanover",
+          "communities": ["Hanover"]
+        },
+        {
+          "name": "Meaford",
+          "communities": [
+            "Meaford",
+            "Rural Meaford"
+          ]
+        },
+        {
+          "name": "Owen Sound",
+          "communities": ["Owen Sound"]
+        },
+        {
+          "name": "Southgate",
+          "communities": [
+            "Dundalk",
+            "Rural Southgate",
+            "Southgate"
+          ]
+        },
+        {
+          "name": "West Grey",
+          "communities": [
+            "Ayton",
+            "Durham",
+            "Neustadt",
+            "Rural West Grey",
+            "West Grey"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HALTON",
+      "municipalities": [
+        {
+          "name": "Burlington",
+          "communities": [
+            "Alton",
+            "Appleby",
+            "Bayview",
+            "Brant",
+            "Brant Hills",
+            "Bronte Creek",
+            "Freeman",
+            "Grindstone",
+            "Headon",
+            "Industrial Burlington",
+            "LaSalle",
+            "Mountainside",
+            "Orchard",
+            "Palmer",
+            "Rose",
+            "Roseland",
+            "Rural Burlington",
+            "Shoreacres",
+            "Tansley",
+            "Tyandaga",
+            "Uptown"
+          ]
+        },
+        {
+          "name": "Halton Hills",
+          "communities": [
+            "1040-OA Rural Oakville",
+            "1041-NA Rural Nassagaweya",
+            "1045-AC Acton",
+            "1048-Limehouse",
+            "1049-Rural Halton Hills",
+            "1050-Stewarttown",
+            "1064-ES Rural Esquesing",
+            "Acton",
+            "Georgetown",
+            "Glen Williams"
+          ]
+        },
+        {
+          "name": "Milton",
+          "communities": [
+            "1023-BE Beaty",
+            "1024-BM Bronte Meadows",
+            "1025-BW Bowes",
+            "1026-CB Cobban",
+            "1027-CL Clarke",
+            "1028-CO Coates",
+            "1029-DE Dempsey",
+            "1030-DG Derry Green",
+            "1031-DP Dorset Park",
+            "1032-FO Ford",
+            "1033-HA Harrison",
+            "1034-MN Milton North",
+            "1035-OM Old Milton",
+            "1036-SC Scott",
+            "1037-TM Timberlea",
+            "1038-WI Willmott",
+            "1039-MI Rural Milton",
+            "401 Business Park",
+            "Beaty",
+            "Bowes",
+            "Bronte Meadows",
+            "Brookville",
+            "Brookville/Haltonville",
+            "Campbellville",
+            "Clarke",
+            "Coates",
+            "Cobban",
+            "Dempsey",
+            "Derry Green Business Park",
+            "Dorset Park",
+            "Esquesing",
+            "Ford",
+            "Harrison",
+            "Milton Heights",
+            "Moffat",
+            "Mountain View",
+            "Nassagaweya",
+            "Nelson",
+            "Old Milton",
+            "Rural Milton West",
+            "Scott",
+            "Timberlea",
+            "Trafalgar",
+            "Walker",
+            "Willmott"
+          ]
+        },
+        {
+          "name": "Oakville",
+          "communities": [
+            "1000-BC Bronte Creek",
+            "1001-BR Bronte",
+            "1002-CO Central",
+            "1003-CP College Park",
+            "1004-CV Clearview",
+            "1005-FA Falgarwood",
+            "1006-FD Ford",
+            "1007-GA Glen Abbey",
+            "1008-GO Glenorchy",
+            "1009-JC Joshua Creek",
+            "1010-JM Joshua Meadows",
+            "1011-MO Morrison",
+            "1012-NW Northwest",
+            "1013-OO Old Oakville",
+            "1014-QE Queen Elizabeth",
+            "1015-RO River Oaks",
+            "1016-SH Sixteen Hollow",
+            "1017-SW Southwest",
+            "1018-WC Wedgewood Creek",
+            "1019-WM Westmount",
+            "1020-WO West",
+            "1021-WP Winston Park",
+            "1022-WT West Oak Trails",
+            "Bronte East",
+            "Bronte West",
+            "Clearview",
+            "Eastlake",
+            "Glen Abbey",
+            "Iroquois Ridge North",
+            "Iroquois Ridge South",
+            "Old Oakville",
+            "Palermo West",
+            "River Oaks",
+            "Rural Oakville",
+            "Uptown Core",
+            "West Oak Trails",
+            "Winston Park"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HAMILTON",
+      "municipalities": [
+        {
+          "name": "Hamilton",
+          "communities": [
+            "Ainslie Wood",
+            "Airport Employment Area",
+            "Albion Falls",
+            "Allison",
+            "Ancaster",
+            "Balfour",
+            "Barnstown",
+            "Bartonville",
+            "Beasley",
+            "Berrisfield",
+            "Binbrook",
+            "Blakeley",
+            "Bonnington",
+            "Broughton",
+            "Bruleville",
+            "Buchanan",
+            "Burkholme",
+            "Butler",
+            "Carlisle",
+            "Carpenter",
+            "Central",
+            "Chedoke Park",
+            "Chappel",
+            "Confederation Park",
+            "Cootes Paradise",
+            "Corktown",
+            "Corman",
+            "Crerar",
+            "Crown Point",
+            "Delta",
+            "Dundas",
+            "Dundurn",
+            "Durand",
+            "Eastmount",
+            "Eleanor",
+            "Falkirk",
+            "Fessenden",
+            "Freelton",
+            "Fruitland",
+            "Gershome",
+            "Gibson",
+            "Gilbert",
+            "Gilkson",
+            "Glenview",
+            "Gourley",
+            "Grayside",
+            "Greenford",
+            "Greeningdon",
+            "Greensville",
+            "Gurnett",
+            "Hamilton Beach",
+            "Hampton Heights",
+            "Hannon",
+            "Hill Park",
+            "Homeside",
+            "Huntington",
+            "Inch Park",
+            "Industrial Sector",
+            "Iroquoia Heights",
+            "Jerome",
+            "Jerseyville",
+            "Kennedy",
+            "Kentley",
+            "Kernighan",
+            "King's Forest Lower",
+            "King's Forest Upper",
+            "Kirkendall",
+            "Lakely",
+            "Lakeshore",
+            "Landsdale",
+            "Lawfield",
+            "Lisgar",
+            "Lynden",
+            "Macassa",
+            "McQuesten",
+            "Meadowlands",
+            "Mewburn",
+            "Mohawk",
+            "Mount Hope",
+            "Mountview",
+            "Nashdale",
+            "Normanhurst",
+            "North End",
+            "Orkney",
+            "Parkview",
+            "Pleasant View",
+            "Quinndale",
+            "Raleigh",
+            "Randall",
+            "Red Hill",
+            "Riverdale",
+            "Rockton",
+            "Rolston",
+            "Rosedale",
+            "Rural Ancaster",
+            "Rural Dundas",
+            "Rural Flamborough",
+            "Rural Glanbrook",
+            "Rural Stoney Creek",
+            "Rushdale",
+            "Rycksmans",
+            "Rymal",
+            "Sheldon",
+            "Sherwood",
+            "Southam",
+            "St. Clair",
+            "Stinson",
+            "Stipley",
+            "Stoney Creek",
+            "Stoney Creek Industrial",
+            "Stoney Creek Mountain",
+            "Strathcona",
+            "Sunninghill",
+            "Templemead",
+            "Thorner",
+            "Trenholme",
+            "Twenty Place",
+            "Villages of Glancaster",
+            "Vincent",
+            "Waterdown",
+            "Westcliffe",
+            "Westdale",
+            "Winona",
+            "Winona Park",
+            "Woodburn",
+            "Yeoville"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HURON",
+      "municipalities": [
+        {
+          "name": "Ashfield-Colborne-Wawanosh",
+          "communities": [
+            "Ashfield Twp",
+            "Belfast",
+            "Colborne Twp",
+            "Kingsbridge",
+            "Kintail",
+            "Lucknow",
+            "Port Albert",
+            "Saltford",
+            "Sheppardton",
+            "St. Helens",
+            "West Wawanosh Twp",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "North Huron",
+          "communities": [
+            "Auburn",
+            "Blyth",
+            "East Wawanosh Twp",
+            "Whitechurch",
+            "Wingham",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Morris-Turnberry",
+          "communities": [
+            "Belgrave",
+            "Bluevale",
+            "Blyth",
+            "Morris Twp",
+            "Turnberry Twp",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Howick",
+          "communities": [
+            "Howick Twp",
+            "zz-Fordwich",
+            "zz-Gorrie",
+            "zz-Wroxeter"
+          ]
+        },
+        {
+          "name": "Goderich",
+          "communities": ["Goderich Town"]
+        },
+        {
+          "name": "Central Huron",
+          "communities": [
+            "Clinton",
+            "Goderich Twp",
+            "Holmesville",
+            "Hullett Twp",
+            "Londesborough",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Huron East",
+          "communities": [
+            "Brucefield",
+            "Brussels",
+            "Cranbrook",
+            "Egmondville",
+            "Grey Twp",
+            "Harpurhey Village",
+            "Kippen",
+            "McKillop Twp",
+            "Seaforth",
+            "Tuckersmith Twp",
+            "Vanastra",
+            "Walton",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Bluewater",
+          "communities": [
+            "Bayfield",
+            "Dashwood",
+            "Hay Twp",
+            "Hensall",
+            "St. Joseph",
+            "Stanley Twp",
+            "Varna",
+            "Zurich",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "South Huron",
+          "communities": [
+            "Centralia",
+            "Corbett",
+            "Crediton",
+            "Dashwood",
+            "Exeter",
+            "Greenway",
+            "Huron Park",
+            "Shipka",
+            "Stephen Twp",
+            "Usborne Twp",
+            "zz-Rural"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "KAWARTHA LAKES",
+      "municipalities": [
+        {
+          "name": "Kawartha Lakes",
+          "communities": [
+            "Bethany",
+            "Bobcaygeon",
+            "Burnt River",
+            "Cameron",
+            "Coboconk",
+            "Dunsford",
+            "Fenelon Falls",
+            "Janetville",
+            "Kinmount",
+            "Kirkfield",
+            "Lindsay",
+            "Little Britain",
+            "Manilla",
+            "Norland",
+            "Oakwood",
+            "Omemee",
+            "Pontypool",
+            "Rural Bexley",
+            "Rural Carden",
+            "Rural Dalton",
+            "Rural Eldon",
+            "Rural Emily",
+            "Rural Fenelon",
+            "Rural Laxton",
+            "Rural Manvers",
+            "Rural Mariposa",
+            "Rural Somerville",
+            "Rural Verulam",
+            "Woodville"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LAMBTON",
+      "municipalities": [
+        {
+          "name": "Lambton Shores",
+          "communities": [
+            "Arkona",
+            "Bosanquet",
+            "Forest",
+            "Grand Bend",
+            "Kettle Point",
+            "Lambton Shores",
+            "Port Franks",
+            "Thedford",
+            "Walden"
+          ]
+        },
+        {
+          "name": "Point Edward",
+          "communities": ["Point Edward"]
+        },
+        {
+          "name": "Sarnia",
+          "communities": ["Sarnia"]
+        },
+        {
+          "name": "Plympton-Wyoming",
+          "communities": [
+            "Plympton Wyoming",
+            "zz-Camlachie",
+            "zz-Central Lakeshore",
+            "zz-East Lakeshore",
+            "zz-Plympton Rural",
+            "zz-West Lakeshore",
+            "zz-Wyoming"
+          ]
+        },
+        {
+          "name": "Warwick",
+          "communities": [
+            "Warwick",
+            "Watford",
+            "zz-Warwick Rural",
+            "zz-Warwick Village"
+          ]
+        },
+        {
+          "name": "St. Clair",
+          "communities": [
+            "St. Clair",
+            "zz-Brigden",
+            "zz-Chenal Ecarte",
+            "zz-Corunna",
+            "zz-Courtright",
+            "zz-Mooretown",
+            "zz-Port Lambton",
+            "zz-Sombra Rural",
+            "zz-Sombra Village",
+            "zz-Wilkesport"
+          ]
+        },
+        {
+          "name": "Petrolia",
+          "communities": ["Petrolia"]
+        },
+        {
+          "name": "Enniskillen",
+          "communities": [
+            "Enniskillen",
+            "Oil Springs",
+            "Petrolia",
+            "zz-Enniskillen Rural",
+            "zz-Oil City"
+          ]
+        },
+        {
+          "name": "Oil Springs",
+          "communities": ["Oil Springs"]
+        },
+        {
+          "name": "Brooke-Alvinston",
+          "communities": [
+            "Brooke Alvinston",
+            "Dawn Euphemia",
+            "zz-Alvinston",
+            "zz-Brook Rural",
+            "zz-Dawn-Euphemia Rural",
+            "zz-Florence",
+            "zz-Inwood"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LEEDS AND GRENVILLE",
+      "municipalities": [
+        {
+          "name": "North Grenville",
+          "communities": [
+            "801-Kemptville",
+            "802-North Grenville Twp (Kemptville East)",
+            "803-North Grenville Twp (Kemptville South)"
+          ]
+        },
+        {
+          "name": "Gananoque",
+          "communities": ["821-Gananoque"]
+        },
+        {
+          "name": "Leeds and the Thousand Islands",
+          "communities": [
+            "824-Rear of Leeds-Lansdowne Twp",
+            "Front of Leeds & Seeleys Bay",
+            "Lansdowne Village"
+          ]
+        },
+        {
+          "name": "Athens",
+          "communities": [
+            "812-Athens",
+            "813-R of Yonge & Escott Twp"
+          ]
+        },
+        {
+          "name": "Front of Yonge",
+          "communities": [
+            "822-Front of Yonge Twp",
+            "823-Front of Escott Twp"
+          ]
+        },
+        {
+          "name": "Elizabethtown-Kitley",
+          "communities": [
+            "811-Elizabethtown Kitley (Old Kitley) Twp",
+            "814-Elizabethtown Kitley (Old K.) Twp"
+          ]
+        },
+        {
+          "name": "Brockville",
+          "communities": ["810-Brockville"]
+        },
+        {
+          "name": "Augusta",
+          "communities": ["809-Augusta Twp"]
+        },
+        {
+          "name": "Prescott",
+          "communities": ["808-Prescott"]
+        },
+        {
+          "name": "Edwardsburgh/Cardinal",
+          "communities": [
+            "806-Town of Cardinal",
+            "807-Edwardsburgh/Cardinal Twp"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "LENNOX AND ADDINGTON",
+      "municipalities": [
+        {
+          "name": "Addington Highlands",
+          "communities": ["Addington Highlands"]
+        },
+        {
+          "name": "Stone Mills",
+          "communities": ["Stone Mills"]
+        },
+        {
+          "name": "Greater Napanee",
+          "communities": ["Greater Napanee"]
+        },
+        {
+          "name": "Loyalist",
+          "communities": [
+            "Amherstview",
+            "Bath",
+            "Lennox and Addington - South",
+            "Odessa"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "MIDDLESEX",
+      "municipalities": [
+        {
+          "name": "Middlesex Centre",
+          "communities": [
+            "Arva",
+            "Ballymote",
+            "Birr",
+            "Bryanston",
+            "Coldstream",
+            "Delaware Town",
+            "Denfield",
+            "Ilderton",
+            "Ivan",
+            "Kilworth",
+            "Komoka",
+            "Lobo Village",
+            "London Township",
+            "Melrose",
+            "Middlesex Centre",
+            "Poplar Hill",
+            "Rural Middlesex Centre",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "London",
+          "communities": [
+            "East A",
+            "East B",
+            "East C",
+            "East D",
+            "East E",
+            "East F",
+            "East G",
+            "East H",
+            "East I",
+            "East J",
+            "East K",
+            "East L",
+            "East M",
+            "East N",
+            "East O",
+            "East P",
+            "East Q",
+            "North A",
+            "North B",
+            "North C",
+            "North D",
+            "North E",
+            "North F",
+            "North G",
+            "North H",
+            "North I",
+            "North J",
+            "North K",
+            "North L",
+            "North M",
+            "North N",
+            "North O",
+            "North P",
+            "North Q",
+            "North R",
+            "North S",
+            "North T",
+            "South A",
+            "South B",
+            "South C",
+            "South D",
+            "South E",
+            "South F",
+            "South G",
+            "South H",
+            "South I",
+            "South J",
+            "South K",
+            "South L",
+            "South M",
+            "South N",
+            "South O",
+            "South P",
+            "South Q",
+            "South R",
+            "South S",
+            "South T",
+            "South U",
+            "South V",
+            "South W",
+            "South X",
+            "South Y",
+            "South Z",
+            "South ZZ"
+          ]
+        },
+        {
+          "name": "Thames Centre",
+          "communities": [
+            "Avon",
+            "Crampton",
+            "Dorchester",
+            "Gladstone",
+            "Harrietsville",
+            "Mossley",
+            "Nilestown",
+            "Putnam",
+            "Rural Thames Centre",
+            "Thorndale",
+            "Wellburn",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "North Middlesex",
+          "communities": [
+            "Ailsa Craig",
+            "Brinsley",
+            "Carlisle",
+            "Lieury",
+            "Mount Carmel",
+            "Nairn",
+            "Parkhill",
+            "Rural North Middlesex",
+            "Sylvan",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Lucan Biddulph",
+          "communities": [
+            "Clandeboye",
+            "Elginfield",
+            "Granton",
+            "Lucan",
+            "Prospect Hill",
+            "Rural Lucan Biddulph",
+            "zz-Rural"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NIAGARA",
+      "municipalities": [
+        {
+          "name": "Grimsby",
+          "communities": [
+            "055-Grimsby Escarpment",
+            "540-Grimsby Beach",
+            "541-Grimsby West",
+            "542-Grimsby East",
+            "Grimsby East"
+          ]
+        },
+        {
+          "name": "Lincoln",
+          "communities": [
+            "981-Lincoln Lake",
+            "982-Beamsville",
+            "983-Escarpment",
+            "Lincoln"
+          ]
+        },
+        {
+          "name": "West Lincoln",
+          "communities": []
+        },
+        {
+          "name": "St. Catharines",
+          "communities": []
+        },
+        {
+          "name": "Thorold",
+          "communities": []
+        },
+        {
+          "name": "Fort Erie",
+          "communities": []
+        },
+        {
+          "name": "Niagara Falls",
+          "communities": []
+        },
+        {
+          "name": "Niagara-on-the-Lake",
+          "communities": []
+        },
+        {
+          "name": "Pelham",
+          "communities": []
+        },
+        {
+          "name": "Port Colborne",
+          "communities": []
+        },
+        {
+          "name": "Wainfleet",
+          "communities": []
+        },
+        {
+          "name": "Welland",
+          "communities": []
+        }
+      ]
+    },
+    {
+      "name": "MUSKOKA",
+      "municipalities": [
+        {
+          "name": "Georgian Bay",
+          "communities": [
+            "Baxter",
+            "Freeman",
+            "Gibson"
+          ]
+        },
+        {
+          "name": "Muskoka Lakes",
+          "communities": [
+            "Cardwell",
+            "Medora",
+            "Monck (Muskoka Lakes)",
+            "Watt",
+            "Wood (Muskoka Lakes)"
+          ]
+        },
+        {
+          "name": "Huntsville",
+          "communities": [
+            "Brunel",
+            "Chaffey",
+            "Stephenson",
+            "Stisted"
+          ]
+        },
+        {
+          "name": "Lake of Bays",
+          "communities": [
+            "Finlayson",
+            "Franklin",
+            "Mclean",
+            "Ridout",
+            "Sinclair"
+          ]
+        },
+        {
+          "name": "Bracebridge",
+          "communities": [
+            "Draper",
+            "Macaulay",
+            "Monck (Bracebridge)",
+            "Muskoka (N)",
+            "Oakley"
+          ]
+        },
+        {
+          "name": "Gravenhurst",
+          "communities": [
+            "Morrison",
+            "Muskoka (S)",
+            "Ryde",
+            "Wood (Gravenhurst)"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NORFOLK",
+      "municipalities": [
+        {
+          "name": "Norwich",
+          "communities": [
+            "Burgessville",
+            "Curries",
+            "Eastwood",
+            "Hawtrey",
+            "Holbrook",
+            "Milldale",
+            "Newark",
+            "Norwich",
+            "Norwich Town",
+            "Otterville",
+            "Oxford Centre",
+            "Rural Norwich",
+            "Springford",
+            "zz-Rural"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NORTHUMBERLAND",
+      "municipalities": [
+        {
+          "name": "Port Hope",
+          "communities": [
+            "Garden Hill",
+            "Port Hope",
+            "Rural Port Hope"
+          ]
+        },
+        {
+          "name": "Cobourg",
+          "communities": ["Cobourg"]
+        },
+        {
+          "name": "Alnwick/Haldimand",
+          "communities": [
+            "Grafton",
+            "Rural Alnwick/Haldimand"
+          ]
+        },
+        {
+          "name": "Alderville First Nation",
+          "communities": ["Alderville First Nation"]
+        },
+        {
+          "name": "Cramahe",
+          "communities": [
+            "Castleton",
+            "Colborne",
+            "Rural Cramahe"
+          ]
+        },
+        {
+          "name": "Brighton",
+          "communities": [
+            "Brighton",
+            "Rural Brighton"
+          ]
+        },
+        {
+          "name": "Trent Hills",
+          "communities": [
+            "Campbellford",
+            "Hastings",
+            "Rural Trent Hills",
+            "Warkworth"
+          ]
+        },
+        {
+          "name": "First Nations",
+          "communities": ["Native Leased Lands"]
+        }
+      ]
+    },
+    {
+      "name": "OXFORD",
+      "municipalities": [
+        {
+          "name": "Blandford-Blenheim",
+          "communities": [
+            "Blandford",
+            "Blenheim",
+            "Bright",
+            "Drumbo",
+            "Forest Estates",
+            "Gobles",
+            "Maple Lake",
+            "Plattsville",
+            "Princeton",
+            "Rural Blandford-Blenheim",
+            "Washington",
+            "Wolverton",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Ingersoll",
+          "communities": [
+            "Ingersoll",
+            "Ingersoll-North",
+            "Ingersoll-South",
+            "None"
+          ]
+        },
+        {
+          "name": "South-West Oxford",
+          "communities": [
+            "Beachville",
+            "Brownsville",
+            "Centreville",
+            "Culloden",
+            "Delmer",
+            "Dereham Centre",
+            "Dorland Subdivision",
+            "Foldens",
+            "Mount Elgin",
+            "Mt. Elgin",
+            "Ostrander",
+            "Rural South-West Oxford",
+            "Salford",
+            "Southwest Oxford",
+            "Sweaburg",
+            "Verschoyle",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Tillsonburg",
+          "communities": [
+            "Tillsonburg",
+            "Woodstock",
+            "Woodstock-North",
+            "Woodstock-South"
+          ]
+        },
+        {
+          "name": "Woodstock",
+          "communities": [
+            "Woodstock-North",
+            "Woodstock-South"
+          ]
+        },
+        {
+          "name": "Zorra",
+          "communities": [
+            "Brooksdale",
+            "East Nissouri",
+            "Embro",
+            "Harrington",
+            "Kintore",
+            "Lakeside",
+            "Medina",
+            "Rural Zorra",
+            "Thamesford",
+            "Uniondale",
+            "West Zorra",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "East Zorra-Tavistock",
+          "communities": [
+            "Braemar",
+            "Cassel",
+            "East Zorra",
+            "Hickson",
+            "Hidden Valley",
+            "Huntingford",
+            "Innerkip",
+            "Rural East Zorra-Tavistock",
+            "Tavistock"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "OTTAWA",
+      "municipalities": [
+        {
+          "name": "Alta Vista and Area",
+          "communities": [
+            "3601-Eastway Gardens/Industrial Park",
+            "3602-Riverview Park",
+            "3603-Faircrest Heights",
+            "3604-Applewood Acres",
+            "3605-Alta Vista",
+            "3606-Alta Vista/Faircrest Heights",
+            "3607-Alta Vista",
+            "3608-Playfair Park",
+            "3609-Guildwood Estates-Urbandale Acres"
+          ]
+        },
+        {
+          "name": "Barrhaven",
+          "communities": [
+            "7701-Barrhaven-Pheasant Run",
+            "7702-Barrhaven-Knollsbrook",
+            "7703-Barrhaven-Cedargrove/Fraserdale",
+            "7704-Barrhaven-Heritage Park",
+            "7705-Barrhaven-On the Green",
+            "7706-Barrhaven-Longfields",
+            "7707-Barrhaven-Hearts Desire",
+            "7708-Barrhaven-Stonebridge",
+            "7709-Barrhaven-Strandherd",
+            "7710-Barrhaven East",
+            "7711-Barrhaven-Half Moon Bay"
+          ]
+        },
+        {
+          "name": "Beacon Hill North - South and Area",
+          "communities": [
+            "2101-Rothwell Heights",
+            "2102-Beacon Hill North",
+            "2103-Beacon Hill North",
+            "2104-Canotek Industrial Park",
+            "2105-Beaconwood",
+            "2106-Cardinal Heights",
+            "2107-Beacon Hill South",
+            "2108-Beacon Hill South"
+          ]
+        },
+        {
+          "name": "Bells Corners and South to Fallowfield",
+          "communities": [
+            "7801-Bellwood-Industrial Park",
+            "7802-Westcliffe Estates",
+            "7803-Bells Corners",
+            "7804-Lynwood Village",
+            "7805-Arbeatha Park",
+            "7806-Cedar Hill/Orchard Estates",
+            "7807-Fallowfield"
+          ]
+        },
+        {
+          "name": "Billings Bridge - Riverside Park and Area",
+          "communities": [
+            "4601-Billings Bridge",
+            "4602-Heron Park",
+            "4603-Brookfield Gardens",
+            "4604-Mooneys Bay/Riverside Park",
+            "4605-Riverside Park",
+            "4606-Riverside Park South",
+            "4607-Riverside Park South",
+            "4608-Mooneys Bay/Revelstoke"
+          ]
+        },
+        {
+          "name": "Kanata",
+          "communities": [
+            "9001-Kanata-Beaverbrook",
+            "9002-Kanata-Katimavik",
+            "9003-Kanata-Glencairn/Hazeldean",
+            "9004-Kanata-Bridlewood",
+            "9005-Kanata-Kanata (North West)",
+            "9006-Kanata-Kanata (North East)",
+            "9007-Kanata-Kanata Lakes/Heritage Hills",
+            "9008-Kanata-Morgan's Grant/South March",
+            "9009-Kanata-Rural Kanata (Central)",
+            "9010-Kanata-Emerald Meadows/Trailwest"
+          ]
+        },
+        {
+          "name": "Orleans",
+          "communities": [
+            "Convent Glen and Area",
+            "2001-Convent Glen through 2013-Mer Bleue/Bradley Estates/Anderson Park"
+          ]
+        },
+        {
+          "name": "Cumberland and Area",
+          "communities": [
+            "1101-Chatelaine Village through 1119-Notting Hill/Summerside"
+          ]
+        },
+        {
+          "name": "Central Areas",
+          "communities": [
+            "Centretown",
+            "Glebe",
+            "Old Ottawa South",
+            "Sandy Hill",
+            "Lowertown",
+            "ByWard Market",
+            "Golden Triangle"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PEEL",
+      "municipalities": [
+        {
+          "name": "Brampton",
+          "communities": [
+            "Airport Road/Highway 7 Business Centre",
+            "Avondale",
+            "Bram East",
+            "Bram West",
+            "Bramalea North Industrial",
+            "Bramalea Road South Gateway",
+            "Bramalea South Industrial",
+            "Bramalea West Industrial",
+            "Brampton 407 Corridor",
+            "Brampton East",
+            "Brampton East Industrial",
+            "Brampton North",
+            "Brampton South",
+            "Brampton West",
+            "Central Park",
+            "Claireville Conservation",
+            "Credit Valley",
+            "Downtown Brampton",
+            "Fletcher's Creek South",
+            "Fletcher's Creek Village",
+            "Fletcher's Meadow",
+            "Fletcher's West",
+            "Gore Industrial North",
+            "Gore Industrial South",
+            "Goreway Drive Corridor",
+            "Heart Lake",
+            "Heart Lake East",
+            "Heart Lake West",
+            "Highway 427",
+            "Huttonville",
+            "Madoc",
+            "Northgate",
+            "Northwest Brampton",
+            "Northwest Sandalwood Parkway",
+            "Northwood Park",
+            "Parkway Belt Industrial Area",
+            "Queen Street Corridor",
+            "Sandringham-Wellington",
+            "Sandringham-Wellington North",
+            "Snelgrove",
+            "Southgate",
+            "Steeles Industrial",
+            "Toronto Gore Rural Estate",
+            "Vales of Castlemore",
+            "Vales of Castlemore North",
+            "Westgate"
+          ]
+        },
+        {
+          "name": "Mississauga",
+          "communities": [
+            "Applewood",
+            "Central Erin Mills",
+            "Churchill Meadows",
+            "City Centre",
+            "Clarkson",
+            "Cooksville",
+            "Creditview",
+            "Dixie",
+            "East Credit",
+            "Erin Mills",
+            "Erindale",
+            "Fairview",
+            "Gateway",
+            "Hurontario",
+            "Lakeview",
+            "Lisgar",
+            "Lorne Park",
+            "Malton",
+            "Mavis-Erindale",
+            "Meadowvale",
+            "Meadowvale Business Park",
+            "Meadowvale Village",
+            "Mineola",
+            "Mississauga Valleys",
+            "Northeast",
+            "Port Credit",
+            "Rathwood",
+            "Sheridan",
+            "Sheridan Park",
+            "Southdown",
+            "Streetsville",
+            "Western Business Park"
+          ]
+        },
+        {
+          "name": "Caledon",
+          "communities": [
+            "Alton",
+            "Bolton East",
+            "Bolton North",
+            "Bolton West",
+            "Caledon East",
+            "Caledon Village",
+            "Cheltenham",
+            "Inglewood",
+            "Mono Mills",
+            "Palgrave",
+            "Rural Caledon"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PERTH",
+      "municipalities": [
+        {
+          "name": "North Perth",
+          "communities": [
+            "31-Elma Twp",
+            "32-Listowel",
+            "33-Wallace",
+            "Gowanstown",
+            "Monkton",
+            "zz-Listowel",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Perth East",
+          "communities": [
+            "41-Crystal Lake",
+            "42-Ellice Twp",
+            "43-Millbank",
+            "44-Milverton",
+            "45-Mornington Twp",
+            "46-North Easthope Twp",
+            "47-Shakespeare",
+            "48-South Easthope Twp",
+            "Amulree",
+            "Gads Hill",
+            "Millbank",
+            "Milverton",
+            "Newton",
+            "Sebastopol",
+            "Shakespeare",
+            "Tavistock",
+            "Wartburg",
+            "zz-Rural"
+          ]
+        },
+        {
+          "name": "Perth South",
+          "communities": [
+            "51-Blanshard Twp",
+            "52-Downie Twp",
+            "53-Sebringville",
+            "zz-Rural",
+            "zz-Sebringville"
+          ]
+        },
+        {
+          "name": "St. Marys",
+          "communities": [
+            "21-St. Marys",
+            "St. Marys"
+          ]
+        },
+        {
+          "name": "Stratford",
+          "communities": [
+            "22-Stratford",
+            "Stratford"
+          ]
+        },
+        {
+          "name": "West Perth",
+          "communities": [
+            "61-Fullarton Twp",
+            "62-Hibbert Twp",
+            "63-Logan Twp",
+            "64-Monkton",
+            "65-Town of Mitchell",
+            "Brunner",
+            "Dublin",
+            "Kirkton",
+            "Staffa",
+            "zz-Mitchell"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PETERBOROUGH",
+      "municipalities": [
+        {
+          "name": "Asphodel-Norwood",
+          "communities": [
+            "Norwood",
+            "Rural Asphodel-Norwood"
+          ]
+        },
+        {
+          "name": "Cavan Monaghan",
+          "communities": [
+            "Millbrook",
+            "Rural Cavan Monaghan"
+          ]
+        },
+        {
+          "name": "Curve Lake First Nation",
+          "communities": [
+            "Curve Lake First Nation"
+          ]
+        },
+        {
+          "name": "Douro-Dummer",
+          "communities": [
+            "Rural Douro-Dummer"
+          ]
+        },
+        {
+          "name": "Havelock-Belmont-Methuen",
+          "communities": [
+            "Havelock",
+            "Rural Havelock-Belmont-Methuen"
+          ]
+        },
+        {
+          "name": "Hiawatha First Nation",
+          "communities": [
+            "Hiawatha First Nation"
+          ]
+        },
+        {
+          "name": "North Kawartha",
+          "communities": [
+            "Rural North Kawartha"
+          ]
+        },
+        {
+          "name": "Otonabee-South Monaghan",
+          "communities": [
+            "Rural Otonabee-South Monaghan"
+          ]
+        },
+        {
+          "name": "Peterborough",
+          "communities": [
+            "Ashburnham",
+            "Downtown",
+            "Monaghan",
+            "Northcrest",
+            "Otonabee"
+          ]
+        },
+        {
+          "name": "Smith-Ennismore-Lakefield",
+          "communities": [
+            "Lakefield",
+            "Rural Smith-Ennismore-Lakefield"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PRESCOTT AND RUSSELL",
+      "municipalities": [
+        {
+          "name": "Alfred and Plantagenet",
+          "communities": [
+            "Alfred",
+            "Plantagenet",
+            "Rural Alfred and Plantagenet",
+            "Wendover"
+          ]
+        },
+        {
+          "name": "Casselman",
+          "communities": [
+            "Casselman"
+          ]
+        },
+        {
+          "name": "Champlain",
+          "communities": [
+            "L'Orignal",
+            "Rural Champlain",
+            "Vankleek Hill"
+          ]
+        },
+        {
+          "name": "Clarence-Rockland",
+          "communities": [
+            "Bourget",
+            "Clarence Creek",
+            "Rockland",
+            "Rural Clarence-Rockland"
+          ]
+        },
+        {
+          "name": "East Hawkesbury",
+          "communities": [
+            "Rural East Hawkesbury",
+            "St-Eugene"
+          ]
+        },
+        {
+          "name": "Hawkesbury",
+          "communities": [
+            "Hawkesbury"
+          ]
+        },
+        {
+          "name": "Russell",
+          "communities": [
+            "Embrun",
+            "Limoges",
+            "Rural Russell",
+            "Russell"
+          ]
+        },
+        {
+          "name": "The Nation",
+          "communities": [
+            "Rural The Nation",
+            "St-Albert",
+            "St-Bernardin",
+            "St-Isidore"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "PRINCE EDWARD",
+      "municipalities": [
+        {
+          "name": "Prince Edward County",
+          "communities": [
+            "Ameliasburgh",
+            "Athol",
+            "Bloomfield",
+            "Hallowell",
+            "Hillier",
+            "North Marysburgh",
+            "Picton",
+            "Sophiasburgh",
+            "South Marysburgh",
+            "Wellington"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SIMCOE",
+      "municipalities": [
+        {
+          "name": "Adjala-Tosorontio",
+          "communities": [
+            "Everett",
+            "Hockley Valley",
+            "Lisle",
+            "Loretto",
+            "Rural Adjala-Tosorontio",
+            "Ruskview"
+          ]
+        },
+        {
+          "name": "Barrie",
+          "communities": [
+            "Allandale",
+            "Ardagh",
+            "Bayfield",
+            "Bayshore",
+            "Bear Creek",
+            "Codrington",
+            "Cundles",
+            "Downtown",
+            "East Bayfield",
+            "Edgehill",
+            "Grove East",
+            "Holly",
+            "Innishore",
+            "Letitia Heights",
+            "Little Lake",
+            "Minet's Point",
+            "North Shore",
+            "Painswick North",
+            "Painswick South",
+            "Queen's Park",
+            "Rural Barrie Northwest",
+            "Rural Barrie Southeast",
+            "Rural Barrie Southwest",
+            "Sandy Hollow",
+            "Sanford",
+            "South Shore",
+            "Sunnidale",
+            "Wellington",
+            "West Bayfield"
+          ]
+        },
+        {
+          "name": "Bradford West Gwillimbury",
+          "communities": [
+            "Bond Head",
+            "Bradford",
+            "Rural Bradford West Gwillimbury"
+          ]
+        },
+        {
+          "name": "Christian Island 30",
+          "communities": [
+            "Beausoleil First Nation"
+          ]
+        },
+        {
+          "name": "Clearview",
+          "communities": [
+            "Batteaux",
+            "Brentwood",
+            "Creemore",
+            "Devil's Glen",
+            "New Lowell",
+            "Nottawa",
+            "Rural Clearview",
+            "Singhampton",
+            "Stayner"
+          ]
+        },
+        {
+          "name": "Collingwood",
+          "communities": [
+            "Collingwood"
+          ]
+        },
+        {
+          "name": "Essa",
+          "communities": [
+            "Angus",
+            "Baxter",
+            "Colwell",
+            "Rural Essa",
+            "Thornton"
+          ]
+        },
+        {
+          "name": "Innisfil",
+          "communities": [
+            "Alcona",
+            "Churchill",
+            "Cookstown",
+            "Gilford",
+            "Lefroy",
+            "Rural Innisfil",
+            "Stroud"
+          ]
+        },
+        {
+          "name": "Midland",
+          "communities": [
+            "Midland"
+          ]
+        },
+        {
+          "name": "New Tecumseth",
+          "communities": [
+            "Alliston",
+            "Beeton",
+            "Rural New Tecumseth",
+            "Tottenham"
+          ]
+        },
+        {
+          "name": "Orillia",
+          "communities": [
+            "Orillia"
+          ]
+        },
+        {
+          "name": "Oro-Medonte",
+          "communities": [
+            "Craighurst",
+            "Edgar",
+            "Guthrie",
+            "Hawkestone",
+            "Horseshoe Valley",
+            "Moonstone",
+            "Prices Corners",
+            "Rural Oro-Medonte",
+            "Shanty Bay",
+            "Sugarbush",
+            "Warminster"
+          ]
+        },
+        {
+          "name": "Penetanguishene",
+          "communities": [
+            "Penetanguishene"
+          ]
+        },
+        {
+          "name": "Rama First Nation 32",
+          "communities": [
+            "Rama First Nation"
+          ]
+        },
+        {
+          "name": "Ramara",
+          "communities": [
+            "Atherley",
+            "Brechin",
+            "Rural Ramara"
+          ]
+        },
+        {
+          "name": "Severn",
+          "communities": [
+            "Ardtrea",
+            "Bass Lake",
+            "Coldwater",
+            "Fesserton",
+            "Marchmont",
+            "Port Severn",
+            "Rural Severn",
+            "Washago",
+            "West Shore"
+          ]
+        },
+        {
+          "name": "Springwater",
+          "communities": [
+            "Anten Mills",
+            "Centre Vespra",
+            "Elmvale",
+            "Hillsdale",
+            "Midhurst",
+            "Minesing",
+            "Phelpston",
+            "Rural Springwater",
+            "Snow Valley"
+          ]
+        },
+        {
+          "name": "Tay",
+          "communities": [
+            "Port McNicoll",
+            "Rural Tay",
+            "Victoria Harbour",
+            "Waubaushene",
+            "Waverley"
+          ]
+        },
+        {
+          "name": "Tiny",
+          "communities": [
+            "Lafontaine",
+            "Perkinsfield",
+            "Rural Tiny",
+            "Wyebridge",
+            "Wyevale"
+          ]
+        },
+        {
+          "name": "Wasaga Beach",
+          "communities": [
+            "Wasaga Beach"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "STORMONT, DUNDAS AND GLENGARRY",
+      "municipalities": [
+        {
+          "name": "North Dundas",
+          "communities": [
+            "701-Winchester",
+            "702-North Dundas (Mountain) Twp",
+            "703-North Dundas (Winchester) Twp",
+            "704-Chesterville"
+          ]
+        },
+        {
+          "name": "South Dundas",
+          "communities": [
+            "705-Morrisburg",
+            "706-South Dundas (Matilda) Twp",
+            "707-South Dundas (Williamsburg) Twp",
+            "708-Iroquois"
+          ]
+        },
+        {
+          "name": "North Stormont",
+          "communities": [
+            "709-Finch",
+            "710-North Stormont (Finch) Twp",
+            "711-North Stormont (Roxborough) Twp",
+            "712-Moose Creek"
+          ]
+        },
+        {
+          "name": "South Stormont",
+          "communities": [
+            "713-Ingleside",
+            "714-Long Sault",
+            "715-South Stormont (Osnabruck) Twp",
+            "716-South Stormont (Cornwall) Twp"
+          ]
+        },
+        {
+          "name": "Cornwall",
+          "communities": [
+            "717-Cornwall"
+          ]
+        },
+        {
+          "name": "South Glengarry",
+          "communities": [
+            "722-Lancaster",
+            "723-South Glengarry (Charlottenburgh) Twp",
+            "724-South Glengarry (Lancaster) Twp"
+          ]
+        },
+        {
+          "name": "Akwesasne (Part) 59",
+          "communities": [
+            "Akwesasne (Part) 60"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "TORONTO",
+      "municipalities": [
+        {
+          "name": "Toronto (Area C)",
+          "communities": [
+            "Toronto C01: Bay Street Corridor, Church-Yonge Corridor, Grange Park, Kensington-Chinatown, University",
+            "Toronto C02: Annex, Casa Loma, Wychwood, Yorkville",
+            "Toronto C03: Corso Italia-Davenport, Dovercourt-Wallace Emerson-Junction, Weston-Pellam Park, Humewood-Cedarvale, Oakwood Village",
+            "Toronto C04: Bedford Park-Nortown, Lawrence Park North, Englemount-Lawrence, Lawrence Park South, Forest Hill North",
+            "Toronto C06: Bathurst Manor, Clanton Park",
+            "Toronto C07: Lansing-Westgate, Willowdale West, Newtonbrook West, Westminster-Branson",
+            "Toronto C08: Cabbagetown-South St. James Town, Church-Yonge Corridor, Moss Park, North St. James Town, Regent Park, Waterfront Communities C8",
+            "Toronto C09: Rosedale-Moore Park",
+            "Toronto C10: Mount Pleasant East, Mount Pleasant West",
+            "Toronto C11: Flemingdon Park, Leaside, Thorncliffe Park",
+            "Toronto C12: Bridle Path-Sunnybrook-York Mills, St. Andrew-Windfields",
+            "Toronto C13: Banbury-Don Mills, Parkwoods-Donalda, Victoria Village",
+            "Toronto C14: Newtonbrook East, Willowdale East",
+            "Toronto C15: Bayview Village, Bayview Woods-Steeles, Don Valley Village, Henry Farm, Hillcrest Village, Pleasant View"
+          ]
+        },
+        {
+          "name": "Toronto (Area E)",
+          "communities": [
+            "Toronto E01: Blake-Jones, Greenwood-Coxwell, North Riverdale, South Riverdale",
+            "Toronto E02: East End-Danforth, The Beaches, Woodbine Corridor",
+            "Toronto E03: Broadview North, Crescent Town, Danforth, Danforth Village-East York, East York, O'Connor-Parkview, Playter Estates-Danforth, Woodbine-Lumsden",
+            "Toronto E04: Clairlea-Birchmount, Dorset Park, Ionview, Kennedy Park, Wexford-Maryvale",
+            "Toronto E05: L'Amoreaux, Steeles, Tam O'Shanter-Sullivan",
+            "Toronto E06: Birchcliffe-Cliffside, Oakridge",
+            "Toronto E07: Agincourt North, Agincourt South-Malvern West, Milliken",
+            "Toronto E08: Cliffcrest, Eglinton East, Guildwood, Scarborough Village",
+            "Toronto E09: Bendale, Morningside, Woburn",
+            "Toronto E10: Centennial Scarborough, Highland Creek, Rouge E10, West Hill",
+            "Toronto E11: Malvern, Rouge E11"
+          ]
+        },
+        {
+          "name": "Toronto (Area W)",
+          "communities": [
+            "Toronto W01: High Park-Swansea, Roncesvalles, South Parkdale",
+            "Toronto W02: Dovercourt-Wallace Emerson-Junction, High Park North, Junction Area, Lambton Baby Point, Runnymede-Bloor West Village",
+            "Toronto W03: Caledonia-Fairbank, Corso Italia-Davenport, Keelesdale-Eglinton West, Rockcliffe-Smythe, Weston-Pellam Park",
+            "Toronto W04: Beechborough-Greenbrook, Briar Hill-Belgravia, Brookhaven-Amesbury, Humberlea-Pelmo Park W4, Maple Leaf, Mount Dennis, Rustic, Weston, Yorkdale-Glen Park",
+            "Toronto W05: Black Creek, Downsview-Roding-CFB, Glenfield-Jane Heights, Humber Summit, Humberlea-Pelmo Park W5, Humbermede, York University Heights",
+            "Toronto W06: Alderwood, Long Branch, Mimico, New Toronto",
+            "Toronto W07: Stonegate-Queensway",
+            "Toronto W08: Edenbridge-Humber Valley, Eringate-Centennial-West Deane, Etobicoke West Mall, Islington-City Centre West, Kingsway South, Markland Wood, Princess-Rosethorn",
+            "Toronto W09: Humber Heights, Kingsview Village-The Westway, Willowridge-Martingrove-Richview",
+            "Toronto W10: Elms-Old Rexdale, Mount Olive-Silverstone-Jamestown, Rexdale-Kipling, Thistletown-Beaumonde Heights, West Humber-Clairville"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WATERLOO",
+      "municipalities": [
+        {
+          "name": "Cambridge",
+          "communities": [
+            "Blair",
+            "Central Preston",
+            "Fiddlesticks",
+            "Galt City Centre",
+            "Greenway-Chaplin",
+            "Hespeler",
+            "Industrial",
+            "Lang's Farm",
+            "North Cambridge",
+            "North Galt",
+            "Preston Heights",
+            "South East Galt",
+            "South West Galt"
+          ]
+        },
+        {
+          "name": "Kitchener",
+          "communities": [
+            "Alpine",
+            "Bridgeport East",
+            "Bridgeport North",
+            "Bridgeport West",
+            "Cedar Hill",
+            "Central Frederick",
+            "Centreville Chicopee",
+            "Cherry Hill",
+            "Country Hills",
+            "Country Hills West",
+            "Doon South",
+            "Downtown",
+            "East Ward",
+            "Forest Heights",
+            "Forest Hill",
+            "Grand River North",
+            "Grand River South",
+            "Idlewood",
+            "KW Hospital",
+            "Laurentian Hills",
+            "Laurentian West",
+            "Lower Doon",
+            "Pioneer Park",
+            "Pioneer Tower East",
+            "Pioneer Tower West",
+            "Rosemount",
+            "South Ward",
+            "Stanley Park",
+            "Vanier",
+            "Victoria Hills",
+            "Victoria North",
+            "Victoria Park",
+            "Victoria South",
+            "Westmount"
+          ]
+        },
+        {
+          "name": "North Dumfries",
+          "communities": [
+            "Ayr",
+            "Rural North Dumfries"
+          ]
+        },
+        {
+          "name": "Waterloo",
+          "communities": [
+            "Beechwood",
+            "Central Waterloo",
+            "Columbia Forest",
+            "Conservation Meadows",
+            "Eastbridge",
+            "Erbsville",
+            "Lakeshore",
+            "Laurelwood",
+            "Lincoln",
+            "Lincoln Heights",
+            "Mary-Allen",
+            "Mount Hope Huron Park",
+            "Northdale",
+            "Rural East",
+            "Rural West",
+            "Uptown Waterloo",
+            "Westvale",
+            "Willowdale"
+          ]
+        },
+        {
+          "name": "Wellesley",
+          "communities": [
+            "Hawkesville",
+            "Linwood",
+            "Rural Wellesley",
+            "St. Clements",
+            "Wellesley"
+          ]
+        },
+        {
+          "name": "Wilmot",
+          "communities": [
+            "Baden",
+            "New Dundee",
+            "New Hamburg",
+            "Rural Wilmot"
+          ]
+        },
+        {
+          "name": "Woolwich",
+          "communities": [
+            "Breslau",
+            "Conestogo",
+            "Elmira",
+            "Floradale",
+            "Heidelberg",
+            "Maryhill",
+            "Rural Woolwich",
+            "St. Jacobs",
+            "West Montrose"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "WELLINGTON",
+      "municipalities": [
+        {
+          "name": "Centre Wellington",
+          "communities": [
+            "Belwood",
+            "Elora/Salem",
+            "Fergus",
+            "Rural Centre Wellington",
+            "Rural Centre Wellington East",
+            "Rural Centre Wellington West"
+          ]
+        },
+        {
+          "name": "Erin",
+          "communities": [
+            "Erin",
+            "Hillsburgh",
+            "Rural Erin"
+          ]
+        },
+        {
+          "name": "Guelph",
+          "communities": [
+            "Brant",
+            "Central East",
+            "Central West",
+            "Clairfields",
+            "Clairfields/Hanlon Business Park",
+            "College",
+            "Dovercliffe Park/Old University",
+            "Downtown",
+            "Exhibition Park",
+            "General Hospital",
+            "Grange Hill East",
+            "Grange Road",
+            "Guelph South",
+            "Hanlon Creek",
+            "Hanlon Industrial",
+            "June Avenue",
+            "Kortright East",
+            "Kortright Hills",
+            "Kortright West",
+            "Minto",
+            "Northwest Industrial Park",
+            "Old University",
+            "Onward Willow",
+            "Parkwood Gardens",
+            "Pine Ridge",
+            "Pineridge/Westminster Woods",
+            "Riverside Park",
+            "Rural Guelph/Eramosa East",
+            "Rural Guelph/Eramosa West",
+            "Rural Puslinch West",
+            "St. George's",
+            "St. Patrick's Ward",
+            "Two Rivers",
+            "Victoria North",
+            "Village",
+            "Village By The Arboretum",
+            "Watson",
+            "Waverley",
+            "West Willow Woods",
+            "Willow West/Sugarbush/West Acres",
+            "York/Watson Industrial Park"
+          ]
+        },
+        {
+          "name": "Guelph/Eramosa",
+          "communities": []
+        },
+        {
+          "name": "Mapleton",
+          "communities": [
+            "Alma",
+            "Drayton",
+            "Moorefield",
+            "Rural Mapleton"
+          ]
+        },
+        {
+          "name": "Minto",
+          "communities": [
+            "Clifford",
+            "Harriston",
+            "Palmerston",
+            "Rural Minto"
+          ]
+        },
+        {
+          "name": "Puslinch",
+          "communities": [
+            "Aberfoyle",
+            "Morriston",
+            "Rural Puslinch"
+          ]
+        },
+        {
+          "name": "Wellington North",
+          "communities": [
+            "Arthur",
+            "Mount Forest",
+            "Rural Wellington North"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "YORK",
+      "municipalities": [
+        {
+          "name": "Aurora",
+          "communities": [
+            "Aurora Estates",
+            "Aurora Grove",
+            "Aurora Heights",
+            "Aurora Highlands",
+            "Aurora Village",
+            "Bayview Northeast",
+            "Bayview Southeast",
+            "Bayview Wellington",
+            "Hills of St Andrew",
+            "Rural Aurora"
+          ]
+        },
+        {
+          "name": "East Gwillimbury",
+          "communities": [
+            "Holland Landing",
+            "Mt Albert",
+            "Queensville",
+            "Rural East Gwillimbury",
+            "Sharon"
+          ]
+        },
+        {
+          "name": "Georgina",
+          "communities": [
+            "Baldwin",
+            "Belhaven",
+            "Historic Lakeshore Communities",
+            "Keswick North",
+            "Keswick South",
+            "Pefferlaw",
+            "Sutton & Jackson's Point",
+            "Virginia"
+          ]
+        },
+        {
+          "name": "Georgina Islands",
+          "communities": [
+            "Fox Island",
+            "Georgina Island",
+            "Snake Island"
+          ]
+        },
+        {
+          "name": "King",
+          "communities": [
+            "King City",
+            "Nobleton",
+            "Pottageville",
+            "Rural King",
+            "Schomberg"
+          ]
+        },
+        {
+          "name": "Markham",
+          "communities": [
+            "Angus Glen",
+            "Berczy",
+            "Box Grove",
+            "Buttonville",
+            "Cache",
+            "Cachet",
+            "Cathedral",
+            "Cedar Grove",
+            "Cornell",
+            "Dickson Hill",
+            "Downtown Markham",
+            "German Mills",
+            "Greensborough",
+            "Langstaff",
+            "Legacy",
+            "Markham Village",
+            "Milliken",
+            "Parkway",
+            "Raymerville",
+            "Rouge Fairways",
+            "Royal Orchard",
+            "Sherwood",
+            "South Unionville",
+            "Thornhill",
+            "Unionville",
+            "Victoria Square",
+            "Vinegar Hill",
+            "Wismer",
+            "Woodbine North"
+          ]
+        },
+        {
+          "name": "Newmarket",
+          "communities": [
+            "Armitage",
+            "Bristol-London",
+            "Central Newmarket",
+            "Glenway Estates",
+            "Gorham-College Manor",
+            "Huron Heights-Leslie Valley",
+            "Newmarket Industrial Park",
+            "Stonehaven-Wyndham",
+            "Summerhill Estates",
+            "Woodland Hill"
+          ]
+        },
+        {
+          "name": "Richmond Hill",
+          "communities": [
+            "Bayview Hill",
+            "Crosby",
+            "Devonsleigh",
+            "Doncrest",
+            "Downtown",
+            "Elgin Mills",
+            "Headford",
+            "Jefferson",
+            "Lake Wilcox",
+            "Langstaff",
+            "Mill Pond",
+            "North Richvale",
+            "Oak Ridges",
+            "Observatory",
+            "Richmond Heights",
+            "Rouge Woods",
+            "Rural Richmond Hill",
+            "South Richvale",
+            "Westbrook",
+            "Yonge North"
+          ]
+        },
+        {
+          "name": "Vaughan",
+          "communities": [
+            "Beverley Glen",
+            "Brownridge",
+            "Carrville",
+            "Concord",
+            "Corporate Centre",
+            "Dufferin Hill",
+            "East Woodbridge",
+            "Elder Mills",
+            "Glen Shields",
+            "Hillcrest Village",
+            "Humewood",
+            "Kleinburg",
+            "Lakeview Estates",
+            "Langstaff",
+            "Maple",
+            "Millwood",
+            "Nashville",
+            "Pine Valley Business Park",
+            "Pinewood",
+            "Rural Vaughan",
+            "Sonoma Heights",
+            "Springfarm",
+            "Steeles",
+            "Thornhill",
+            "Thornhill Woods",
+            "Uplands",
+            "Valley",
+            "Vellore",
+            "West Woodbridge",
+            "Woodbridge"
+          ]
+        },
+        {
+          "name": "Whitchurch-Stouffville",
+          "communities": [
+            "Ballantrae",
+            "Rural Whitchurch-Stouffville",
+            "Stouffville"
+          ]
+        }
+      ]
+    }
+  ]
+} 
