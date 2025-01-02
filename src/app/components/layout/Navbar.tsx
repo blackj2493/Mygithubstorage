@@ -10,12 +10,12 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="bg-white shadow-lg border-b border-gray-200">
+    <nav className="absolute top-0 left-0 right-0 z-50">
       <div className="max-w-6xl mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors">
-            PureProperties
+            PureProperty.ca
           </Link>
 
           {/* Navigation Links */}
@@ -24,8 +24,8 @@ export default function Navbar() {
               href="/listings"
               className={`transition-colors ${
                 isActive('/listings')
-                  ? 'text-blue-600 font-medium'
-                  : 'text-gray-600 hover:text-blue-600'
+                  ? 'text-blue-800 font-medium'
+                  : 'text-gray-800 hover:text-blue-800'
               }`}
             >
               Browse Listings
@@ -37,8 +37,8 @@ export default function Navbar() {
                   href="/listings/create"
                   className={`px-4 py-2 rounded-md transition-colors ${
                     isActive('/listings/create')
-                      ? 'bg-blue-700 text-white'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-blue-800 text-white'
+                      : 'bg-blue-800 text-white hover:bg-blue-600'
                   }`}
                 >
                   List Property
@@ -47,15 +47,15 @@ export default function Navbar() {
                   href="/dashboard/listings"
                   className={`transition-colors ${
                     pathname.startsWith('/dashboard')
-                      ? 'text-blue-600 font-medium'
-                      : 'text-gray-600 hover:text-blue-600'
+                      ? 'text-blue-800 font-medium'
+                      : 'text-gray-800 hover:text-blue-00'
                   }`}
                 >
                   Dashboard
                 </Link>
                 <Link
                   href="/api/auth/logout"
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
+                  className="bg-gray-200 bg-opacity-80 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
                 >
                   Logout
                 </Link>

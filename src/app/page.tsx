@@ -20,7 +20,6 @@ export default function HomePage() {
   const [userPostalCode, setUserPostalCode] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get user's postal code using a geocoding service
     const getUserLocation = async () => {
       try {
         const response = await fetch('https://ipapi.co/json/');
@@ -58,36 +57,42 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-blue-800 text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            {/* Left side content */}
-            <div className="md:w-1/2 mb-8 md:mb-0">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Take Control of Selling Your Home
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
-                Save thousands in fees, connect directly with buyers and access professional support every step of the way.
-              </p>
+      <div className="relative min-h-[90vh] -mt-[72px]">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/Hero Section_Happy Lady.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+        
+        {/* Content Overlay - Left aligned with black text */}
+        <div className="relative z-10 w-full pl-8 sm:pl-16 lg:pl-24 flex items-center min-h-[90vh]">
+          <div className="max-w-xl pt-[72px]">
+            <h1 className="text-5xl md:text-6xl font-bold text-black mb-6 leading-tight">
+              Take Control of Selling Your Home
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-gray-800 mb-8 leading-relaxed">
+              Save thousands in fees, connect directly with buyers and access professional support every step of the way.
+            </p>
+            
+            {/* Keep button blue */}
+            <div className="mt-8">
               <Link
                 href="/listings/create"
-                className="inline-block bg-white text-blue-800 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-50 transition-colors"
+                onClick={handleListPropertyClick}
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors"
               >
                 List Your Property
               </Link>
             </div>
-
-            {/* Right side illustration */}
-            <div className="md:w-1/2 flex justify-center">
-              <img
-                src="/Hero_photo.svg"
-                alt="Home selling illustration"
-                className="w-full max-w-md"
-              />
-            </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Nearby Listings Section */}
       <section className="py-16 bg-white">
@@ -103,7 +108,7 @@ export default function HomePage() {
           ) : (
             <>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                {nearbyListings.map((property) => (
+                {nearbyListings.slice(0, 8).map((property) => (
                   <PropertyCard
                     key={property.ListingKey}
                     property={property}
