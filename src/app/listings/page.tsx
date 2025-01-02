@@ -24,24 +24,41 @@ export default function ListingsPage() {
   );
 
   const handleFilterChange = (filterParams: string) => {
-    // Clear properties immediately
     setProperties([]);
     setPage(1);
     setLoading(true);
     
-    // Combine existing search params with filter params
-    const currentParams = new URLSearchParams(searchParams.toString());
+    // Parse the new filter params
     const newParams = new URLSearchParams(filterParams);
     
-    // Merge the params
+    // Start fresh with current search params
+    const currentParams = new URLSearchParams(searchParams.toString());
+    
+    // Map of frontend param names to API param names
+    const paramMapping: Record<string, string> = {
+      'bedrooms': 'BedroomsTotal',
+      'bathrooms': 'BathroomsTotalInteger',
+      'maxPrice': 'maxPrice',
+      'minPrice': 'minPrice',
+      'propertyType': 'PropertyType',
+      'propertySubType': 'PropertySubType'
+    };
+    
+    // Remove any existing filter params that might conflict
+    Object.values(paramMapping).forEach(param => {
+      currentParams.delete(param);
+    });
+    
+    // Add new filter params with correct API naming
     newParams.forEach((value, key) => {
-      currentParams.set(key, value);
+      if (value && value !== 'Any' && value !== '0') {
+        const apiKey = paramMapping[key] || key;
+        currentParams.set(apiKey, value);
+      }
     });
     
     // Update URL with new params
     window.history.pushState({}, '', `/listings?${currentParams.toString()}`);
-    
-    // Fetch will happen automatically due to searchParams change
   };
 
   const fetchProperties = async () => {

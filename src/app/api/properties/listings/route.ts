@@ -6,6 +6,9 @@ function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
+// Add this type at the top of your file
+type ValidPropertyType = 'Residential Condo & Other' | 'Residential Freehold' | 'Commercial';
+
 export async function GET(request: Request) {
   try {
     if (!process.env.PROPTX_IDX_TOKEN) {
@@ -14,8 +17,11 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = 50;
+    const limit = parseInt(searchParams.get('limit') || '50');
     const skip = (page - 1) * limit;
+    
+    // Add postal code to existing parameters
+    const PostalCode = searchParams.get('PostalCode');
     
     const baseUrl = 'https://query.ampre.ca/odata';
     
@@ -25,16 +31,44 @@ export async function GET(request: Request) {
     const mls = searchParams.get('mls');
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
-    const propertyType = searchParams.get('propertyType');
+    const propertyType = searchParams.get('PropertyType') || searchParams.get('propertyType');
     const transactionType = searchParams.get('TransactionType');
     const sortBy = searchParams.get('sortBy') || 'ModificationTimestamp desc,ListingKey desc';
     const BedroomsTotal = searchParams.get('BedroomsTotal');
 
     // Build filter string
-    let filters = ["StandardStatus eq 'Active'"]; // Add default active filter
+    let filters = ["StandardStatus eq 'Active'"]; // Keep default active filter
 
-    // Add property type filter - using direct value without metadata reference
+    // Add postal code filter if provided
+    if (PostalCode) {
+      const PostalPrefix = PostalCode.substring(0, 3);
+      filters.push(`startswith(PostalCode, '${PostalPrefix}')`);
+    }
+
+    // Add property type filter with proper encoding for OData
     if (propertyType) {
+        console.log('Raw propertyType value:', propertyType);
+        // For OData, we need to wrap the value in single quotes and encode special characters
+        const encodedValue = propertyType.replace(/'/g, "''"); // Handle any single quotes in the value
+        filters.push(`PropertyType eq '${encodedValue}'`);
+        
+        // Debug logging
+        console.log('Filter string:', `PropertyType eq '${encodedValue}'`);
+    }
+
+    // Add this validation before creating the filter
+    if (propertyType) {
+      const validPropertyTypes: ValidPropertyType[] = [
+        'Residential Condo & Other',
+        'Residential Freehold',
+        'Commercial'
+      ];
+      
+      if (!validPropertyTypes.includes(propertyType as ValidPropertyType)) {
+        console.warn('Invalid property type:', propertyType);
+        // Optionally throw an error or handle invalid property type
+      }
+      
       filters.push(`PropertyType eq '${propertyType}'`);
     }
 
@@ -61,9 +95,9 @@ export async function GET(request: Request) {
       filters.push(`BedroomsTotal ge ${bedroomValue}`); // Use 'ge' for greater than or equal to
     }
 
-    const filterString = `&$filter=${filters.join(' and ')}`;
-    
-    // Debug logging
+    const filterString = filters.length > 0 
+        ? `&$filter=${encodeURIComponent(filters.join(' and '))}`
+        : '';
     console.log('Complete filter string:', filterString);
     console.log('Complete URL:', `${baseUrl}/Property?$skip=${skip}&$top=${limit}&$orderby=${sortBy}${filterString}`);
 
@@ -174,6 +208,13 @@ export async function GET(request: Request) {
     const totalCount = countData['@odata.count'];
     const totalPages = Math.ceil(totalCount / limit);
 
+    // After all filters are added
+    console.log('Final filter array:', filters);
+    console.log('Final filter string:', filterString);
+
+    // Add this debug logging before making the fetch request
+    console.log('Final URL:', propertiesUrl);
+
     return NextResponse.json({
       listings: propertiesWithImages,
       pagination: {
@@ -188,7 +229,8 @@ export async function GET(request: Request) {
         minPrice,
         maxPrice,
         propertyType,
-        sortBy
+        sortBy,
+        PostalCode
       }
     });
 

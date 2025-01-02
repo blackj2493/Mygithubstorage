@@ -22,18 +22,29 @@ export default function HomePage() {
   useEffect(() => {
     const getUserLocation = async () => {
       try {
+        // Get user's location from IP
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
-        setUserPostalCode(data.postal);
+        const userPostal = data.postal;
+        setUserPostalCode(userPostal);
         
-        // Now fetch properties using postal code
-        const propertiesResponse = await fetch(`/api/properties/listings?postalCode=${data.postal}&limit=8`);
+        // Log for debugging
+        console.log('User postal code:', userPostal);
+        
+        // Fetch properties using postal code
+        const propertiesResponse = await fetch(`/api/properties/listings?postalCode=${userPostal}&limit=8`);
         if (!propertiesResponse.ok) {
           throw new Error('Failed to fetch properties');
         }
 
         const propertiesData = await propertiesResponse.json();
-        setNearbyListings(propertiesData.listings || []);
+        console.log('Properties found:', propertiesData); // Debug log
+        
+        if (propertiesData.listings && propertiesData.listings.length > 0) {
+          setNearbyListings(propertiesData.listings);
+        } else {
+          setLocationError('No properties found in your area');
+        }
         setLoading(false);
       } catch (error) {
         console.error('Error:', error);

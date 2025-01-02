@@ -6,13 +6,12 @@ interface FilterProps {
 
 export default function PropertyFilters({ onFilterChange }: FilterProps) {
   const [filters, setFilters] = useState({
-    TransactionType: 'For Sale',
-    propertyType: '',
-    propertySubType: '',
+    bedrooms: '',
+    bathrooms: '',
     minPrice: '',
     maxPrice: '',
-    BedroomsTotal: '',
-    bathroomsTotalInteger: '',
+    propertyType: '',
+    TransactionType: 'For Sale',
     waterfrontYN: false,
     garageYN: false,
     basementYN: false,
@@ -23,7 +22,8 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
   });
 
   const PROPERTY_TYPES = [
-    { display: 'Residential', value: 'Residential Freehold' },
+    { display: 'Residential Condo & Other', value: 'Residential Condo & Other' },
+    { display: 'Residential Freehold', value: 'Residential Freehold' },
     { display: 'Commercial', value: 'Commercial' }
   ];
 
@@ -63,19 +63,33 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
     }));
   };
 
+  const handlePropertyTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setFilters(prev => ({
+      ...prev,
+      propertyType: value
+    }));
+  };
+
   const handleApplyFilters = () => {
     const params = new URLSearchParams();
     
-    if (filters.TransactionType === 'Lease') {
+    if (filters.city) {
+      params.set('city', filters.city);
+    }
+    
+    if (filters.TransactionType === 'For Rent') {
       params.set('TransactionType', 'Lease');
     }
     
-    if (filters.propertyType) params.set('propertyType', filters.propertyType);
-    if (filters.propertySubType) params.set('propertySubType', filters.propertySubType);
+    if (filters.propertyType) {
+      params.set('PropertyType', filters.propertyType);
+    }
+    
     if (filters.minPrice) params.set('minPrice', filters.minPrice);
     if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
-    if (filters.BedroomsTotal) params.set('BedroomsTotal', filters.BedroomsTotal);
-    if (filters.bathroomsTotalInteger) params.set('bathroomsTotalInteger', filters.bathroomsTotalInteger);
+    if (filters.bedrooms) params.set('bedrooms', filters.bedrooms);
+    if (filters.bathrooms) params.set('bathrooms', filters.bathrooms);
     if (filters.waterfrontYN) params.set('waterfrontYN', 'true');
     if (filters.garageYN) params.set('garageYN', 'true');
     if (filters.basementYN) params.set('basementYN', 'true');
@@ -123,7 +137,7 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
             </label>
           </div>
 
-          {/* Property Type (Residential/Commercial) */}
+          {/* Property Type Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Property Type
@@ -131,7 +145,7 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
             <select
               name="propertyType"
               value={filters.propertyType}
-              onChange={handleInputChange}
+              onChange={handlePropertyTypeChange}
               className="w-full p-2 border rounded"
             >
               <option value="">Any Property Type</option>
@@ -139,28 +153,6 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
                 <option key={type.value} value={type.value}>
                   {type.display}
                 </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Property Sub Type */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Property Sub Type
-            </label>
-            <select
-              name="propertySubType"
-              value={filters.propertySubType}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded"
-              disabled={!filters.propertyType}
-            >
-              <option value="">Any Sub Type</option>
-              {filters.propertyType && 
-                propertyTypeMetadata.propertySubTypes[filters.propertyType]
-                  ?.filter(subType => subType !== 'Any')
-                  .map(subType => (
-                    <option key={subType} value={subType}>{subType}</option>
               ))}
             </select>
           </div>
@@ -200,9 +192,9 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
               Minimum Bedrooms
             </label>
             <select
-              name="BedroomsTotal"
-              value={filters.BedroomsTotal}
-              onChange={(e) => setFilters(prev => ({ ...prev, BedroomsTotal: e.target.value }))}
+              name="bedrooms"
+              value={filters.bedrooms}
+              onChange={handleInputChange}
               className="w-full p-2 border rounded"
             >
               <option value="">Any</option>
@@ -220,8 +212,8 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
             </label>
             <input
               type="number"
-              name="bathroomsTotalInteger"
-              value={filters.bathroomsTotalInteger}
+              name="bathrooms"
+              value={filters.bathrooms}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
               min="0"
