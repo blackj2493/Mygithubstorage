@@ -9,6 +9,12 @@ function capitalizeFirstLetter(string: string) {
 // Add this type at the top of your file
 type ValidPropertyType = 'Residential Condo & Other' | 'Residential Freehold' | 'Commercial';
 
+// Add this mapping object at the top of the file
+const PROPERTY_SUBTYPE_MAPPING: { [key: string]: string } = {
+  'Semi-Detached': 'Semi-Detached ', // with space at the end
+  'Attached/Row/Street Townhouse': 'Att/Row/Townhouse'  // exactly as in API response
+};
+
 export async function GET(request: Request) {
   try {
     if (!process.env.PROPTX_IDX_TOKEN) {
@@ -31,7 +37,8 @@ export async function GET(request: Request) {
     const mls = searchParams.get('mls');
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
-    const propertyType = searchParams.get('PropertyType') || searchParams.get('propertyType');
+    const propertyType = searchParams.get('PropertyType');
+    const propertySubType = searchParams.get('PropertySubType');
     const transactionType = searchParams.get('TransactionType');
     const sortBy = searchParams.get('sortBy') || 'ModificationTimestamp desc,ListingKey desc';
     const BedroomsTotal = searchParams.get('BedroomsTotal');
@@ -45,31 +52,41 @@ export async function GET(request: Request) {
       filters.push(`startswith(PostalCode, '${PostalPrefix}')`);
     }
 
-    // Add property type filter with proper encoding for OData
-    if (propertyType) {
-        console.log('Raw propertyType value:', propertyType);
-        // For OData, we need to wrap the value in single quotes and encode special characters
-        const encodedValue = propertyType.replace(/'/g, "''"); // Handle any single quotes in the value
-        filters.push(`PropertyType eq '${encodedValue}'`);
-        
-        // Debug logging
-        console.log('Filter string:', `PropertyType eq '${encodedValue}'`);
+    // Handle property type filtering
+    const propertyTypes = searchParams.get('PropertyTypes');
+
+    if (propertyTypes) {
+      // Handle multiple property types (Residential case)
+      const types = JSON.parse(propertyTypes);
+      const typeFilters = types.map((type: string) => `PropertyType eq '${type}'`);
+      filters.push(`(${typeFilters.join(' or ')})`);
+    } else if (propertyType) {
+      // Handle single property type (Commercial case)
+      filters.push(`PropertyType eq '${propertyType}'`);
     }
 
-    // Add this validation before creating the filter
-    if (propertyType) {
-      const validPropertyTypes: ValidPropertyType[] = [
-        'Residential Condo & Other',
-        'Residential Freehold',
-        'Commercial'
-      ];
-      
-      if (!validPropertyTypes.includes(propertyType as ValidPropertyType)) {
-        console.warn('Invalid property type:', propertyType);
-        // Optionally throw an error or handle invalid property type
+    // Add PropertySubType filter if provided
+    if (propertySubType) {
+      try {
+        const subTypes = JSON.parse(propertySubType);
+        if (subTypes.length > 0) {
+          const subTypeFilters = subTypes.map((type: string) => {
+            // First decode the type to handle any URL encoding
+            const decodedType = decodeURIComponent(type);
+            // Use the mapping if it exists, otherwise use the original type
+            const mappedType = PROPERTY_SUBTYPE_MAPPING[decodedType] || decodedType;
+            // Add logging to debug the mapping
+            console.log('Original type:', type);
+            console.log('Decoded type:', decodedType);
+            console.log('Mapped type:', mappedType);
+            return `PropertySubType eq '${mappedType}'`;
+          });
+          filters.push(`(${subTypeFilters.join(' or ')})`);
+        }
+      } catch (error) {
+        console.error('Error parsing PropertySubType:', error);
+        console.error('Raw PropertySubType value:', propertySubType);
       }
-      
-      filters.push(`PropertyType eq '${propertyType}'`);
     }
 
     // Add other filters with capitalized city name

@@ -1,0 +1,22 @@
+/* Price Range Slider Styles */
+.price-range-slider {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+}
+
+.price-range-slider .range-slider__range {
+  background: #3b82f6;
+}
+
+.price-range-slider .range-slider__thumb {
+  width: 16px;
+  height: 16px;
+  background: #3b82f6;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.price-range-slider .range-slider__thumb:hover {
+  transform: scale(1.1);
+} 
