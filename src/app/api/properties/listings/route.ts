@@ -83,7 +83,7 @@ export async function GET(request: Request) {
     if (minPrice) filters.push(`ListPrice ge ${minPrice}`);
     if (maxPrice) filters.push(`ListPrice le ${maxPrice}`);
     if (transactionType === 'Lease') {
-        filters.push("TransactionType eq 'For Rent'");
+        filters.push("TransactionType eq 'For Lease'");
     } else {
         filters.push("TransactionType eq 'For Sale'");
     }
