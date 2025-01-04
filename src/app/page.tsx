@@ -9,7 +9,6 @@ import { calculateDistance } from '@/utils/distance';
 import PropertyCard from '@/components/PropertyCard';
 import { Property } from '@/types/property';
 import Link from 'next/link';
-import SearchBar from '@/components/SearchBar';
 
 export default function HomePage() {
   const router = useRouter();
@@ -67,8 +66,8 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="relative min-h-[90vh] -mt-[72px]">
+      {/* Hero Section - added pt-20 to account for navbar height */}
+      <div className="relative min-h-[90vh]">
         {/* Background Image */}
         <div 
           className="absolute inset-0 z-0"
@@ -77,12 +76,13 @@ export default function HomePage() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
+            marginTop: '72px', // Add margin-top to push content below navbar
           }}
         />
         
-        {/* Content Overlay - Left aligned with black text */}
-        <div className="relative z-10 w-full pl-8 sm:pl-16 lg:pl-24 flex items-center min-h-[90vh]">
-          <div className="max-w-xl pt-[72px]">
+        {/* Content Overlay - added pt-20 to push content down */}
+        <div className="relative z-10 w-full pl-8 sm:pl-16 lg:pl-24 flex items-center min-h-[90vh] pt-20">
+          <div className="max-w-xl">
             <h1 className="text-5xl md:text-6xl font-bold text-black mb-6 leading-tight">
               Take Control of Selling Your Home
             </h1>
@@ -91,7 +91,6 @@ export default function HomePage() {
               Save thousands in fees, connect directly with buyers and access professional support every step of the way.
             </p>
             
-            {/* Keep button blue */}
             <div className="mt-8">
               <Link
                 href="/listings/create"
@@ -242,12 +241,6 @@ export default function HomePage() {
           <Link href="/signup" className="inline-block bg-white text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors">
             Create Your Account
           </Link>
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4">
-        <div className="flex justify-center mt-8">
-          <SearchBar />
         </div>
       </div>
     </main>

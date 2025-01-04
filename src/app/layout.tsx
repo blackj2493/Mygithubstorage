@@ -2,12 +2,27 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/layout/Navbar';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
+import PageWrapper from '@/components/layout/PageWrapper';
+import SearchBar from '@/components/layout/SearchBar';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'PureProperties - Your Real Estate Marketplace',
-  description: 'Find your perfect property with PureProperties. Browse houses, apartments, and more.',
+  title: 'PureProperty.ca',
+  description: 'Real Estate done your way',
+  icons: {
+    icon: [
+      {
+        url: '/favicon.ico',
+        sizes: 'any',
+      },
+      {
+        url: '/icon.svg',
+        type: 'image/svg+xml',
+      },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({
@@ -22,7 +37,9 @@ export default function RootLayout({
           <div className="flex flex-col min-h-screen">
             <Navbar />
             <main className="flex-grow bg-gray-50">
-              {children}
+              <PageWrapper>
+                {children}
+              </PageWrapper>
             </main>
             <footer className="bg-gray-800 text-white py-6">
               <div className="max-w-6xl mx-auto px-4">
@@ -67,7 +84,7 @@ export default function RootLayout({
                       <li className="text-gray-300">
                         <span className="block">Phone:</span>
                         <a href="tel:+1234567890" className="hover:text-white">
-                          (123) 456-7890
+                          (647) 466-2109
                         </a>
                       </li>
                     </ul>
@@ -81,9 +98,17 @@ export default function RootLayout({
                   </div>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-gray-700 text-center">
-                  <p className="text-gray-300">
+                <div className="mt-8 pt-8 border-t border-gray-700">
+                  <p className="text-gray-300 text-sm mb-4">
                     © {new Date().getFullYear()} PureProperties. All rights reserved.
+                  </p>
+                  
+                  <p className="text-gray-300 text-xs leading-relaxed mb-4">
+                    The listing data is provided under copyright by the Toronto Regional Real Estate Board (TRREB). The information provided herein must only be used by consumers that have a bona fide interest in the purchase, sale or lease of real estate and may not be used for any commercial purpose or any other purpose. The data is deemed reliable but is not guaranteed accurate by the Toronto Regional Real Estate Board nor PureProperty.ca. 
+                  </p>
+
+                  <p className="text-gray-300 text-xs leading-relaxed">
+                    The REALTOR® trademark is controlled by The Canadian Real Estate Association (CREA) and identifies real estate professionals who are members of CREA. The trademarks MLS®, Multiple Listing Service® and the associated logos identify professional services rendered by REALTOR® members of CREA to effect the purchase, sale and lease of real estate as part of a cooperative selling system.
                   </p>
                 </div>
               </div>

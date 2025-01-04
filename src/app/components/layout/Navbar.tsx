@@ -10,11 +10,50 @@ export default function Navbar() {
   const isActive = (path: string) => pathname === path;
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white">
       <div className="w-full px-4 py-3">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-colors pl-0">
-            PureProperty.ca
+          <Link href="/" className="flex items-center pl-0">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 400 100" 
+              className="h-18 w-72"
+            >
+              {/* Circle with Arrow */}
+              <g transform="translate(20, 10)">
+                {/* Circle */}
+                <circle 
+                  cx="40" 
+                  cy="40" 
+                  r="35" 
+                  fill="none" 
+                  stroke="#2563EB" 
+                  strokeWidth="3"
+                />
+                
+                {/* Arrow */}
+                <path 
+                  d="M40 60 L40 20 M25 35 L40 20 L55 35" 
+                  fill="none" 
+                  stroke="#2563EB" 
+                  strokeWidth="3" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </g>
+              
+              {/* Text */}
+              <text 
+                x="110" 
+                y="55" 
+                fontFamily="Arial" 
+                fontSize="32" 
+                fontWeight="bold" 
+                fill="#1F2937"
+              >
+                PureProperty<tspan fill="#2563EB">.ca</tspan>
+              </text>
+            </svg>
           </Link>
 
           <div className="flex items-center space-x-4 ml-auto">

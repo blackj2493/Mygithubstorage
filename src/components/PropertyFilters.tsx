@@ -88,6 +88,19 @@ const BASEMENT_OPTIONS = [
   { value: 'Walk-out', label: 'Walk-out' }
 ];
 
+interface Filters {
+  city: string;
+  propertyType: string;
+  propertySubTypes: string[];
+  TransactionType: 'For Sale' | 'For Rent';
+  minPrice: string;
+  maxPrice: string;
+  BedroomsTotal: string;
+  BathroomsTotalInteger: string;
+  keywords: string;
+  basementFeatures: string[];
+}
+
 export default function PropertyFilters({ onFilterChange }: FilterProps) {
   const [filters, setFilters] = useState({
     bedrooms: '',
@@ -208,10 +221,6 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
     if (filters.maxPrice) params.set('maxPrice', filters.maxPrice);
     if (filters.bedrooms) params.set('bedrooms', filters.bedrooms);
     if (filters.bathrooms) params.set('bathrooms', filters.bathrooms);
-    if (filters.waterfrontYN) params.set('waterfrontYN', 'true');
-    if (filters.garageYN) params.set('garageYN', 'true');
-    if (filters.coolingYN) params.set('coolingYN', 'true');
-    if (filters.heatingYN) params.set('heatingYN', 'true');
     if (filters.keywords) params.set('keywords', filters.keywords);
 
     // Add bedroom filter
@@ -577,55 +586,6 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
                 </option>
               ))}
             </select>
-          </div>
-
-          {/* Features Checkboxes */}
-          <div className="col-span-full">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Features
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="waterfrontYN"
-                  checked={filters.waterfrontYN}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                Waterfront
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="garageYN"
-                  checked={filters.garageYN}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                Garage
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="coolingYN"
-                  checked={filters.coolingYN}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                Cooling
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="heatingYN"
-                  checked={filters.heatingYN}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                Heating
-              </label>
-            </div>
           </div>
 
           {/* Keywords */}
