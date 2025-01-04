@@ -42,6 +42,8 @@ export async function GET(request: Request) {
     const transactionType = searchParams.get('TransactionType');
     const sortBy = searchParams.get('sortBy') || 'ModificationTimestamp desc,ListingKey desc';
     const BedroomsTotal = searchParams.get('BedroomsTotal');
+    const BathroomsTotalInteger = searchParams.get('BathroomsTotalInteger');
+    const basementFeatures = searchParams.get('basementFeatures');
 
     // Build filter string
     let filters = ["StandardStatus eq 'Active'"]; // Keep default active filter
@@ -105,18 +107,93 @@ export async function GET(request: Request) {
         filters.push("TransactionType eq 'For Sale'");
     }
 
-    // Add bedrooms filter with special handling for 5+
+    // Add bedrooms filter
     if (BedroomsTotal) {
-      // Remove the '+' suffix if present
-      const bedroomValue = BedroomsTotal.replace('+', '');
-      filters.push(`BedroomsTotal ge ${bedroomValue}`); // Use 'ge' for greater than or equal to
+      try {
+        // Remove any '+' suffix if present
+        const bedroomValue = BedroomsTotal.replace('+', '');
+        
+        // Convert to number for comparison
+        const numBedrooms = parseInt(bedroomValue, 10);
+        
+        if (!isNaN(numBedrooms)) {
+          // If it had a '+', use greater than or equal to
+          if (BedroomsTotal.includes('+')) {
+            filters.push(`BedroomsTotal ge ${numBedrooms}`);
+          } else {
+            // Exact match if no '+'
+            filters.push(`BedroomsTotal eq ${numBedrooms}`);
+          }
+        }
+        
+        console.log('Added bedroom filter:', filters[filters.length - 1]);
+      } catch (error) {
+        console.error('Error parsing bedrooms:', error);
+      }
     }
+
+    // Add bathrooms filter
+    if (BathroomsTotalInteger) {
+      try {
+        // Remove any '+' suffix if present
+        const bathroomValue = BathroomsTotalInteger.replace('+', '');
+        
+        // Convert to number for comparison
+        const numBathrooms = parseInt(bathroomValue, 10);
+        
+        if (!isNaN(numBathrooms)) {
+          // If it had a '+', use greater than or equal to
+          if (BathroomsTotalInteger.includes('+')) {
+            filters.push(`BathroomsTotalInteger ge ${numBathrooms}`);
+          } else {
+            // Exact match if no '+'
+            filters.push(`BathroomsTotalInteger eq ${numBathrooms}`);
+          }
+        }
+        
+        console.log('Added bathroom filter:', filters[filters.length - 1]);
+      } catch (error) {
+        console.error('Error parsing bathrooms:', error);
+      }
+    }
+
+    // Add basement filter
+    if (basementFeatures) {
+      try {
+        const features = JSON.parse(basementFeatures);
+        if (features.length > 0) {
+          // Add debug logging
+          console.log('Parsed basement features:', features);
+          
+          // For multiple features, use OR without extra parentheses for single conditions
+          const basementFilters = features.map((feature: string) => 
+            `Basement eq '${feature}'`
+          );
+          
+          // Only use parentheses if we have multiple conditions to group
+          const basementFilter = basementFilters.length > 1 
+            ? `(${basementFilters.join(' or ')})`
+            : basementFilters[0];
+            
+          console.log('Basement filter:', basementFilter);
+          filters.push(basementFilter);
+        }
+      } catch (error) {
+        console.error('Error parsing basement features:', error);
+        console.error('Raw basementFeatures value:', basementFeatures);
+      }
+    }
+
+    // Add debug logging
+    console.log('All filters before joining:', filters);
+    console.log('Complete filter string:', filters.join(' and '));
 
     const filterString = filters.length > 0 
         ? `&$filter=${encodeURIComponent(filters.join(' and '))}`
         : '';
-    console.log('Complete filter string:', filterString);
-    console.log('Complete URL:', `${baseUrl}/Property?$skip=${skip}&$top=${limit}&$orderby=${sortBy}${filterString}`);
+
+    // Log the final URL
+    console.log('Final URL:', `${baseUrl}/Property?$skip=${skip}&$top=${limit}&$orderby=${sortBy}${filterString}`);
 
     // Fetch properties with pagination
     const propertiesUrl = `${baseUrl}/Property?$skip=${skip}&$top=${limit}&$orderby=${sortBy}${filterString}`;
@@ -132,7 +209,12 @@ export async function GET(request: Request) {
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch properties: ${response.status}`);
+      // Get the error details from the response
+      const errorText = await response.text();
+      console.error('API Error Response:', errorText);
+      console.error('API Status:', response.status);
+      console.error('Request URL:', propertiesUrl);
+      throw new Error(`Failed to fetch properties: ${response.status}\nDetails: ${errorText}`);
     }
 
     const data = await response.json();
@@ -253,6 +335,11 @@ export async function GET(request: Request) {
 
   } catch (error) {
     console.error('API Error:', error);
+    // Add more detailed error logging
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+      console.error('Error stack:', error.stack);
+    }
     return NextResponse.json(
       { 
         error: 'Failed to fetch listings',

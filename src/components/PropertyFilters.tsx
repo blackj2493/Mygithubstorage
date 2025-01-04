@@ -66,6 +66,28 @@ const PROPERTY_SUBTYPES: PropertySubType = {
   ]
 };
 
+// Add this constant for the options
+const ROOM_OPTIONS = [
+  { value: '', label: 'Any' },
+  { value: '1', label: '1' },
+  { value: '1+', label: '1+' },
+  { value: '2', label: '2' },
+  { value: '2+', label: '2+' },
+  { value: '3', label: '3' },
+  { value: '3+', label: '3+' },
+  { value: '4', label: '4' },
+  { value: '4+', label: '4+' },
+  { value: '5', label: '5' },
+  { value: '5+', label: '5+' }
+];
+
+// Add this type and constant for basement options
+const BASEMENT_OPTIONS = [
+  { value: 'Finished', label: 'Finished' },
+  { value: 'Separate Entrance', label: 'Separate Entrance' },
+  { value: 'Walk-out', label: 'Walk-out' }
+];
+
 export default function PropertyFilters({ onFilterChange }: FilterProps) {
   const [filters, setFilters] = useState({
     bedrooms: '',
@@ -76,12 +98,12 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
     TransactionType: 'For Sale',
     waterfrontYN: false,
     garageYN: false,
-    basementYN: false,
     coolingYN: false,
     heatingYN: false,
     poolFeatures: [],
     keywords: '',
     propertySubTypes: [] as string[],
+    basementFeatures: [] as string[],
   });
 
   const PROPERTY_TYPES = [
@@ -188,10 +210,27 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
     if (filters.bathrooms) params.set('bathrooms', filters.bathrooms);
     if (filters.waterfrontYN) params.set('waterfrontYN', 'true');
     if (filters.garageYN) params.set('garageYN', 'true');
-    if (filters.basementYN) params.set('basementYN', 'true');
     if (filters.coolingYN) params.set('coolingYN', 'true');
     if (filters.heatingYN) params.set('heatingYN', 'true');
     if (filters.keywords) params.set('keywords', filters.keywords);
+
+    // Add bedroom filter
+    if (filters.BedroomsTotal) {
+      params.set('BedroomsTotal', filters.BedroomsTotal);
+    }
+
+    // Add bathroom filter
+    if (filters.BathroomsTotalInteger) {
+      params.set('BathroomsTotalInteger', filters.BathroomsTotalInteger);
+    }
+
+    // Add basement filter
+    if (filters.basementFeatures.length > 0) {
+      params.set('basementFeatures', JSON.stringify(filters.basementFeatures));
+    }
+
+    // Debug logging
+    console.log('Final URL params:', params.toString());
 
     // Log the URL for debugging
     console.log('API URL:', `${window.location.pathname}?${params.toString()}`);
@@ -286,6 +325,18 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isDropdownOpen]);
+
+  // Add this helper function
+  const handleRoomFilter = (value: string) => {
+    if (!value || value === 'Any') return null;
+    
+    // Remove the '+' and convert to number
+    const number = parseInt(value.replace('+', ''));
+    
+    // If original value had '+', use 'ge', otherwise use 'eq'
+    const operator = value.includes('+') ? 'ge' : 'eq';
+    return `${operator} ${number}`;
+  };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md mb-8">
@@ -494,35 +545,38 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
           {/* Bedrooms & Bathrooms */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Minimum Bedrooms
+              Bedroom
             </label>
             <select
-              name="bedrooms"
-              value={filters.bedrooms}
+              name="BedroomsTotal"
+              value={filters.BedroomsTotal}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
             >
-              <option value="">Any</option>
-              <option value="1">1+</option>
-              <option value="2">2+</option>
-              <option value="3">3+</option>
-              <option value="4">4+</option>
-              <option value="5">5+</option>
+              {ROOM_OPTIONS.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Minimum Bathrooms
+              Bathroom
             </label>
-            <input
-              type="number"
-              name="bathrooms"
-              value={filters.bathrooms}
+            <select
+              name="BathroomsTotalInteger"
+              value={filters.BathroomsTotalInteger}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
-              min="0"
-            />
+            >
+              {ROOM_OPTIONS.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Features Checkboxes */}
@@ -550,16 +604,6 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
                   className="mr-2"
                 />
                 Garage
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="basementYN"
-                  checked={filters.basementYN}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                Basement
               </label>
               <label className="flex items-center">
                 <input
@@ -597,6 +641,34 @@ export default function PropertyFilters({ onFilterChange }: FilterProps) {
               className="w-full p-2 border rounded"
               placeholder="Search in property description"
             />
+          </div>
+
+          {/* Basement */}
+          <div className="col-span-full">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Basement
+            </label>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {BASEMENT_OPTIONS.map((option) => (
+                <label key={option.value} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={filters.basementFeatures.includes(option.value)}
+                    onChange={(e) => {
+                      const newFeatures = e.target.checked
+                        ? [...filters.basementFeatures, option.value]
+                        : filters.basementFeatures.filter(f => f !== option.value);
+                      setFilters(prev => ({
+                        ...prev,
+                        basementFeatures: newFeatures
+                      }));
+                    }}
+                    className="mr-2"
+                  />
+                  {option.label}
+                </label>
+              ))}
+            </div>
           </div>
         </div>
       )}
