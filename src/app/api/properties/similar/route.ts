@@ -26,10 +26,17 @@ export async function POST(request: Request) {
       filterParts.push(`PropertySubType eq '${propertyData.PropertySubType}'`);
     }
 
-    // Add bedrooms filter if provided and is a number
     if (propertyData.BedroomsTotal && !isNaN(Number(propertyData.BedroomsTotal))) {
       filterParts.push(`BedroomsTotal eq ${Number(propertyData.BedroomsTotal)}`);
     }
+
+    // Add filter for recently closed/leased properties with correct date format
+    const sixtyDaysAgo = new Date();
+    sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+    const formattedDate = sixtyDaysAgo.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+
+    filterParts.push(`CloseDate gt ${formattedDate}`);
+    filterParts.push(`(MlsStatus eq 'Sold' or MlsStatus eq 'Leased')`);
 
     // Combine all filters with 'and'
     let apiUrl = 'https://query.ampre.ca/odata/Property?$top=100';

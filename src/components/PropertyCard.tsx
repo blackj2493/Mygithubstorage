@@ -9,6 +9,9 @@ interface PropertyCardProps {
   property: {
     ListingKey: string;
     ListPrice: number;
+    ClosePrice?: number;
+    MlsStatus?: string;
+    CloseDate?: string;
     UnparsedAddress?: string;
     City?: string;
     BedroomsTotal?: number;
@@ -20,25 +23,29 @@ interface PropertyCardProps {
 
 const getImageUrl = (imageUrl: string) => {
   if (!imageUrl) return '/placeholder-property.jpg';
-  
-  // Check if the URL already has https://
-  if (imageUrl.startsWith('https://')) {
-    return imageUrl;
-  }
-  
-  // Add https:// to the URL if it's missing
-  return `https://${imageUrl}`;
+  return imageUrl.startsWith('https://') ? imageUrl : `https://${imageUrl}`;
+};
+
+const getRelativeDate = (closeDate: string) => {
+  const days = Math.floor((new Date().getTime() - new Date(closeDate).getTime()) / (1000 * 3600 * 24));
+  if (days === 0) return 'Today';
+  if (days === 1) return '1 day ago';
+  return `${days} days ago`;
 };
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   const imageUrl = property.images?.[0]?.MediaURL || '/placeholder-property.jpg';
   
-  const formattedPrice = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(property.ListPrice);
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'CAD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(price);
+  };
+
+  const isSoldOrLeased = property.MlsStatus === 'Sold' || property.MlsStatus === 'Leased';
 
   return (
     <Link href={`/listings/${property.ListingKey}`}>
@@ -51,11 +58,15 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             style={{ objectFit: 'cover' }}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
+          <div className="absolute top-2 left-2 px-3 py-1 rounded-full bg-white/90">
+            <span className={`font-semibold ${property.MlsStatus === 'Sold' ? 'text-red-600' : 'text-blue-600'}`}>
+              {property.MlsStatus}
+            </span>
+          </div>
           <button 
             className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white"
             onClick={(e) => {
-              e.preventDefault(); // Prevent navigation when clicking the heart
-              // Add your favorite functionality here
+              e.preventDefault();
             }}
           >
             <FaHeart className="text-gray-400 hover:text-red-500" />
@@ -63,9 +74,30 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         </div>
 
         <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold text-blue-600">{formattedPrice}</h3>
+          <div className="flex flex-col mb-2">
+            {isSoldOrLeased ? (
+              <>
+                <div className="text-gray-500 line-through text-sm">
+                  CA${property.ListPrice.toLocaleString()}
+                </div>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-blue-600">
+                    CA${property.ClosePrice?.toLocaleString()}
+                  </h3>
+                  {property.CloseDate && (
+                    <span className="text-gray-500 text-sm">
+                      {getRelativeDate(property.CloseDate)}
+                    </span>
+                  )}
+                </div>
+              </>
+            ) : (
+              <h3 className="text-xl font-bold text-blue-600">
+                CA${property.ListPrice.toLocaleString()}
+              </h3>
+            )}
           </div>
+          
           <p className="text-gray-600 mb-2">{property.UnparsedAddress}</p>
           
           <div className="flex items-center gap-4 text-gray-600">
@@ -82,18 +114,6 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               </div>
             )}
           </div>
-
-          {property.officeLogo && (
-            <div className="mt-2">
-              <Image
-                src={property.officeLogo}
-                alt="Office Logo"
-                width={100}
-                height={30}
-                style={{ objectFit: 'contain' }}
-              />
-            </div>
-          )}
         </div>
       </div>
     </Link>
