@@ -26,8 +26,9 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get('limit') || '50');
     const skip = (page - 1) * limit;
     
-    // Add postal code to existing parameters
-    const PostalCode = searchParams.get('PostalCode');
+    // Get both possible parameter names and log them
+    const postalCode = searchParams.get('postalCode') || searchParams.get('PostalCode');
+    console.log('Received postal code:', postalCode);
     
     const baseUrl = 'https://query.ampre.ca/odata';
     
@@ -48,10 +49,20 @@ export async function GET(request: Request) {
     // Build filter string
     let filters = ["StandardStatus eq 'Active'"]; // Keep default active filter
 
-    // Add postal code filter if provided
-    if (PostalCode) {
-      const PostalPrefix = PostalCode.substring(0, 3);
-      filters.push(`startswith(PostalCode, '${PostalPrefix}')`);
+    // Add postal code filter if provided, with additional error checking
+    if (postalCode) {
+      try {
+        const postalPrefix = postalCode.substring(0, 3).toUpperCase();
+        console.log('Using postal prefix:', postalPrefix);
+        
+        if (postalPrefix && postalPrefix.length === 3) {
+          filters.push(`startswith(PostalCode, '${postalPrefix}')`);
+          console.log('Added postal code filter:', `startswith(PostalCode, '${postalPrefix}')`);
+        }
+      } catch (error) {
+        console.error('Error processing postal code:', error);
+        // Continue without postal code filter rather than failing completely
+      }
     }
 
     // Handle property type filtering
@@ -329,7 +340,7 @@ export async function GET(request: Request) {
         maxPrice,
         propertyType,
         sortBy,
-        PostalCode
+        postalCode
       }
     });
 

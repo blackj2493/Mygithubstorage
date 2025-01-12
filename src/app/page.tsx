@@ -30,11 +30,17 @@ export default function HomePage() {
         // Get user's location from IP
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
-        const userPostal = data.postal;
+        // Extract just the first 3 characters of the postal code
+        const userPostal = data.postal?.substring(0, 3);
+        
+        if (!userPostal) {
+          throw new Error('Invalid postal code received');
+        }
+        
         setUserPostalCode(userPostal);
         
         // Log for debugging
-        console.log('User postal code:', userPostal);
+        console.log('Using first 3 digits of postal code:', userPostal);
         
         // Fetch properties using postal code
         const propertiesResponse = await fetch(`/api/properties/listings?postalCode=${userPostal}&limit=8`);
@@ -43,7 +49,7 @@ export default function HomePage() {
         }
 
         const propertiesData = await propertiesResponse.json();
-        console.log('Properties found:', propertiesData); // Debug log
+        console.log('Properties response:', propertiesData); // Enhanced debug log
         
         if (propertiesData.listings && propertiesData.listings.length > 0) {
           setNearbyListings(propertiesData.listings);
@@ -52,7 +58,7 @@ export default function HomePage() {
         }
         setLoading(false);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error getting location or properties:', error);
         setLocationError('Unable to find properties in your area');
         setLoading(false);
       }
