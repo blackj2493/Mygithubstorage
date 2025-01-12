@@ -45,7 +45,7 @@ export default function RootLayout({
               <div className="max-w-6xl mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                   <div>
-                    <h3 className="text-lg font-semibold mb-4">PureProperties</h3>
+                    <h3 className="text-lg font-semibold mb-4">PureProperty.ca</h3>
                     <p className="text-gray-300">
                       Your trusted partner in finding the perfect property.
                     </p>
@@ -77,8 +77,8 @@ export default function RootLayout({
                     <ul className="space-y-2">
                       <li className="text-gray-300">
                         <span className="block">Email:</span>
-                        <a href="mailto:info@pureproperties.ca" className="hover:text-white">
-                          info@pureproperties.ca
+                        <a href="mailto:info@pureproperty.ca" className="hover:text-white">
+                          info@pureproperty.ca
                         </a>
                       </li>
                       <li className="text-gray-300">
@@ -100,7 +100,7 @@ export default function RootLayout({
 
                 <div className="mt-8 pt-8 border-t border-gray-700">
                   <p className="text-gray-300 text-sm mb-4">
-                    © {new Date().getFullYear()} PureProperties. All rights reserved.
+                    © {new Date().getFullYear()} PureProperty.ca. All rights reserved.
                   </p>
                   
                   <p className="text-gray-300 text-xs leading-relaxed mb-4">

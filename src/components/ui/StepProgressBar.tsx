@@ -1,72 +1,90 @@
 import React from 'react';
 
-type Step = {
+interface Step {
   id: number;
   title: string;
   description: string;
-  isComplete?: boolean;
-};
+  isComplete: boolean;
+}
 
 interface StepProgressBarProps {
-  steps: Step[];
   currentStep: number;
+  steps: Step[];
   onStepClick: (stepId: number) => void;
 }
 
-export default function StepProgressBar({ steps, currentStep, onStepClick }: StepProgressBarProps) {
+const StepProgressBar = ({ currentStep, steps, onStepClick }: StepProgressBarProps) => {
   return (
-    <div className="w-full py-6 px-4 max-w-6xl mx-auto">
-      <div className="flex items-center justify-between relative">
-        {steps.map((step, index) => {
-          const isClickable = (step.id >= 3 && step.id <= 6) || step.id === currentStep;
-          
-          return (
-            <div 
-              key={step.id} 
-              className={`relative flex flex-col items-center ${isClickable ? 'cursor-pointer' : 'cursor-not-allowed'}`}
-              onClick={() => isClickable ? onStepClick(step.id) : null}
+    <div className="w-full px-8">
+      {/* Steps Container */}
+      <div className="relative flex justify-between max-w-6xl mx-auto">
+        {/* Progress Line */}
+        <div className="absolute top-1/2 transform -translate-y-1/2 h-0.5 bg-gray-200 w-full" />
+        <div 
+          className="absolute top-1/2 transform -translate-y-1/2 h-0.5 bg-blue-500 transition-all duration-500"
+          style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+        />
+
+        {/* Steps */}
+        {steps.map((step) => (
+          <div
+            key={step.id}
+            className="relative flex flex-col items-center group"
+            onClick={() => onStepClick(step.id)}
+          >
+            {/* Step Circle */}
+            <div
+              className={`
+                w-8 h-8 rounded-full flex items-center justify-center
+                transition-all duration-300 cursor-pointer
+                ${currentStep === step.id
+                  ? 'bg-blue-500 border-2 border-blue-200 shadow-md'
+                  : step.isComplete
+                  ? 'bg-blue-500 border-2 border-blue-500'
+                  : 'bg-white border-2 border-gray-300'
+                }
+                ${step.id < currentStep ? 'hover:scale-105' : ''}
+              `}
             >
-              {/* Line */}
-              {index !== 0 && (
-                <div
-                  className={`absolute left-0 right-0 top-5 h-0.5 -translate-x-1/2 w-full
-                    ${step.isComplete ? 'bg-green-500' : 
-                      currentStep > index ? 'bg-blue-600' : 'bg-gray-300'}`}
-                />
+              {step.isComplete ? (
+                <svg
+                  className="w-4 h-4 text-white"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <span className={`text-xs font-semibold
+                  ${currentStep === step.id ? 'text-white' : 'text-gray-500'}`}
+                >
+                  {step.id}
+                </span>
               )}
-              
-              {/* Circle and Number */}
-              <div
-                className={`relative flex h-10 w-10 items-center justify-center rounded-full 
-                  ${step.isComplete ? 'bg-green-500 text-white' :
-                    currentStep > index
-                      ? 'bg-blue-600 text-white'
-                      : currentStep === index
-                      ? 'border-2 border-blue-600 text-blue-600'
-                      : 'border-2 border-gray-300 text-gray-300'}`}
-              >
-                {step.isComplete || currentStep > index ? (
-                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                ) : (
-                  <span>{step.id}</span>
-                )}
-              </div>
-              
-              {/* Title and Description */}
-              <div className="mt-3 text-center min-w-[100px] px-2">
-                <div className="text-sm font-medium whitespace-nowrap">{step.title}</div>
-                <div className="text-xs text-gray-500 whitespace-nowrap">{step.description}</div>
-              </div>
             </div>
-          );
-        })}
+
+            {/* Step Title & Description - Adjusted spacing and width */}
+            <div className="absolute -bottom-12 w-28 text-center">
+              <p className={`text-xs font-medium mb-0.5
+                ${currentStep === step.id ? 'text-blue-600' : 'text-gray-600'}`}
+              >
+                {step.title}
+              </p>
+              <p className={`text-[10px]
+                ${currentStep === step.id ? 'text-blue-400' : 'text-gray-400'}`}
+              >
+                {step.description}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
-}
+};
+
+export default StepProgressBar;
