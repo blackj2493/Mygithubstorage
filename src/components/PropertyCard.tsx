@@ -1,10 +1,8 @@
 'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaHeart, FaBed, FaBath } from 'react-icons/fa';
-
 interface PropertyCardProps {
   property: {
     ListingKey: string;
@@ -14,25 +12,26 @@ interface PropertyCardProps {
     CloseDate?: string;
     UnparsedAddress?: string;
     City?: string;
-    BedroomsTotal?: number;
+    BedroomsAboveGrade?: number;
+    BedroomsBelowGrade?: number;
     BathroomsTotalInteger?: number;
-    images?: Array<{ MediaURL: string }>;
+    images: Array<{
+      MediaURL: string;
+      Order: number;
+    }>;
     officeLogo?: string;
   };
 }
-
 const getImageUrl = (imageUrl: string) => {
   if (!imageUrl) return '/placeholder-property.jpg';
   return imageUrl.startsWith('https://') ? imageUrl : `https://${imageUrl}`;
 };
-
 const getRelativeDate = (closeDate: string) => {
   const days = Math.floor((new Date().getTime() - new Date(closeDate).getTime()) / (1000 * 3600 * 24));
   if (days === 0) return 'Today';
   if (days === 1) return '1 day ago';
   return `${days} days ago`;
 };
-
 export default function PropertyCard({ property }: PropertyCardProps) {
   const imageUrl = property.images?.[0]?.MediaURL || '/placeholder-property.jpg';
   
@@ -44,9 +43,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       maximumFractionDigits: 0,
     }).format(price);
   };
-
   const isSoldOrLeased = property.MlsStatus === 'Sold' || property.MlsStatus === 'Leased';
-
   return (
     <Link href={`/listings/${property.ListingKey}`}>
       <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
@@ -72,7 +69,6 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             <FaHeart className="text-gray-400 hover:text-red-500" />
           </button>
         </div>
-
         <div className="p-4">
           <div className="flex flex-col mb-2">
             {isSoldOrLeased ? (
@@ -101,10 +97,14 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           <p className="text-gray-600 mb-2">{property.UnparsedAddress}</p>
           
           <div className="flex items-center gap-4 text-gray-600">
-            {property.BedroomsTotal != null && (
+            {(property.BedroomsAboveGrade != null || property.BedroomsBelowGrade != null) && (
               <div className="flex items-center gap-1">
                 <FaBed />
-                <span>{property.BedroomsTotal} bed</span>
+                <span>
+                  {property.BedroomsAboveGrade || 0}
+                  {property.BedroomsBelowGrade ? ` + ${property.BedroomsBelowGrade}` : ''}
+                  {' bed'}
+                </span>
               </div>
             )}
             {property.BathroomsTotalInteger != null && (

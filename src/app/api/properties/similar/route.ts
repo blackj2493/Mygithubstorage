@@ -1,5 +1,27 @@
 import { NextResponse } from 'next/server';
 
+async function fetchIDXImages(listingKey: string) {
+  try {
+    const mediaUrl = `https://query.ampre.ca/odata/Media?$filter=ResourceRecordKey eq '${listingKey}' and ResourceName eq 'Property' and ImageSizeDescription eq 'Large'&$orderby=Order`;
+    
+    const response = await fetch(mediaUrl, {
+      headers: {
+        'Authorization': `Bearer ${process.env.PROPTX_IDX_TOKEN}`,
+        'Accept': 'application/json'
+      },
+      cache: 'no-store'
+    });
+
+    if (!response.ok) return null;
+    
+    const mediaData = await response.json();
+    return mediaData.value || null;
+  } catch (error) {
+    console.error('Error fetching IDX images:', error);
+    return null;
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -38,7 +60,7 @@ export async function POST(request: Request) {
     filterParts.push(`CloseDate gt ${formattedDate}`);
     filterParts.push(`(MlsStatus eq 'Sold' or MlsStatus eq 'Leased')`);
 
-    // Combine all filters with 'and'
+    // Remove $expand=Media from the URL
     let apiUrl = 'https://query.ampre.ca/odata/Property?$top=100';
     if (filterParts.length > 0) {
       const filter = filterParts.join(' and ');
@@ -68,18 +90,26 @@ export async function POST(request: Request) {
 
     const data = await response.json();
     console.log('API Response:', data);
-
     const properties = data.value || [];
     console.log(`Found ${properties.length} properties matching criteria`);
 
-    return NextResponse.json({ 
-      properties: properties,
-      totalProperties: properties.length
+    // Fetch images for each property using the Media endpoint
+    const propertiesWithImages = await Promise.all(properties.map(async (property) => {
+      const images = await fetchIDXImages(property.ListingKey);
+      return {
+        ...property,
+        images: images || [] // Store as 'images' instead of 'Media'
+      };
+    }));
+
+    return NextResponse.json({
+      properties: propertiesWithImages,
+      totalProperties: propertiesWithImages.length
     });
 
   } catch (error) {
     console.error('Detailed error in similar properties API:', error);
-    return NextResponse.json({ 
+    return NextResponse.json({
       error: 'Failed to fetch similar properties',
       details: error.message,
       properties: []
