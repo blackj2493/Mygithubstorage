@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/AllCard';
+import PropertyCard from '@/components/PropertyCard';
 
 interface PricingDetailsProps {
   listingType: 'SALE' | 'RENT' | null;
@@ -42,56 +43,54 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
   const [similarProperties, setSimilarProperties] = useState<SimilarProperty[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Add debug logging
+  React.useEffect(() => {
+    console.log('PricingDetails received exteriorDetails:', exteriorDetails);
+  }, [exteriorDetails]);
+
   const fetchSimilarProperties = async () => {
     try {
-      // Add validation logging
-      console.log('Checking details:', {
-        propertyType: exteriorDetails?.PropertyType,
-        propertyClass: exteriorDetails?.PropertySubType,
-        bedrooms: interiorDetails?.rooms?.bedrooms,
-        city: address?.city
+      setIsLoading(true);
+      console.log('Fetching similar properties with:', {
+        Community: exteriorDetails.CityRegion,
+        BedroomsTotal: interiorDetails.rooms.bedrooms,
+        PropertyType: exteriorDetails.PropertyClass,
+        PropertySubType: exteriorDetails.PropertyType
       });
 
-      // Validate required fields
-      if (!exteriorDetails || !exteriorDetails.PropertyType || !exteriorDetails.PropertySubType) {
-        alert('Please ensure property type and class are selected in the exterior details section');
-        return;
-      }
-
-      if (!interiorDetails?.rooms?.bedrooms) {
-        alert('Please ensure number of bedrooms is specified in the interior details section');
-        return;
-      }
-
-      if (!address?.city) {
-        alert('Please ensure the property address is complete');
-        return;
-      }
-
-      setIsLoading(true);
       const response = await fetch('/api/properties/similar', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          PropertyType: exteriorDetails.PropertyType,
-          PropertySubType: exteriorDetails.PropertySubType,
-          BedroomsTotal: interiorDetails.rooms.bedrooms,
-          City: address.city
+          propertyData: {
+            Community: exteriorDetails.CityRegion,
+            BedroomsTotal: interiorDetails.rooms.bedrooms,
+            PropertyType: exteriorDetails.PropertyClass,
+            PropertySubType: exteriorDetails.PropertyType
+          }
         })
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch similar properties');
+        const errorData = await response.json();
+        console.error('API Error Response:', errorData);
+        throw new Error(`API error: ${errorData.details || 'Unknown error'}`);
       }
 
       const data = await response.json();
+      console.log('API Response:', data);
+
+      if (!data.properties) {
+        throw new Error('No properties data in response');
+      }
+
       setSimilarProperties(data.properties);
       setShowSimilarProperties(true);
     } catch (error) {
-      console.error('Error fetching similar properties:', error);
-      alert('Error fetching similar properties. Please try again.');
+      console.error('Detailed error in fetchSimilarProperties:', error);
+      alert('Unable to fetch similar properties. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -300,58 +299,39 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
               </div>
             </div>
 
-            {/* Add similar properties button for sale listings */}
-            {listingType === 'SALE' && (
-              <div className="mt-6">
-                <button
-                  onClick={fetchSimilarProperties}
-                  disabled={isLoading}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
-                >
-                  {isLoading ? 'Searching...' : 'Get Similar Properties'}
-                </button>
+            {/* Similar properties button - show for both SALE and RENT */}
+            <div className="mt-6">
+              <button
+                onClick={fetchSimilarProperties}
+                disabled={isLoading}
+                className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
+              >
+                {isLoading ? 'Searching...' : 'Get Similar Properties'}
+              </button>
 
-                {showSimilarProperties && similarProperties.length > 0 && (
-                  <div className="mt-4 p-6 bg-white rounded-xl shadow-lg border border-blue-100">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                      Similar Properties
-                    </h3>
-                    
-                    <div className="space-y-4">
-                      <h4 className="font-medium text-gray-700">
-                        Found {similarProperties.length} similar properties:
-                      </h4>
-                      <div className="max-h-60 overflow-y-auto">
-                        {similarProperties.map((prop, index) => (
-                          <div key={index} className="p-3 bg-gray-50 rounded-lg mb-2">
-                            <div className="font-medium">
-                              ${prop.ListPrice.toLocaleString()}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {prop.Address}, {prop.City}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              Sold on {new Date(prop.PurchaseContractDate).toLocaleDateString()}
-                            </div>
-                            <div className="text-sm text-gray-500">
-                              {prop.BedroomsTotal} Bedrooms • {prop.PropertySubType}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+              {showSimilarProperties && (
+                <div className="mt-4">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                    Similar Properties
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {similarProperties.map((property) => (
+                      <PropertyCard
+                        key={property.MlsNumber}
+                        property={property}
+                      />
+                    ))}
                   </div>
-                )}
 
-                {showSimilarProperties && similarProperties.length === 0 && (
-                  <div className="mt-4 p-6 bg-white rounded-xl shadow-lg border border-blue-100">
-                    <p className="text-gray-700">
+                  {similarProperties.length === 0 && (
+                    <p className="text-gray-700 text-center py-4">
                       No similar properties found in your area with the specified criteria.
                     </p>
-                  </div>
-                )}
-              </div>
-            )}
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>

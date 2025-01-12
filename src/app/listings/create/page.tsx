@@ -6,6 +6,9 @@ import ImageUpload from '@/app/components/ui/ImageUpload';
 import StepProgressBar from '@/components/ui/StepProgressBar';
 import NeighborhoodInfo from '@/app/components/ui/NeighborhoodInfo';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faKey } from '@fortawesome/free-solid-svg-icons';
 
 // Import new components
 import ExteriorFeatures from '@/components/listing/ExteriorFeatures';
@@ -139,19 +142,24 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
     const [exteriorDetails, setExteriorDetails] = useState({
       PropertyType: '',
       PropertySubType: '',
-      area: '',
-      municipality: '',
-      community: '',
-      link: false,
-      parcelOfTiedLand: false,
+      LinkYN: false,
+      ParcelOfTiedLand: false,
+      ConstructionMaterials: [],
+      ExteriorFeatures: [],
+      Utilities: {
+        Water: '',
+        Sewers: '',
+        Pool: ''
+      },
+      Area: '',
+      City: '',
+      CityRegion: '',
       portionForLease: [],
       portionComments: '',
       style: null,
       view: '',
-      exterior: [],
-      exteriorFeatures: [],
       foundationDetail: '',
-      roof: '' as RoofType,
+      roof: '',
       topography: '',
       garageType: null,
       garageParkingSpaces: '',
@@ -159,9 +167,6 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
       driveParkingSpaces: '',
       totalParkingSpaces: '',
       parkingCostMonth: '',
-      water: '' as WaterType,
-      pool: '' as YesNoNA,
-      sewers: '' as SewerType,
       retirementCommunity: false,
       physicallyHandicappedEquipped: false,
       specialDesignations: [],
@@ -433,51 +438,26 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
   };
 
   const handleExteriorFeaturesChange = (features: any) => {
-    // First, create a properly merged state
     const updatedFeatures = {
-      ...exteriorDetails,           // Start with existing state
+      ...exteriorDetails,
+      ...features,
+      Area: features.Area || exteriorDetails.Area,
+      City: features.City || exteriorDetails.City,
+      CityRegion: features.CityRegion || exteriorDetails.CityRegion,
       PropertyType: features.PropertyType || exteriorDetails.PropertyType,
       PropertySubType: features.PropertySubType || exteriorDetails.PropertySubType,
-      area: features.area || exteriorDetails.area,
-      municipality: features.municipality || exteriorDetails.municipality,
-      community: features.community || exteriorDetails.community,
-      exteriorMaterial: features.exteriorMaterial || exteriorDetails.exteriorMaterial,
-      utilities: {
-        ...exteriorDetails.utilities,
-        ...(features.utilities || {})
+      LinkYN: features.LinkYN !== undefined ? features.LinkYN : exteriorDetails.LinkYN,
+      ParcelOfTiedLand: features.ParcelOfTiedLand !== undefined ? features.ParcelOfTiedLand : exteriorDetails.ParcelOfTiedLand,
+      ConstructionMaterials: features.ConstructionMaterials || exteriorDetails.ConstructionMaterials || [],
+      ExteriorFeatures: features.ExteriorFeatures || exteriorDetails.ExteriorFeatures || [],
+      Utilities: {
+        ...exteriorDetails.Utilities,
+        ...(features.Utilities || {})
       }
     };
 
-    // Update state
+    console.log('Updating exterior details:', updatedFeatures);
     setExteriorDetails(updatedFeatures);
-
-    // Log for debugging
-    console.log('Complete updated features:', updatedFeatures);
-
-    // Validation checks
-    const validationChecks = {
-      propertyType: Boolean(updatedFeatures.PropertyType),
-      propertySubType: Boolean(updatedFeatures.PropertySubType),
-      area: Boolean(updatedFeatures.area),           // Check specifically for area
-      municipality: Boolean(updatedFeatures.municipality),  // Check specifically for municipality
-      exteriorMaterial: Array.isArray(updatedFeatures.exteriorMaterial) && 
-                       updatedFeatures.exteriorMaterial.length > 0,
-      utilities: Boolean(
-        updatedFeatures.utilities?.water && 
-        updatedFeatures.utilities?.sewers && 
-        updatedFeatures.utilities?.pool
-      )
-    };
-
-    console.log('Validation checks:', validationChecks);
-
-    const isStepComplete = Object.values(validationChecks).every(check => check === true);
-    
-    if (isStepComplete) {
-      markStepComplete(3);
-    }
-
-    return isStepComplete;
   };
 
   // Loading States Check
@@ -498,14 +478,55 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
     switch (currentStep) {
       case 1:
         return (
-          <ListingType
-            listingType={listingType}
-            onTypeSelect={(type) => {
-              setListingType(type);
-              setCurrentStep(2);
-              markStepComplete(1);
-            }}
-          />
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="max-w-4xl mx-auto py-12"
+          >
+            <h1 className="text-4xl font-bold text-center text-gray-900 mb-12">
+              Let's Get Started: Is this a Sale or a Rental?
+            </h1>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setListingType('SALE');
+                  setCurrentStep(2);
+                  markStepComplete(1);
+                }}
+                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 cursor-pointer"
+              >
+                <div className="flex flex-col items-center space-y-6">
+                  <div className="w-24 h-24 flex items-center justify-center text-blue-600">
+                    <FontAwesomeIcon icon={faHome} className="w-16 h-16" />
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900">For Sale</h2>
+                  <p className="text-gray-600 text-center">List my property for sale</p>
+                </div>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  setListingType('RENT');
+                  setCurrentStep(2);
+                  markStepComplete(1);
+                }}
+                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 p-8 cursor-pointer"
+              >
+                <div className="flex flex-col items-center space-y-6">
+                  <div className="w-24 h-24 flex items-center justify-center text-blue-600">
+                    <FontAwesomeIcon icon={faKey} className="w-16 h-16" />
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900">For Rent</h2>
+                  <p className="text-gray-600 text-center">List my property for rent</p>
+                </div>
+              </motion.button>
+            </div>
+          </motion.div>
         );
 
         case 2:

@@ -7,20 +7,20 @@ import { areas } from '../../data/locations.json';
 
 interface ExteriorFeaturesProps {
   exteriorFeatures: {
-    propertyType: string;
-    propertyClass: string;
-    link: boolean;
-    parcelOfTiedLand: boolean;
-    exteriorMaterial: string[];
-    exteriorFeatures: string[];
-    utilities: {
-      water: string;
-      sewers: string;
-      pool: string;
-    };
-    area?: string;
-    municipality?: string;
-    community?: string;
+    PropertyType: string;
+    PropertySubType: string;
+    LinkYN: boolean;
+    ParcelOfTiedLand: boolean;
+    ConstructionMaterials: string[];
+    ExteriorFeatures: string[];
+    Utilities: {
+      Water: string;
+      Sewers: string;
+      Pool: string;
+    },
+    Area: string;
+    City: string;
+    CityRegion: string;
   };
   onFeaturesChange: (features: any) => void;
   onContinue: () => void;
@@ -387,20 +387,20 @@ interface UtilitiesSection {
 
 const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
   exteriorFeatures = {
-    propertyType: '',
-    propertyClass: '',
-    link: false,
-    parcelOfTiedLand: false,
-    exteriorMaterial: [],
-    exteriorFeatures: [],
-    utilities: {
-      water: '',
-      sewers: '',
-      pool: ''
+    PropertyType: '',
+    PropertySubType: '',
+    LinkYN: false,
+    ParcelOfTiedLand: false,
+    ConstructionMaterials: [],
+    ExteriorFeatures: [],
+    Utilities: {
+      Water: '',
+      Sewers: '',
+      Pool: ''
     },
-    area: '',
-    municipality: '',
-    community: ''
+    Area: '',
+    City: '',
+    CityRegion: ''
   },
   onFeaturesChange,
   onContinue,
@@ -413,62 +413,83 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
   const [selectedValues, setSelectedValues] = useState({
     PropertyType: exteriorFeatures.PropertyType || '',
     PropertySubType: exteriorFeatures.PropertySubType || '',
-    exteriorMaterial: exteriorFeatures.exteriorMaterial || [],
-    utilities: {
-      water: exteriorFeatures.utilities?.water || '',
-      sewers: exteriorFeatures.utilities?.sewers || '',
-      pool: exteriorFeatures.utilities?.pool || ''
+    ConstructionMaterials: exteriorFeatures.ConstructionMaterials || [],
+    Utilities: {
+      Water: exteriorFeatures.Utilities?.Water || '',
+      Sewers: exteriorFeatures.Utilities?.Sewers || '',
+      Pool: exteriorFeatures.Utilities?.Pool || ''
     }
   });
 
   // Helper function for material selection
   const handleMaterialToggle = (material: string) => {
-    const updatedMaterials = exteriorFeatures.exteriorMaterial?.includes(material)
-      ? exteriorFeatures.exteriorMaterial.filter(m => m !== material)
-      : [...(exteriorFeatures.exteriorMaterial || []), material];
+    // Ensure we're working with an array
+    const currentMaterials = Array.isArray(exteriorFeatures.ConstructionMaterials) 
+      ? exteriorFeatures.ConstructionMaterials 
+      : [];
+    
+    console.log('Current materials before update:', currentMaterials);
+    
+    const updatedMaterials = currentMaterials.includes(material)
+      ? currentMaterials.filter(m => m !== material)
+      : [...currentMaterials, material];
+    
+    console.log('Updated materials:', updatedMaterials);
 
-    onFeaturesChange({
+    const updatedFeatures = {
       ...exteriorFeatures,
-      exteriorMaterial: updatedMaterials
-    });
+      ConstructionMaterials: updatedMaterials
+    };
+
+    console.log('Sending updated features:', updatedFeatures);
+    
+    onFeaturesChange(updatedFeatures);
   };
 
   // Helper function for feature selection
   const handleFeatureToggle = (feature: string) => {
-    const updatedFeatures = exteriorFeatures.exteriorFeatures?.includes(feature)
-      ? exteriorFeatures.exteriorFeatures.filter(f => f !== feature)
-      : [...(exteriorFeatures.exteriorFeatures || []), feature];
+    const currentFeatures = exteriorFeatures.ExteriorFeatures || [];
+    const updatedFeatures = currentFeatures.includes(feature)
+      ? currentFeatures.filter(f => f !== feature)
+      : [...currentFeatures, feature];
 
-    onFeaturesChange({
+    // Create a complete updated features object
+    const updatedExteriorFeatures = {
       ...exteriorFeatures,
-      exteriorFeatures: updatedFeatures
-    });
+      ExteriorFeatures: updatedFeatures
+    };
+
+    // Log for debugging
+    console.log('Updating features:', updatedFeatures);
+    console.log('Complete updated features:', updatedExteriorFeatures);
+
+    onFeaturesChange(updatedExteriorFeatures);
   };
 
   // Helper function to check if form is valid
   const isValid = () => {
     return (
-      exteriorFeatures.propertyType && 
-      exteriorFeatures.propertyClass &&
-      typeof exteriorFeatures.link === 'boolean' &&
-      typeof exteriorFeatures.parcelOfTiedLand === 'boolean' &&
-      exteriorFeatures.exteriorMaterial.length > 0 &&
-      exteriorFeatures.utilities.water &&
-      exteriorFeatures.utilities.sewers &&
-      exteriorFeatures.utilities.pool
+      exteriorFeatures.PropertyType && 
+      exteriorFeatures.PropertySubType &&
+      typeof exteriorFeatures.LinkYN === 'boolean' &&
+      typeof exteriorFeatures.ParcelOfTiedLand === 'boolean' &&
+      exteriorFeatures.ConstructionMaterials.length > 0 &&
+      exteriorFeatures.Utilities.Water &&
+      exteriorFeatures.Utilities.Sewers &&
+      exteriorFeatures.Utilities.Pool
     );
   };
 
-  // Check if exteriorFeatures.utilities.water is defined before using it
-  const waterType = exteriorFeatures?.utilities?.water || '';
-  const sewerType = exteriorFeatures?.utilities?.sewers || '';
-  const poolType = exteriorFeatures?.utilities?.pool || '';
+  // Check if exteriorFeatures.Utilities.Water is defined before using it
+  const waterType = exteriorFeatures?.Utilities?.Water || '';
+  const sewerType = exteriorFeatures?.Utilities?.Sewers || '';
+  const poolType = exteriorFeatures?.Utilities?.Pool || '';
 
-  const handleUtilitiesChange = (field: keyof typeof exteriorFeatures.utilities, value: string) => {
+  const handleUtilitiesChange = (field: keyof typeof exteriorFeatures.Utilities, value: string) => {
     onFeaturesChange({
       ...exteriorFeatures,
-      utilities: {
-        ...exteriorFeatures.utilities,
+      Utilities: {
+        ...exteriorFeatures.Utilities,
         [field]: value
       }
     });
@@ -504,51 +525,52 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
   };
 
   const handleExteriorMaterialChange = (material: string) => {
-    const currentMaterials = exteriorFeatures.exteriorMaterial || [];
+    const currentMaterials = exteriorFeatures.ConstructionMaterials || [];
     const updatedMaterials = currentMaterials.includes(material)
       ? currentMaterials.filter(m => m !== material)
       : [...currentMaterials, material];
 
-    onFeaturesChange({
+    // Create a complete updated features object
+    const updatedFeatures = {
       ...exteriorFeatures,
-      exteriorMaterial: updatedMaterials
-    });
-  };
-
-  const handleUtilityChange = (type: 'water' | 'sewers' | 'pool', value: string) => {
-    console.log('Updating utility:', type, value); // Debug log
-
-    const updatedUtilities = {
-      ...exteriorFeatures.utilities,
-      [type]: value
+      ConstructionMaterials: updatedMaterials
     };
 
-    console.log('Updated utilities:', updatedUtilities); // Debug log
+    // Log for debugging
+    console.log('Updating materials:', updatedMaterials);
+    console.log('Complete updated features:', updatedFeatures);
 
+    onFeaturesChange(updatedFeatures);
+  };
+
+  const handleUtilityChange = (type: 'Water' | 'Sewers' | 'Pool', value: string) => {
     onFeaturesChange({
       ...exteriorFeatures,
-      utilities: updatedUtilities
+      Utilities: {
+        ...exteriorFeatures.Utilities,
+        [type]: value
+      }
     });
   };
 
   const handleAreaChange = (value: string) => {
     onFeaturesChange({
       ...exteriorFeatures,
-      area: value
+      Area: value
     });
   };
 
   const handleMunicipalityChange = (value: string) => {
     onFeaturesChange({
       ...exteriorFeatures,
-      municipality: value
+      City: value
     });
   };
 
   const handleCommunityChange = (value: string) => {
     onFeaturesChange({
       ...exteriorFeatures,
-      community: value
+      CityRegion: value
     });
   };
 
@@ -564,6 +586,21 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
 
     console.log('Updated features:', updatedFeatures);
     onFeaturesChange(updatedFeatures);
+  };
+
+  // Add these handlers
+  const handleLinkToggle = (value: boolean) => {
+    onFeaturesChange({
+      ...exteriorFeatures,
+      LinkYN: value
+    });
+  };
+
+  const handleParcelToggle = (value: boolean) => {
+    onFeaturesChange({
+      ...exteriorFeatures,
+      ParcelOfTiedLand: value
+    });
   };
 
   return (
@@ -602,9 +639,14 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
               <LocationDropdown
                 locations={areas}
                 onChange={(selection) => {
-                  handleChange('area', selection.area || '');
-                  handleChange('municipality', selection.municipality || '');
-                  handleChange('community', selection.community || '');
+                  const updatedFeatures = {
+                    ...exteriorFeatures,
+                    Area: selection.area || '',
+                    City: selection.municipality || '',
+                    CityRegion: selection.community || ''
+                  };
+                  console.log('Updated location features:', updatedFeatures);
+                  onFeaturesChange(updatedFeatures);
                 }}
               />
             </div>
@@ -708,9 +750,9 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                 <div className="flex space-x-4">
                   <button
                     type="button"
-                    onClick={() => handleChange('link', true)}
+                    onClick={() => handleLinkToggle(true)}
                     className={`px-4 py-2 rounded ${
-                      exteriorFeatures.link
+                      exteriorFeatures.LinkYN
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-100 hover:bg-gray-200'
                     }`}
@@ -719,9 +761,9 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleChange('link', false)}
+                    onClick={() => handleLinkToggle(false)}
                     className={`px-4 py-2 rounded ${
-                      !exteriorFeatures.link
+                      !exteriorFeatures.LinkYN
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-100 hover:bg-gray-200'
                     }`}
@@ -748,9 +790,9 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
               <div className="flex space-x-4">
                 <button
                   type="button"
-                  onClick={() => handleChange('parcelOfTiedLand', true)}
+                  onClick={() => handleParcelToggle(true)}
                   className={`px-4 py-2 rounded ${
-                    exteriorFeatures.parcelOfTiedLand
+                    exteriorFeatures.ParcelOfTiedLand
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-100 hover:bg-gray-200'
                   }`}
@@ -759,9 +801,9 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleChange('parcelOfTiedLand', false)}
+                  onClick={() => handleParcelToggle(false)}
                   className={`px-4 py-2 rounded ${
-                    !exteriorFeatures.parcelOfTiedLand
+                    !exteriorFeatures.ParcelOfTiedLand
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-100 hover:bg-gray-200'
                   }`}
@@ -801,19 +843,25 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                   'Stucco (Plaster)',
                   'Vinyl Siding',
                   'Wood'
-                ].map((material) => (
-                  <button
-                    key={material}
-                    onClick={() => handleExteriorMaterialChange(material)}
-                    className={`px-4 py-2 rounded-full text-sm ${
-                      exteriorFeatures.exteriorMaterial?.includes(material)
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200'
-                    }`}
-                  >
-                    {material}
-                  </button>
-                ))}
+                ].map((material) => {
+                  console.log('Checking material:', material, 'Current materials:', exteriorFeatures.ConstructionMaterials);
+                  
+                  return (
+                    <button
+                      key={material}
+                      type="button"
+                      onClick={() => handleMaterialToggle(material)}
+                      className={`px-4 py-2 rounded-full text-sm ${
+                        Array.isArray(exteriorFeatures.ConstructionMaterials) && 
+                        exteriorFeatures.ConstructionMaterials.includes(material)
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-100 hover:bg-gray-200'
+                      }`}
+                    >
+                      {material}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
@@ -851,7 +899,7 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                     type="button"
                     onClick={() => handleFeatureToggle(feature)}
                     className={`px-4 py-2 rounded-full text-sm ${
-                      exteriorFeatures.exteriorFeatures?.includes(feature)
+                      exteriorFeatures.ExteriorFeatures?.includes(feature)
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-100 hover:bg-gray-200'
                     }`}
@@ -879,8 +927,8 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                     Water Type *
                   </label>
                   <select
-                    value={exteriorFeatures.utilities?.water || ''}
-                    onChange={(e) => handleUtilityChange('water', e.target.value)}
+                    value={exteriorFeatures.Utilities?.Water || ''}
+                    onChange={(e) => handleUtilityChange('Water', e.target.value)}
                     className="w-full p-2 border rounded-md"
                   >
                     <option value="">Select Water Type</option>
@@ -895,8 +943,8 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                     Sewer Type *
                   </label>
                   <select
-                    value={exteriorFeatures.utilities?.sewers || ''}
-                    onChange={(e) => handleUtilityChange('sewers', e.target.value)}
+                    value={exteriorFeatures.Utilities?.Sewers || ''}
+                    onChange={(e) => handleUtilityChange('Sewers', e.target.value)}
                     className="w-full p-2 border rounded-md"
                   >
                     <option value="">Select Sewer Type</option>
@@ -911,8 +959,8 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                     Pool *
                   </label>
                   <select
-                    value={exteriorFeatures.utilities?.pool || ''}
-                    onChange={(e) => handleUtilityChange('pool', e.target.value)}
+                    value={exteriorFeatures.Utilities?.Pool || ''}
+                    onChange={(e) => handleUtilityChange('Pool', e.target.value)}
                     className="w-full p-2 border rounded-md"
                   >
                     <option value="">Select Option</option>

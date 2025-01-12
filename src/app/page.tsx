@@ -3,12 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { HomeIcon, Scale, Shield, ArrowRight } from 'lucide-react';
+import { HomeIcon, Scale, Shield, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import CommissionCalculator from '@/components/CommissionCalculator';
 import { calculateDistance } from '@/utils/distance';
 import PropertyCard from '@/components/PropertyCard';
 import { Property } from '@/types/property';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function HomePage() {
   const router = useRouter();
@@ -17,6 +18,11 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [userPostalCode, setUserPostalCode] = useState<string | null>(null);
+  const [selectedUserType, setSelectedUserType] = useState<'seller' | 'buyer'>('seller');
+  const images = {
+    seller: { src: "/How it works-Sellers.svg", alt: "How it works for sellers" },
+    buyer: { src: "/How it works-Buyers.svg", alt: "How it works for buyers" }
+  };
 
   useEffect(() => {
     const getUserLocation = async () => {
@@ -145,63 +151,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <div className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-12">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <HomeIcon className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Buy Properties</h3>
-              <p className="text-gray-600">
-                Find your dream home from our extensive listings
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <Scale className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Sell Properties</h3>
-              <p className="text-gray-600">
-                List your property and reach thousands of buyers
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center">
-                <Shield className="w-8 h-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-4">Professional Services</h3>
-              <p className="text-gray-600">
-                Connect with photographers, lawyers, and mortgage brokers
-              </p>
-            </div>
+      {/* How It Works Section */}
+      <div className="relative min-h-[90vh]">
+        <h2 className="text-3xl font-bold text-center py-8">How It Works</h2>
+        
+        <div className="relative">
+          {/* User Type Selection - Buttons overlay on the image */}
+          <div className="absolute left-12 top-1/3 z-20 flex flex-col gap-5">
+            <button
+              onClick={() => setSelectedUserType('seller')}
+              className={`px-8 py-5 rounded-xl font-semibold text-xl transition-all w-68 text-center shadow-lg ${
+                selectedUserType === 'seller'
+                  ? 'bg-blue-600 text-white scale-105 transform'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              I want to sell my house
+            </button>
+            <button
+              onClick={() => setSelectedUserType('buyer')}
+              className={`px-8 py-5 rounded-xl font-semibold text-xl transition-all w-68 text-center shadow-lg ${
+                selectedUserType === 'buyer'
+                  ? 'bg-blue-600 text-white scale-105 transform'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+              }`}
+            >
+              I want to buy a house
+            </button>
           </div>
-        </div>
-      </div>
 
-     {/* How It Works Section */}
-     <div className="py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-16">How It Works</h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { title: "Create Account", desc: "Sign up in minutes" },
-              { title: "List or Search", desc: "Browse or post properties" },
-              { title: "Connect", desc: "Chat with buyers/sellers" },
-              { title: "Close Deal", desc: "Secure transaction process" }
-            ].map((step, i) => (
-              <div key={i} className="relative text-center">
-                <div className="w-12 h-12 mx-auto mb-4 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold">
-                  {i + 1}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                <p className="text-gray-600">{step.desc}</p>
-                {i < 3 && (
-                  <ArrowRight className="hidden md:block absolute top-6 -right-4 text-blue-600" />
-                )}
-              </div>
-            ))}
+          {/* Image Display - Full width without padding */}
+          <div className="relative h-[calc(90vh-8rem)] w-full">
+            <div className="transition-opacity duration-500">
+              <Image
+                src={images[selectedUserType].src}
+                alt={images[selectedUserType].alt}
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>

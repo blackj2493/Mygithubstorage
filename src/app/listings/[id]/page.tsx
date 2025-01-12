@@ -90,8 +90,14 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
         ← Back to Listings
       </Link>
 
-      {/* Media Gallery */}
-      <MediaGallery media={property.media || []} />
+      {/* Media Gallery - Filter for unique photos only */}
+      <MediaGallery 
+        media={property.media
+          ?.filter(item => item.MediaCategory === 'Photo')
+          ?.filter((item, index, self) => 
+            index === self.findIndex(t => t.MediaObjectID === item.MediaObjectID)
+          ) || []} 
+      />
 
       {/* Property Header */}
       <div className="mt-8">
