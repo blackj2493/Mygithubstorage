@@ -55,7 +55,8 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
         Community: exteriorDetails.CityRegion,
         BedroomsTotal: interiorDetails.rooms.bedrooms,
         PropertyType: exteriorDetails.PropertyClass,
-        PropertySubType: exteriorDetails.PropertyType
+        PropertySubType: exteriorDetails.PropertyType,
+        listingType
       });
 
       const response = await fetch('/api/properties/similar', {
@@ -69,7 +70,8 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
             BedroomsTotal: interiorDetails.rooms.bedrooms,
             PropertyType: exteriorDetails.PropertyClass,
             PropertySubType: exteriorDetails.PropertyType
-          }
+          },
+          listingType
         })
       });
 

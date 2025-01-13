@@ -25,9 +25,10 @@ async function fetchIDXImages(listingKey: string) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { propertyData } = body;
+    const { propertyData, listingType } = body;
     
     console.log('Received property data:', propertyData);
+    console.log('Listing type:', listingType);
 
     if (!process.env.PROPTX_VOW_TOKEN) {
       throw new Error('VOW token is not configured');
@@ -55,12 +56,17 @@ export async function POST(request: Request) {
     // Add filter for recently closed/leased properties with correct date format
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-    const formattedDate = sixtyDaysAgo.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+    const formattedDate = sixtyDaysAgo.toISOString().split('T')[0];
 
     filterParts.push(`CloseDate gt ${formattedDate}`);
-    filterParts.push(`(MlsStatus eq 'Sold' or MlsStatus eq 'Leased')`);
 
-    // Remove $expand=Media from the URL
+    // Filter MlsStatus based on listingType
+    if (listingType === 'SALE') {
+      filterParts.push(`MlsStatus eq 'Sold'`);
+    } else if (listingType === 'RENT') {
+      filterParts.push(`MlsStatus eq 'Leased'`);
+    }
+
     let apiUrl = 'https://query.ampre.ca/odata/Property?$top=100';
     if (filterParts.length > 0) {
       const filter = filterParts.join(' and ');

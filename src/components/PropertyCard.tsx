@@ -15,6 +15,7 @@ interface PropertyCardProps {
     BedroomsAboveGrade?: number;
     BedroomsBelowGrade?: number;
     BathroomsTotalInteger?: number;
+    ListOfficeName?: string;
     images: Array<{
       MediaURL: string;
       Order: number;
@@ -114,6 +115,12 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               </div>
             )}
           </div>
+
+          {property.ListOfficeName && (
+            <div className="mt-2 pt-2 border-t border-gray-200">
+              <p className="text-sm text-gray-500">{property.ListOfficeName}</p>
+            </div>
+          )}
         </div>
       </div>
     </Link>

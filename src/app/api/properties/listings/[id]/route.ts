@@ -112,7 +112,6 @@ export async function GET(
     );
   }
 }
-
 // Helper function to process history data
 function processHistoryData(historyData: any) {
   return (historyData?.value || [])
