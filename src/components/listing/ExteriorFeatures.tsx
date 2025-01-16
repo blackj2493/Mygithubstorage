@@ -21,11 +21,21 @@ interface ExteriorFeaturesProps {
     Area: string;
     City: string;
     CityRegion: string;
+    GarageType: string;
+    ParkingFeatures: string[];
+    ParkingTotal: number;
+    ParkingSpaces: number;
   };
   onFeaturesChange: (features: any) => void;
   onContinue: () => void;
   onBack: () => void;
   selectedAddress: any;
+  garage: {
+    GarageType: string;
+    ParkingFeatures: string[];
+    ParkingTotal: number;
+    ParkingSpaces: number;
+  };
 }
 
 type PopupType = 'propertyClass' | 'propertyType' | 'linkProperty' | 'parcelTiedLand' | 'sewerType' | null;
@@ -400,7 +410,11 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
     },
     Area: '',
     City: '',
-    CityRegion: ''
+    CityRegion: '',
+    GarageType: '',
+    ParkingFeatures: [],
+    ParkingTotal: 0,
+    ParkingSpaces: 0
   },
   onFeaturesChange,
   onContinue,
@@ -602,6 +616,33 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
       ParcelOfTiedLand: value
     });
   };
+
+  // Add the garage type options
+  const garageTypes = [
+    'Attached',
+    'Built-in',
+    'Carport',
+    'Detached',
+    'Garage',
+    'None',
+    'Other',
+    'Underground'
+  ];
+
+  // Add the parking features options
+  const parkingFeatures = [
+    'Asphalt',
+    'Concrete',
+    'Garage Door Opener',
+    'Gravel',
+    'Heated',
+    'Inside Entry',
+    'Interlocked',
+    'Lane',
+    'Other',
+    'Private',
+    'Shared'
+  ];
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -972,6 +1013,143 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
             </div>
           </CardContent>
         </Card>
+
+        {/* Garage & Parking Section - with matching style */}
+        <div className="mt-8">
+          <div className="bg-blue-600 text-white p-4 rounded-t-lg">
+            <h3 className="text-lg font-semibold">Garage & Parking</h3>
+          </div>
+
+          <div className="bg-white p-6 rounded-b-lg shadow-sm">
+            {/* Garage Type */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Garage Type *
+              </label>
+              <select
+                value={exteriorFeatures.GarageType || ''}
+                onChange={(e) => onFeaturesChange({
+                  ...exteriorFeatures,
+                  GarageType: e.target.value
+                })}
+                className="w-full p-2 border rounded-md"
+                required
+              >
+                <option value="">Select Garage Type</option>
+                {garageTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Parking Features */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Parking/Drive Features
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {parkingFeatures.map((feature) => (
+                  <button
+                    key={feature}
+                    onClick={() => {
+                      const currentFeatures = exteriorFeatures.ParkingFeatures || [];
+                      const updatedFeatures = currentFeatures.includes(feature)
+                        ? currentFeatures.filter(f => f !== feature)
+                        : [...currentFeatures, feature];
+                      
+                      onFeaturesChange({
+                        ...exteriorFeatures,
+                        ParkingFeatures: updatedFeatures
+                      });
+                    }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 ${
+                      exteriorFeatures.ParkingFeatures?.includes(feature)
+                        ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
+                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    }`}
+                    type="button"
+                  >
+                    {feature}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Parking Spaces */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Drive Parking Spaces *
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={exteriorFeatures.ParkingSpaces || ''}
+                  onChange={(e) => {
+                    const driveSpaces = parseInt(e.target.value) || 0;
+                    onFeaturesChange({
+                      ...exteriorFeatures,
+                      ParkingSpaces: driveSpaces,
+                      // Ensure ParkingTotal is at least equal to ParkingSpaces
+                      ParkingTotal: Math.max(driveSpaces, exteriorFeatures.ParkingTotal || 0)
+                    });
+                  }}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Garage Parking Spaces
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={Math.max(0, (exteriorFeatures.ParkingTotal || 0) - (exteriorFeatures.ParkingSpaces || 0))}
+                  onChange={(e) => {
+                    const garageSpaces = parseInt(e.target.value) || 0;
+                    const driveSpaces = exteriorFeatures.ParkingSpaces || 0;
+                    onFeaturesChange({
+                      ...exteriorFeatures,
+                      ParkingTotal: garageSpaces + driveSpaces
+                    });
+                  }}
+                  className="w-full p-2 border rounded-md bg-gray-50"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Total Parking Spaces *
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  value={exteriorFeatures.ParkingTotal || ''}
+                  onChange={(e) => {
+                    const total = parseInt(e.target.value) || 0;
+                    onFeaturesChange({
+                      ...exteriorFeatures,
+                      ParkingTotal: total,
+                      // Ensure ParkingSpaces doesn't exceed total
+                      ParkingSpaces: Math.min(exteriorFeatures.ParkingSpaces || 0, total)
+                    });
+                  }}
+                  className="w-full p-2 border rounded-md"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Optional: Add helper text */}
+            <div className="mt-2 text-sm text-gray-500">
+              Garage Parking Spaces are automatically calculated as the difference between Total and Drive spaces
+            </div>
+          </div>
+        </div>
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">

@@ -1,11 +1,15 @@
-import { Inter } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 import Navbar from './components/layout/Navbar';
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import PageWrapper from '@/components/layout/PageWrapper';
 import SearchBar from '@/components/layout/SearchBar';
 
-const inter = Inter({ subsets: ['latin'] });
+const poppins = Poppins({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export const metadata = {
   title: 'PureProperty.ca',
@@ -31,8 +35,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className={poppins.className}>
+      <body className={poppins.className}>
         <UserProvider>
           <div className="flex flex-col min-h-screen">
             <Navbar />

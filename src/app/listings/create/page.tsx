@@ -178,7 +178,11 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
         sewers: '',
         pool: ''
       },
-      exteriorMaterial: []
+      exteriorMaterial: [],
+      GarageType: '',
+      ParkingFeatures: [],
+      ParkingTotal: 0,
+      ParkingSpaces: 0
     });
   
     // Property Description State

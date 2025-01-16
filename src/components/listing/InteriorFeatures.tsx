@@ -705,16 +705,16 @@ export const InteriorFeatures: React.FC<InteriorFeaturesProps> = ({
                   />
                 </div>
 
-                {/* Bedrooms */}
+                {/* Bedrooms Above Grade */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Number of Bedrooms *
+                    Number of Bedrooms Above Grade *
                   </label>
                   <input
                     type="number"
                     min="0"
-                    value={interiorFeatures.rooms.bedrooms || ''}
-                    onChange={(e) => handleNumberInput(e.target.value, 'bedrooms')}
+                    value={interiorFeatures.rooms.BedroomsAboveGrade || ''}
+                    onChange={(e) => handleNumberInput(e.target.value, 'BedroomsAboveGrade')}
                     className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
                     required
                   />
@@ -1217,7 +1217,7 @@ export const InteriorFeatures: React.FC<InteriorFeaturesProps> = ({
 function isValid(features: InteriorFeaturesType): boolean {
   return !!(
     features.rooms.total > 0 &&
-    features.rooms.bedrooms >= 0 &&
+    features.rooms.BedroomsAboveGrade >= 0 &&
     features.rooms.bathrooms > 0 &&
     features.rooms.kitchens > 0 &&
     features.basement.type &&

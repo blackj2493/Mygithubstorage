@@ -10,6 +10,7 @@ import PropertyCard from '@/components/PropertyCard';
 import { Property } from '@/types/property';
 import Link from 'next/link';
 import Image from 'next/image';
+import FAQSection from '@/components/FAQSection';
 
 export default function HomePage() {
   const router = useRouter();
@@ -156,6 +157,9 @@ export default function HomePage() {
           )}
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <FAQSection />
 
       {/* How It Works Section */}
       <div className="relative min-h-[90vh]">

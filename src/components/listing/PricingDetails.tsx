@@ -22,7 +22,7 @@ type SimilarProperty = {
   Address: string;
   City: string;
   PurchaseContractDate: string;
-  BedroomsTotal: number;
+  BedroomsAboveGrade: number;
   PropertyType: string;
   PropertySubType: string;
 };
@@ -53,7 +53,7 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
       setIsLoading(true);
       console.log('Fetching similar properties with:', {
         Community: exteriorDetails.CityRegion,
-        BedroomsTotal: interiorDetails.rooms.bedrooms,
+        BedroomsAboveGrade: interiorDetails.rooms.BedroomsAboveGrade,
         PropertyType: exteriorDetails.PropertyClass,
         PropertySubType: exteriorDetails.PropertyType,
         listingType
@@ -67,7 +67,7 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
         body: JSON.stringify({
           propertyData: {
             Community: exteriorDetails.CityRegion,
-            BedroomsTotal: interiorDetails.rooms.bedrooms,
+            BedroomsAboveGrade: interiorDetails.rooms.BedroomsAboveGrade,
             PropertyType: exteriorDetails.PropertyClass,
             PropertySubType: exteriorDetails.PropertyType
           },
@@ -308,7 +308,7 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
                 disabled={isLoading}
                 className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
               >
-                {isLoading ? 'Searching...' : 'Get Similar Properties'}
+                {isLoading ? 'Searching...' : 'Get Similar Properties Sold in the Area'}
               </button>
 
               {showSimilarProperties && (

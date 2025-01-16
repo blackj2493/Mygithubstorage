@@ -49,16 +49,16 @@ export async function POST(request: Request) {
       filterParts.push(`PropertySubType eq '${propertyData.PropertySubType}'`);
     }
 
-    if (propertyData.BedroomsTotal && !isNaN(Number(propertyData.BedroomsTotal))) {
-      filterParts.push(`BedroomsTotal eq ${Number(propertyData.BedroomsTotal)}`);
+    if (propertyData.BedroomsAboveGrade && !isNaN(Number(propertyData.BedroomsAboveGrade))) {
+      filterParts.push(`BedroomsAboveGrade eq ${Number(propertyData.BedroomsAboveGrade)}`);
     }
 
-    // Add filter for recently closed/leased properties with correct date format
+    // Add filter for recently sold/leased properties with correct date format
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
     const formattedDate = sixtyDaysAgo.toISOString().split('T')[0];
 
-    filterParts.push(`CloseDate gt ${formattedDate}`);
+    filterParts.push(`PurchaseContractDate ge ${formattedDate}`);
 
     // Filter MlsStatus based on listingType
     if (listingType === 'SALE') {
