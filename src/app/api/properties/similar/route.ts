@@ -53,6 +53,11 @@ export async function POST(request: Request) {
       filterParts.push(`BedroomsAboveGrade eq ${Number(propertyData.BedroomsAboveGrade)}`);
     }
 
+    // Add CoveredSpaces filter
+    if (propertyData.CoveredSpaces && !isNaN(Number(propertyData.CoveredSpaces))) {
+      filterParts.push(`CoveredSpaces eq ${Number(propertyData.CoveredSpaces)}`);
+    }
+
     // Add filter for recently sold/leased properties with correct date format
     const sixtyDaysAgo = new Date();
     sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);

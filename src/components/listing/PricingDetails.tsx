@@ -11,7 +11,7 @@ interface PricingDetailsProps {
   setSaleDetails: (details: SaleDetails) => void;
   onContinue: () => void;
   onBack: () => void;
-  exteriorDetails: ExteriorDetails;
+  exteriorFeatures: ExteriorFeatures;
   interiorDetails: InteriorDetails;
   address: Address;
 }
@@ -35,29 +35,53 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
   setSaleDetails,
   onContinue,
   onBack,
-  exteriorDetails,
+  exteriorFeatures,
   interiorDetails,
   address
 }) => {
   const [showSimilarProperties, setShowSimilarProperties] = useState(false);
   const [similarProperties, setSimilarProperties] = useState<SimilarProperty[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [priceEstimate, setPriceEstimate] = useState<{
+    estimatedPrice: number;
+    confidence: number;
+    comparablesCount: number;
+    basePrice: number;
+  } | null>(null);
+  const [isEstimating, setIsEstimating] = useState(false);
 
   // Add debug logging
   React.useEffect(() => {
-    console.log('PricingDetails received exteriorDetails:', exteriorDetails);
-  }, [exteriorDetails]);
+    console.log('PricingDetails received exteriorFeatures:', exteriorFeatures);
+  }, [exteriorFeatures]);
 
   const fetchSimilarProperties = async () => {
     try {
       setIsLoading(true);
-      console.log('Fetching similar properties with:', {
-        Community: exteriorDetails.CityRegion,
-        BedroomsAboveGrade: interiorDetails.rooms.BedroomsAboveGrade,
-        PropertyType: exteriorDetails.PropertyClass,
-        PropertySubType: exteriorDetails.PropertyType,
-        listingType
+      
+      // Debug log the incoming data
+      console.log('Input data:', {
+        interiorDetails,
+        exteriorFeatures
       });
+      
+      const propertyData = {
+        BedroomsAboveGrade: interiorDetails?.rooms?.bedrooms || 0,
+        CityRegion: exteriorFeatures?.CityRegion || '',
+        PropertyType: exteriorFeatures?.PropertyType || '',
+        CoveredSpaces: exteriorFeatures?.CoveredSpaces || 0
+      };
+
+      // Remove empty or zero values
+      const cleanedPropertyData = {};
+      Object.entries(propertyData).forEach(([key, value]) => {
+        if (value !== '' && value !== 0) {
+          cleanedPropertyData[key] = value;
+        }
+      });
+
+      // Log the cleaned data being sent
+      console.log('Sending propertyData:', cleanedPropertyData);
 
       const response = await fetch('/api/properties/similar', {
         method: 'POST',
@@ -65,36 +89,73 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          propertyData: {
-            Community: exteriorDetails.CityRegion,
-            BedroomsAboveGrade: interiorDetails.rooms.BedroomsAboveGrade,
-            PropertyType: exteriorDetails.PropertyClass,
-            PropertySubType: exteriorDetails.PropertyType
-          },
+          propertyData: cleanedPropertyData,
           listingType
         })
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('API Error Response:', errorData);
-        throw new Error(`API error: ${errorData.details || 'Unknown error'}`);
+        throw new Error('Failed to fetch similar properties');
       }
 
       const data = await response.json();
       console.log('API Response:', data);
-
-      if (!data.properties) {
-        throw new Error('No properties data in response');
-      }
-
       setSimilarProperties(data.properties);
       setShowSimilarProperties(true);
     } catch (error) {
-      console.error('Detailed error in fetchSimilarProperties:', error);
+      console.error('Error fetching similar properties:', error);
       alert('Unable to fetch similar properties. Please try again later.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const getPriceEstimate = async () => {
+    try {
+      setIsEstimating(true);
+      console.log('Sending data:', {
+        Community: exteriorFeatures.CityRegion,
+        BedroomsAboveGrade: interiorDetails.rooms.BedroomsAboveGrade,
+        PropertyType: exteriorFeatures.PropertyClass,
+        ParkingTotal: exteriorFeatures.ParkingTotal,
+        Basement: interiorDetails.basement?.type || 'unfinished',
+        KitchensTotal: interiorDetails.rooms.kitchens,
+        LotDepth: exteriorFeatures.lot?.depth || 0,
+        LotWidth: exteriorFeatures.lot?.width || 0,
+        PostalCode: address.postalCode
+      });
+
+      const response = await fetch('/api/properties/price-perfect', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          propertyData: {
+            Community: exteriorFeatures.CityRegion,
+            BedroomsAboveGrade: interiorDetails.rooms.BedroomsAboveGrade,
+            PropertyType: exteriorFeatures.PropertyClass,
+            ParkingTotal: exteriorFeatures.ParkingTotal,
+            Basement: interiorDetails.basement?.type || 'unfinished',
+            KitchensTotal: interiorDetails.rooms.kitchens,
+            LotDepth: exteriorFeatures.lot?.depth || 0,
+            LotWidth: exteriorFeatures.lot?.width || 0,
+            PostalCode: address.postalCode
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get price estimate');
+      }
+
+      const data = await response.json();
+      setPriceEstimate(data);
+    } catch (error) {
+      console.error('Error getting price estimate:', error);
+      alert('Unable to calculate price estimate. Please try again later.');
+    } finally {
+      setIsEstimating(false);
     }
   };
 
@@ -308,7 +369,7 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
                 disabled={isLoading}
                 className="w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
               >
-                {isLoading ? 'Searching...' : 'Get Similar Properties Sold in the Area'}
+                {isLoading ? 'Searching...' : 'Get Similar Properties recently Sold in the Area'}
               </button>
 
               {showSimilarProperties && (
@@ -331,6 +392,46 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
                       No similar properties found in your area with the specified criteria.
                     </p>
                   )}
+                </div>
+              )}
+            </div>
+
+            {/* PricePerfect AI Section */}
+            <div className="mt-6">
+              <button
+                onClick={getPriceEstimate}
+                disabled={isEstimating}
+                className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
+              >
+                {isEstimating ? 'Calculating...' : 'Get PricePerfect AI™ Estimate'}
+              </button>
+
+              {priceEstimate && (
+                <div className="mt-4 p-6 border border-purple-200 rounded-xl bg-purple-50">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-semibold text-purple-900">
+                      PricePerfect AI™ Estimate
+                    </h3>
+                    <span className={`px-3 py-1 rounded-full ${
+                      priceEstimate.confidence >= 80 ? 'bg-green-100 text-green-800' :
+                      priceEstimate.confidence >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {priceEstimate.confidence}% Confidence
+                    </span>
+                  </div>
+
+                  <p className="text-3xl font-bold text-purple-700 mb-4">
+                    {new Intl.NumberFormat('en-CA', {
+                      style: 'currency',
+                      currency: 'CAD',
+                      maximumFractionDigits: 0
+                    }).format(priceEstimate.estimatedPrice)}
+                  </p>
+
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <p>Based on {priceEstimate.comparablesCount} comparable properties</p>
+                  </div>
                 </div>
               )}
             </div>

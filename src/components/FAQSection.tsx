@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Users, Wrench, Repeat, Briefcase, FileText } from 'lucide-react';
+import { Home, Users, Wrench, Repeat, Briefcase, FileText, Plus } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/AllCard';
 import Image from 'next/image';
 
 interface FAQItem {
@@ -17,27 +18,27 @@ const faqData: FAQItem[] = [
     id: 1,
     question: "How does PureProperty.ca help sellers?",
     answer: (
-      <div className="p-6">
-        <p className="mb-4">
-          <strong className="text-blue-600 text-lg">PureProperty.ca is a game-changer for sellers!</strong> Unlike the traditional real estate model, we help you 
+      <div className="p-12">
+        <p className="mb-8 text-3xl">
+          <strong className="text-blue-600">PureProperty.ca is a game-changer for sellers!</strong>
+        </p>
+        
+        <p className="mb-8 text-2xl">
+          Unlike the traditional real estate model, we help you 
           <span className="text-green-600 font-semibold"> save thousands in commission fees</span> while delivering professional-grade tools and maximum exposure.
         </p>
         
-        <p className="mb-4">
-          <span className="text-gray-700 font-semibold">🎯 Maximum Reach:</span> List your property directly on 
-          <span className="text-blue-600"> MLS, Realtor.ca, Zolo,</span> and other platforms, connecting with both professional Realtors and serious buyers.
+        <p className="mb-8 text-2xl">
+          <span className="text-gray-700 font-semibold">🎯 Maximum Reach:</span>
+          <br />• List your property directly on <span className="text-blue-600">MLS, Realtor.ca, Zolo</span>
+          <br />• Connect with both professional Realtors and serious buyers
         </p>
         
-        <p className="mb-4">
+        <p className="mb-8 text-2xl">
           <span className="text-gray-700 font-semibold">🤖 Powerful AI Tools:</span>
           <br />• <span className="font-semibold">PricePerfect AI™</span> - Smart pricing optimization
           <br />• <span className="font-semibold">ListEase AI™</span> - Step-by-step listing guidance
           <br />• <span className="font-semibold">EnhanceAI™</span> - Property improvement recommendations
-        </p>
-        
-        <p className="mb-2">
-          <span className="text-gray-700 font-semibold">✅ Complete Peace of Mind:</span> We connect you with trusted lawyers to handle all paperwork and legal formalities, ensuring a 
-          <span className="text-green-600 font-semibold"> smooth, confident selling experience</span>.
         </p>
       </div>
     ),
@@ -47,21 +48,22 @@ const faqData: FAQItem[] = [
     id: 2,
     question: "How does PureProperty.ca help buyers?",
     answer: (
-      <div className="p-6">
-        <p className="mb-4">
-          <span className="text-blue-600 text-lg font-semibold">Discover your dream home, your way!</span> 
+      <div className="p-12">
+        <p className="mb-8 text-3xl">
+          <span className="text-blue-600 font-semibold">Discover your dream home, your way!</span> 
         </p>
 
-        <p className="mb-4">
+        <p className="mb-8 text-2xl">
           <span className="text-gray-700 font-semibold">🏠 For FSBO Properties:</span>
           <br />• <span className="font-semibold">Direct Connection</span> with sellers
           <br />• <span className="font-semibold">Instant Chat</span> functionality
           <br />• <span className="font-semibold">Easy Scheduling</span> for property viewings
         </p>
 
-        <p className="mb-2">
-          <span className="text-gray-700 font-semibold">🔑 For MLS Listings:</span> We pair you with a 
-          <span className="text-green-600 font-semibold"> professional realtor</span> who will guide you through every step of your home-buying journey.
+        <p className="mb-8 text-2xl">
+          <span className="text-gray-700 font-semibold">🔑 For MLS Listings:</span>
+          <br />• Paired with a <span className="text-green-600 font-semibold">professional realtor</span>
+          <br />• Full guidance through your home-buying journey
         </p>
       </div>
     ),
@@ -71,40 +73,25 @@ const faqData: FAQItem[] = [
     id: 3,
     question: "What are the innovative tools available on PureProperty.ca?",
     answer: (
-      <div className="p-4">
-        <p className="mb-2">
+      <div className="p-8">
+        <p className="mb-6 text-3xl">
           <span className="text-blue-600 font-semibold">Discover our powerful AI-powered toolkit!</span>
         </p>
 
-        <div className="space-y-2">
+        <div className="space-y-4 text-2xl">
           <div>
             <span className="text-blue-600 font-semibold">🎯 PricePerfect AI™</span>
-            <p className="ml-6 text-sm">Make data-driven pricing decisions with smart recommendations backed by comprehensive market data.</p>
+            <p className="ml-6">Make data-driven pricing decisions with smart recommendations backed by comprehensive market data.</p>
           </div>
 
           <div>
             <span className="text-green-600 font-semibold">📝 ListEase AI™</span>
-            <p className="ml-6 text-sm">Experience hassle-free listing creation with our intuitive, step-by-step professional guidance system.</p>
+            <p className="ml-6">Experience hassle-free listing creation with our intuitive, step-by-step professional guidance system.</p>
           </div>
 
           <div>
             <span className="text-purple-600 font-semibold">✨ ListingGenius™</span>
-            <p className="ml-6 text-sm">Create compelling, SEO-optimized property descriptions that capture buyers' attention—effortlessly.</p>
-          </div>
-
-          <div>
-            <span className="text-orange-600 font-semibold">🏠 EnhanceAI™</span>
-            <p className="ml-6 text-sm">Receive smart, data-driven suggestions to maximize your property's appeal and market value.</p>
-          </div>
-
-          <div>
-            <span className="text-red-600 font-semibold">🎯 HomeMatch AI™</span>
-            <p className="ml-6 text-sm">Get personalized property recommendations that perfectly align with your unique preferences and needs.</p>
-          </div>
-
-          <div>
-            <span className="text-indigo-600 font-semibold">💬 Keyton AI™</span>
-            <p className="ml-6 text-sm">Access instant, intelligent support with our real-time AI assistant—available 24/7 for all your questions.</p>
+            <p className="ml-6">Create compelling, SEO-optimized property descriptions that capture buyers' attention—effortlessly.</p>
           </div>
         </div>
       </div>
@@ -115,12 +102,15 @@ const faqData: FAQItem[] = [
     id: 4,
     question: "Can I switch to a full-commission realtor if needed?",
     answer: (
-      <div className="p-6">
-        <p>
-          <span className="text-blue-600 font-semibold">✅ Absolutely!</span> You can 
-          <span className="text-green-600 font-semibold"> switch to a full-commission realtor model at any time</span>, 
-          giving you complete 
-          <span className="text-gray-700 font-semibold"> flexibility</span> to adapt your selling strategy as your needs evolve.
+      <div className="p-12">
+        <p className="mb-8 text-3xl">
+          <span className="text-blue-600 font-semibold">✅ Absolutely!</span>
+        </p>
+        
+        <p className="text-2xl">
+          You can <span className="text-green-600 font-semibold">switch to a full-commission realtor model at any time</span>, 
+          giving you complete <span className="text-gray-700 font-semibold">flexibility</span> to adapt your selling strategy 
+          as your needs evolve.
         </p>
       </div>
     ),
@@ -130,19 +120,19 @@ const faqData: FAQItem[] = [
     id: 5,
     question: "How does PureProperty.ca connect sellers and buyers with local professionals?",
     answer: (
-      <div className="p-6">
-        <p className="mb-4">
+      <div className="p-8">
+        <p className="mb-6 text-2xl">
           <span className="text-gray-700 font-semibold">🏡 For Sellers:</span> We connect you with:
           <br />• <span className="text-blue-600 font-semibold">Professional Photographers</span> to capture stunning listing photos
           <br />• <span className="text-blue-600 font-semibold">Expert Lawyers</span> to handle all legal requirements
         </p>
 
-        <p className="mb-2">
+        <p className="text-2xl">
           <span className="text-gray-700 font-semibold">🔑 For Buyers:</span> We provide access to:
           <br />• <span className="text-green-600 font-semibold">Mortgage Agents</span>
           <br />• <span className="text-green-600 font-semibold">Home Inspectors</span>
           <br />• <span className="text-green-600 font-semibold">Real Estate Lawyers</span>
-          <p className="mt-2 text-gray-700">Ensuring a <span className="font-semibold">smooth and secure transaction</span> from start to finish.</p>
+          <p className="mt-4 text-gray-700">Ensuring a <span className="font-semibold">smooth and secure transaction</span> from start to finish.</p>
         </p>
       </div>
     ),
@@ -152,22 +142,27 @@ const faqData: FAQItem[] = [
     id: 6,
     question: "How is legal and paperwork managed on PureProperty.ca?",
     answer: (
-      <div className="p-6">
-        <p className="mb-4">
-          <span className="text-blue-600 font-semibold">⚖️ Don't stress about the legalities!</span> We understand that handling real estate paperwork can feel overwhelming.
+      <div className="p-12">
+        <p className="mb-8 text-3xl">
+          <span className="text-blue-600 font-semibold">⚖️ Don't stress about the legalities!</span>
         </p>
 
-        <p className="mb-4">
+        <p className="mb-8 text-2xl">
+          We understand that handling real estate paperwork can feel overwhelming.
           Here's how we make it simple:
-          <br />• We <span className="text-green-600 font-semibold">connect you with experienced lawyers</span> who specialize in real estate
-          <br />• They handle <span className="font-semibold">all aspects</span> of your transaction:
-            <br />&nbsp;&nbsp;📄 Paperwork management
-            <br />&nbsp;&nbsp;📋 Contract review
-            <br />&nbsp;&nbsp;✔️ Due diligence
         </p>
 
-        <p className="text-gray-700">
-          <span className="font-semibold">🔒 Result:</span> Everything is handled <span className="text-green-600 font-semibold">professionally and securely</span>, giving you complete peace of mind.
+        <p className="mb-8 text-2xl">
+          <span className="text-gray-700 font-semibold">For Your Peace of Mind:</span>
+          <br />• We <span className="text-green-600 font-semibold">connect you with experienced lawyers</span>
+          <br />• Handle all paperwork management
+          <br />• Manage contract reviews
+          <br />• Complete due diligence checks
+        </p>
+
+        <p className="text-2xl text-gray-700">
+          <span className="font-semibold">🔒 Result:</span> Everything is handled 
+          <span className="text-green-600 font-semibold">professionally and securely</span>.
         </p>
       </div>
     ),
@@ -175,79 +170,70 @@ const faqData: FAQItem[] = [
   }
 ];
 
-export default function FAQSection() {
-  const [selectedId, setSelectedId] = useState<number>(1);
+const FAQSection = () => {
+  const [openId, setOpenId] = useState<number | null>(null);
 
   return (
-    <section className="h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-7xl h-full flex flex-col">
-        <h2 className="text-3xl font-semibold text-center mb-6">Your Real Estate Journey, Your Way</h2>
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <h2 className="text-5xl font-bold text-center mb-16">
+          Frequently<br />asked questions
+        </h2>
         
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-6">
-          {faqData.map((faq) => (
-            <button
-              key={faq.id}
-              onClick={() => setSelectedId(faq.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg transition-all font-medium ${
-                selectedId === faq.id
-                  ? 'bg-blue-600 text-white shadow-lg scale-105'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
-              }`}
-            >
-              <div className={`${selectedId === faq.id ? 'text-white' : 'text-blue-600'}`}>
-                {faq.icon}
-              </div>
-              <span className="whitespace-nowrap">{faq.question}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Content Area */}
-        <div className="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6 h-[calc(90vh-250px)] max-w-[90%] mx-auto">
-          {/* Answer Section */}
-          <div className="bg-white rounded-lg shadow-lg overflow-auto">
-            {faqData.map((faq) => (
-              <motion.div
-                key={faq.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ 
-                  opacity: selectedId === faq.id ? 1 : 0,
-                  y: selectedId === faq.id ? 0 : 20,
-                  display: selectedId === faq.id ? 'block' : 'none'
-                }}
-                transition={{ duration: 0.3 }}
-                className="tracking-tight" // Tighter letter spacing like DuProprio
-              >
-                {Array.isArray(faq.answer) ? (
-                  <ul className="list-disc pl-5 space-y-3 text-gray-600">
-                    {faq.answer.map((item, index) => (
-                      <li key={index} className="leading-relaxed font-light">{item}</li>
-                    ))}
-                  </ul>
-                ) : typeof faq.answer === 'string' ? (
-                  <p className="text-gray-600 leading-relaxed font-light">{faq.answer}</p>
-                ) : (
-                  <div className="text-lg leading-relaxed">
-                    {faq.answer}
-                  </div>
-                )}
-              </motion.div>
-            ))}
+        <div className="flex flex-col md:flex-row gap-12 max-w-7xl mx-auto">
+          {/* Left side - FAQ Accordion */}
+          <div className="md:w-2/3">
+            <div className="space-y-6">
+              {faqData.map((faq) => (
+                <div 
+                  key={faq.id}
+                  className="border-b border-gray-200"
+                >
+                  <button
+                    onClick={() => setOpenId(openId === faq.id ? null : faq.id)}
+                    className="w-full flex items-center justify-between py-6 text-left hover:text-gray-700"
+                  >
+                    <span className="text-xl font-medium pr-8 text-gray-800">{faq.question}</span>
+                    <Plus 
+                      className={`flex-shrink-0 w-7 h-7 transition-transform duration-200
+                        ${openId === faq.id ? 'rotate-45' : ''}`}
+                    />
+                  </button>
+                  
+                  {openId === faq.id && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="pb-8 text-gray-600 text-lg"
+                    >
+                      {faq.answer}
+                    </motion.div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Image Section */}
-          <div className="relative rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src="/How it works section.jpg"
-              alt="Real Estate Journey"
-              fill
-              className="object-cover"
-              priority
-            />
+          {/* Right side - How it Works Image */}
+          <div className="md:w-1/3 relative">
+            <div className="sticky top-8">
+              <div className="aspect-[3/4] relative">
+                <Image
+                  src="/How it Works section.jpg"
+                  alt="How PureProperty.ca Works"
+                  fill
+                  className="object-cover rounded-lg"
+                  priority
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
-} 
+};
+
+export default FAQSection; 

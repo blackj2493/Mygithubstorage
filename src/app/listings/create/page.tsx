@@ -666,6 +666,18 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
                 markStepComplete(6);
               }}
               onBack={() => setCurrentStep(5)}
+              propertyData={{
+                listingType,
+                selectedAddress: address,
+                exteriorFeatures: exteriorDetails,
+                interiorFeatures: interiorDetails,
+                neighborhoodData: {
+                  schools: [],
+                  transit: [],
+                  shopping: [],
+                  parks: []
+                }
+              }}
             />
           );
   

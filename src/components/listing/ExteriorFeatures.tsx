@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/AllCard';
 import { QuestionMarkCircleIcon, XMarkIcon, CloseIcon, QuestionMarkIcon, MapIcon } from '@heroicons/react/24/outline';
@@ -25,6 +25,7 @@ interface ExteriorFeaturesProps {
     ParkingFeatures: string[];
     ParkingTotal: number;
     ParkingSpaces: number;
+    CoveredSpaces: number;
   };
   onFeaturesChange: (features: any) => void;
   onContinue: () => void;
@@ -414,7 +415,8 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
     GarageType: '',
     ParkingFeatures: [],
     ParkingTotal: 0,
-    ParkingSpaces: 0
+    ParkingSpaces: 0,
+    CoveredSpaces: 0
   },
   onFeaturesChange,
   onContinue,
@@ -525,17 +527,21 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
   };
 
   const handlePropertyTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onFeaturesChange({
+    const updatedFeatures = {
       ...exteriorFeatures,
       PropertyType: e.target.value
-    });
+    };
+    console.log('Updating PropertyType:', updatedFeatures);
+    onFeaturesChange(updatedFeatures);
   };
 
   const handlePropertySubTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onFeaturesChange({
+    const updatedFeatures = {
       ...exteriorFeatures,
       PropertySubType: e.target.value
-    });
+    };
+    console.log('Updating PropertySubType:', updatedFeatures);
+    onFeaturesChange(updatedFeatures);
   };
 
   const handleExteriorMaterialChange = (material: string) => {
@@ -643,6 +649,11 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
     'Private',
     'Shared'
   ];
+
+  // Add this near the top of the component
+  useEffect(() => {
+    console.log('ExteriorFeatures current state:', exteriorFeatures);
+  }, [exteriorFeatures]);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -1092,8 +1103,8 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                     onFeaturesChange({
                       ...exteriorFeatures,
                       ParkingSpaces: driveSpaces,
-                      // Ensure ParkingTotal is at least equal to ParkingSpaces
-                      ParkingTotal: Math.max(driveSpaces, exteriorFeatures.ParkingTotal || 0)
+                      // Ensure ParkingTotal is at least equal to ParkingSpaces + CoveredSpaces
+                      ParkingTotal: Math.max(driveSpaces + (exteriorFeatures.CoveredSpaces || 0), exteriorFeatures.ParkingTotal || 0)
                     });
                   }}
                   className="w-full p-2 border rounded-md"
@@ -1103,21 +1114,23 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Garage Parking Spaces
+                  Garage Parking Spaces *
                 </label>
                 <input
                   type="number"
                   min="0"
-                  value={Math.max(0, (exteriorFeatures.ParkingTotal || 0) - (exteriorFeatures.ParkingSpaces || 0))}
+                  value={exteriorFeatures.CoveredSpaces || ''}
                   onChange={(e) => {
                     const garageSpaces = parseInt(e.target.value) || 0;
-                    const driveSpaces = exteriorFeatures.ParkingSpaces || 0;
                     onFeaturesChange({
                       ...exteriorFeatures,
-                      ParkingTotal: garageSpaces + driveSpaces
+                      CoveredSpaces: garageSpaces,
+                      // Update total to be at least the sum of drive and garage spaces
+                      ParkingTotal: Math.max(garageSpaces + (exteriorFeatures.ParkingSpaces || 0), exteriorFeatures.ParkingTotal || 0)
                     });
                   }}
-                  className="w-full p-2 border rounded-md bg-gray-50"
+                  className="w-full p-2 border rounded-md"
+                  required
                 />
               </div>
 
@@ -1131,11 +1144,15 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
                   value={exteriorFeatures.ParkingTotal || ''}
                   onChange={(e) => {
                     const total = parseInt(e.target.value) || 0;
+                    const currentDrive = exteriorFeatures.ParkingSpaces || 0;
+                    const currentGarage = exteriorFeatures.CoveredSpaces || 0;
+                    
+                    // Ensure total is not less than sum of drive and garage spaces
+                    const adjustedTotal = Math.max(total, currentDrive + currentGarage);
+                    
                     onFeaturesChange({
                       ...exteriorFeatures,
-                      ParkingTotal: total,
-                      // Ensure ParkingSpaces doesn't exceed total
-                      ParkingSpaces: Math.min(exteriorFeatures.ParkingSpaces || 0, total)
+                      ParkingTotal: adjustedTotal
                     });
                   }}
                   className="w-full p-2 border rounded-md"
@@ -1144,9 +1161,9 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
               </div>
             </div>
 
-            {/* Optional: Add helper text */}
+            {/* Helper text */}
             <div className="mt-2 text-sm text-gray-500">
-              Garage Parking Spaces are automatically calculated as the difference between Total and Drive spaces
+              Total Parking Spaces should be equal to or greater than the sum of Drive and Garage spaces
             </div>
           </div>
         </div>

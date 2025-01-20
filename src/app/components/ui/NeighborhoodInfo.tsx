@@ -10,15 +10,23 @@ import {
   ChevronRight 
 } from 'lucide-react';
 
-const NeighborhoodInfo = ({ location }) => {
+interface NeighborhoodInfoProps {
+  location: { lat: number; lng: number };
+  onDataFetched: (data: NeighborhoodData) => void;
+}
+
+const NeighborhoodInfo: React.FC<NeighborhoodInfoProps> = ({ location, onDataFetched }) => {
   const [neighborhoodData, setNeighborhoodData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
+    if (hasLoaded || !location?.lat || !location?.lng) return;
+    
     const fetchNeighborhoodData = async () => {
-      if (!location?.lat || !location?.lng) return;
-      
       try {
+        setLoading(true);
+        
         // Fetch schools using Overpass API
         const schoolsQuery = `
           [out:json][timeout:25];
@@ -55,12 +63,16 @@ const NeighborhoodInfo = ({ location }) => {
         const shops = amenitiesData.elements.filter(item => item.tags.shop).map(shop => shop.tags.name).filter(Boolean);
         const transit = amenitiesData.elements.filter(item => item.tags.public_transport).map(transit => transit.tags.name).filter(Boolean);
 
-        setNeighborhoodData({
+        const processedData = {
           schools: nearbySchools.slice(0, 5),
           parks: parks.slice(0, 5),
           shopping: shops.slice(0, 5),
           transit: transit.slice(0, 5)
-        });
+        };
+
+        setNeighborhoodData(processedData);
+        onDataFetched(processedData);
+        setHasLoaded(true);
       } catch (error) {
         console.error('Error fetching neighborhood data:', error);
       } finally {
@@ -68,10 +80,18 @@ const NeighborhoodInfo = ({ location }) => {
       }
     };
 
-    fetchNeighborhoodData();
-  }, [location]);
+    const timeoutId = setTimeout(() => {
+      fetchNeighborhoodData();
+    }, 1000);
 
-  if (loading) {
+    return () => clearTimeout(timeoutId);
+  }, [location, hasLoaded]);
+
+  useEffect(() => {
+    setHasLoaded(false);
+  }, [location.lat, location.lng]);
+
+  if (loading && !neighborhoodData) {
     return <div>Loading neighborhood information...</div>;
   }
 

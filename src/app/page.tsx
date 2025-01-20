@@ -3,14 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@auth0/nextjs-auth0/client';
-import { HomeIcon, Scale, Shield, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import CommissionCalculator from '@/components/CommissionCalculator';
-import { calculateDistance } from '@/utils/distance';
-import PropertyCard from '@/components/PropertyCard';
-import { Property } from '@/types/property';
 import Link from 'next/link';
 import Image from 'next/image';
 import FAQSection from '@/components/FAQSection';
+import CommissionCalculator from '@/components/CommissionCalculator';
+import PropertyCard from '@/components/PropertyCard';
+import { Property } from '@/types/property';
 
 export default function HomePage() {
   const router = useRouter();
@@ -19,11 +17,6 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [userPostalCode, setUserPostalCode] = useState<string | null>(null);
-  const [selectedUserType, setSelectedUserType] = useState<'seller' | 'buyer'>('seller');
-  const images = {
-    seller: { src: "/How it works-Sellers.svg", alt: "How it works for sellers" },
-    buyer: { src: "/How it works-Buyers.svg", alt: "How it works for buyers" }
-  };
 
   useEffect(() => {
     const getUserLocation = async () => {
@@ -79,9 +72,8 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Hero Section - added pt-20 to account for navbar height */}
+      {/* Hero Section */}
       <div className="relative min-h-[90vh]">
-        {/* Background Image */}
         <div 
           className="absolute inset-0 z-0"
           style={{
@@ -89,11 +81,10 @@ export default function HomePage() {
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            marginTop: '72px', // Add margin-top to push content below navbar
+            marginTop: '72px',
           }}
         />
         
-        {/* Content Overlay - added pt-20 to push content down */}
         <div className="relative z-10 w-full pl-8 sm:pl-16 lg:pl-24 flex items-center min-h-[90vh] pt-20">
           <div className="max-w-xl">
             <h1 className="text-5xl md:text-6xl font-bold text-black mb-6 leading-tight">
@@ -120,7 +111,7 @@ export default function HomePage() {
       {/* Nearby Listings Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">
+          <h2 className="text-5xl font-bold text-center mb-16">
             Properties Near You
           </h2>
           {locationError && (
@@ -150,80 +141,11 @@ export default function HomePage() {
               )}
             </>
           )}
-          {!loading && nearbyListings.length === 0 && !locationError && (
-            <p className="text-center text-gray-600">
-              No properties found nearby
-            </p>
-          )}
         </div>
       </section>
 
       {/* FAQ Section */}
       <FAQSection />
-
-      {/* How It Works Section */}
-      <div className="relative min-h-[90vh]">
-        <h2 className="text-3xl font-bold text-center py-8">How It Works</h2>
-        
-        <div className="relative">
-          {/* User Type Selection - Buttons overlay on the image */}
-          <div className="absolute left-12 top-1/3 z-20 flex flex-col gap-5">
-            <button
-              onClick={() => setSelectedUserType('seller')}
-              className={`px-8 py-5 rounded-xl font-semibold text-xl transition-all w-68 text-center shadow-lg ${
-                selectedUserType === 'seller'
-                  ? 'bg-blue-600 text-white scale-105 transform'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              I want to sell my house
-            </button>
-            <button
-              onClick={() => setSelectedUserType('buyer')}
-              className={`px-8 py-5 rounded-xl font-semibold text-xl transition-all w-68 text-center shadow-lg ${
-                selectedUserType === 'buyer'
-                  ? 'bg-blue-600 text-white scale-105 transform'
-                  : 'bg-white text-gray-700 hover:bg-gray-50'
-              }`}
-            >
-              I want to buy a house
-            </button>
-          </div>
-
-          {/* Image Display - Full width without padding */}
-          <div className="relative h-[calc(90vh-8rem)] w-full">
-            <div className="transition-opacity duration-500">
-              <Image
-                src={images[selectedUserType].src}
-                alt={images[selectedUserType].alt}
-                fill
-                className="object-contain"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Service Marketplace Section */}
-      <div className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Professional Services</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { title: "Photography", icon: "📸" },
-              { title: "Legal", icon: "⚖️" },
-              { title: "Home Inspection", icon: "🏠" },
-              { title: "Mortgage", icon: "💰" }
-            ].map((service, i) => (
-              <div key={i} className="bg-white p-6 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow">
-                <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="font-semibold">{service.title}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
 
       {/* Commission Calculator Section */}
       <section className="py-16 bg-gradient-to-b from-white to-gray-50">

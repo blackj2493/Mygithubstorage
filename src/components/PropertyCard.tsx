@@ -27,11 +27,12 @@ const getImageUrl = (imageUrl: string) => {
   if (!imageUrl) return '/placeholder-property.jpg';
   return imageUrl.startsWith('https://') ? imageUrl : `https://${imageUrl}`;
 };
-const getRelativeDate = (closeDate: string) => {
-  const days = Math.floor((new Date().getTime() - new Date(closeDate).getTime()) / (1000 * 3600 * 24));
-  if (days === 0) return 'Today';
-  if (days === 1) return '1 day ago';
-  return `${days} days ago`;
+const formatDaysAgo = (purchaseDate: string): string => {
+  const today = new Date();
+  const saleDate = new Date(purchaseDate);
+  const timeDiff = today.getTime() - saleDate.getTime();
+  const daysDiff = Math.abs(Math.round(timeDiff / (1000 * 60 * 60 * 24)));
+  return `${daysDiff} days ago`;
 };
 export default function PropertyCard({ property }: PropertyCardProps) {
   const imageUrl = property.images?.[0]?.MediaURL || '/placeholder-property.jpg';
@@ -82,8 +83,8 @@ export default function PropertyCard({ property }: PropertyCardProps) {
                     CA${property.ClosePrice?.toLocaleString()}
                   </h3>
                   {property.CloseDate && (
-                    <span className="text-gray-500 text-sm">
-                      {getRelativeDate(property.CloseDate)}
+                    <span className="text-gray-600">
+                      {formatDaysAgo(property.CloseDate)}
                     </span>
                   )}
                 </div>

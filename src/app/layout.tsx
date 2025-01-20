@@ -82,7 +82,7 @@ export default function RootLayout({
                       <li className="text-gray-300">
                         <span className="block">Email:</span>
                         <a href="mailto:info@pureproperty.ca" className="hover:text-white">
-                          info@pureproperty.ca
+                          support@pureproperty.ca
                         </a>
                       </li>
                       <li className="text-gray-300">
