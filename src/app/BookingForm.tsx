@@ -57,17 +57,18 @@ const BookingForm: React.FC = () => {
               id="time"
               {...register('time', { required: true })}
               className="border rounded p-2 w-full"
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Request Viewing
-            </button>
-          </form>
-        }
-      </div>
-    );
-  };
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Request Viewing
+          </button>
+        </form>
+      )}
+    </div>
+  );
+};
 
-  export default BookingForm;
+export default BookingForm;

@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     });
 
     // Emit socket event
-    // @ts-ignore - request has socket property in runtime
+    // @ts-expect-error Server runtime has additional socket property
     const io = initializeSocket(request.socket.server);
     io.to(message.recipient.auth0Id).emit('newMessage', {
       message,

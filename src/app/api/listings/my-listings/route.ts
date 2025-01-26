@@ -1,9 +1,19 @@
-import { NextResponse } from 'next/server';
 import { getSession } from '@auth0/nextjs-auth0';
 import { prisma } from '@/lib/db';
 import axios from 'axios';
 
-export async function GET(request: Request) {
+// Define interface for MLS listing data
+interface MLSListing {
+  ListingId?: string;
+  id?: string;
+  StreetAddress?: string;
+  ListPrice?: number;
+  BedroomsTotal?: number;
+  BathroomsTotal?: number;
+  LivingArea?: number;
+}
+
+export async function GET() {  // Removed unused 'request' parameter
   try {
     const session = await getSession();
     const user = session?.user;
@@ -44,7 +54,7 @@ export async function GET(request: Request) {
         });
 
         // Transform and add MLS listings to the results
-        const mlsListings = mlsResponse.data.value.map((listing: any) => ({
+        const mlsListings = mlsResponse.data.value.map((listing: MLSListing) => ({
           id: listing.ListingId || listing.id,
           address: listing.StreetAddress || '',
           price: listing.ListPrice || 0,

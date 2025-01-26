@@ -5,7 +5,48 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-function createPrompt(propertyData: any) {
+interface Address {
+  streetNumber: string;
+  streetName: string;
+  city: string;
+  province: string;
+  community?: string;
+}
+
+interface PropertyData {
+  listingType: 'SALE' | 'RENTAL';
+  selectedAddress?: Address;
+  exteriorFeatures?: {
+    PropertyType?: string;
+    PropertySubType?: string;
+    ParkingTotal?: number;
+    ParkingSpaces?: number;
+    CoveredSpaces?: number;
+    ExteriorFeatures?: string[];
+  };
+  interiorFeatures?: {
+    rooms?: {
+      total?: number;
+      BedroomsAboveGrade?: number;
+      BedroomsBelowGrade?: number;
+      bathrooms?: number;
+    };
+    basement?: {
+      type?: string;
+    };
+    laundry?: {
+      features?: string[];
+    };
+  };
+  neighborhoodData?: {
+    schools?: string[];
+    transit?: string[];
+    shopping?: string[];
+    parks?: string[];
+  };
+}
+
+function createPrompt(propertyData: PropertyData) {
   const sections: string[] = [];
 
   // Basic Property Information
