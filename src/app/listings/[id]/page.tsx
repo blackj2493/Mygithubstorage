@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import MediaGallery from '@/components/MediaGallery';
 import ListingHistory from '@/components/ListingHistory';
 import ListingContactDialog from '@/components/ListingContactDialog';
+import MortgageCalculator from '@/app/components/MortgageCalculator';
 
 interface Room {
   RoomKey?: string;
@@ -251,6 +252,8 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
           </div>
         </div>
       </div>
+
+      <MortgageCalculator propertyPrice={property.ListPrice} />
     </div>
   );
 }
