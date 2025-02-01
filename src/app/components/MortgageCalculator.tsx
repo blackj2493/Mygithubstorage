@@ -9,16 +9,20 @@ import { Label } from '@/components/ui/label';
 
 interface MortgageCalculatorProps {
   propertyPrice?: number;
+  annualPropertyTax?: number;
 }
 
-export default function MortgageCalculator({ propertyPrice = 0 }: MortgageCalculatorProps) {
+export default function MortgageCalculator({ 
+  propertyPrice = 0, 
+  annualPropertyTax = 0 
+}: MortgageCalculatorProps) {
   const [inputs, setInputs] = useState({
-    homePrice: propertyPrice,
+    homePrice: Math.round(propertyPrice),
     downPaymentPercent: 20,
-    downPaymentAmount: propertyPrice * 0.2,
+    downPaymentAmount: Math.round(propertyPrice * 0.2),
     term: 25,
     rate: 6.0,
-    propertyTax: 250,
+    propertyTax: Math.round(annualPropertyTax ? annualPropertyTax / 12 : 0),
     maintenance: 0,
     rentalIncome: 0,
   });
@@ -31,15 +35,14 @@ export default function MortgageCalculator({ propertyPrice = 0 }: MortgageCalcul
   });
 
   useEffect(() => {
-    // Calculate mortgage payment using the formula: P * (r(1+r)^n)/((1+r)^n-1)
-    const p = inputs.homePrice - inputs.downPaymentAmount;
+    const p = Math.round(inputs.homePrice - inputs.downPaymentAmount);
     const r = inputs.rate / 100 / 12;
     const n = inputs.term * 12;
     
-    const mortgagePayment = p * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    const monthlyPayment = mortgagePayment + inputs.propertyTax + inputs.maintenance;
-    const cashFlow = inputs.rentalIncome - monthlyPayment;
-    const breakEvenPercent = (inputs.downPaymentAmount / inputs.homePrice) * 100;
+    const mortgagePayment = Math.round(p * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1));
+    const monthlyPayment = Math.round(mortgagePayment + inputs.propertyTax + inputs.maintenance);
+    const cashFlow = Math.round(inputs.rentalIncome - monthlyPayment);
+    const breakEvenPercent = Math.round((inputs.downPaymentAmount / inputs.homePrice) * 100);
 
     setCalculations({
       mortgagePayment,
@@ -55,6 +58,24 @@ export default function MortgageCalculator({ propertyPrice = 0 }: MortgageCalcul
     { value: 25, label: '25 years' },
     { value: 30, label: '30 years' },
   ];
+
+  const handleDownPaymentAmountChange = (value: number) => {
+    const roundedValue = Math.round(value);
+    setInputs(prev => ({
+      ...prev,
+      downPaymentAmount: roundedValue,
+      downPaymentPercent: Math.round((roundedValue / prev.homePrice) * 100)
+    }));
+  };
+
+  const handleDownPaymentPercentChange = (value: number) => {
+    const roundedPercent = Math.round(value);
+    setInputs(prev => ({
+      ...prev,
+      downPaymentPercent: roundedPercent,
+      downPaymentAmount: Math.round(prev.homePrice * (roundedPercent / 100))
+    }));
+  };
 
   return (
     <Card className="mt-8">
@@ -85,23 +106,18 @@ export default function MortgageCalculator({ propertyPrice = 0 }: MortgageCalcul
                 <input
                   type="number"
                   className="flex-1 px-3 py-2 border rounded-md"
-                  value={inputs.downPaymentAmount}
-                  onChange={(e) => setInputs(prev => ({
-                    ...prev,
-                    downPaymentAmount: Number(e.target.value),
-                    downPaymentPercent: (Number(e.target.value) / prev.homePrice) * 100
-                  }))}
+                  value={Math.round(inputs.downPaymentAmount)}
+                  onChange={(e) => handleDownPaymentAmountChange(Number(e.target.value))}
                 />
-                <input
-                  type="number"
-                  className="w-32 px-3 py-2 border rounded-md"
-                  value={inputs.downPaymentPercent}
-                  onChange={(e) => setInputs(prev => ({
-                    ...prev,
-                    downPaymentPercent: Number(e.target.value),
-                    downPaymentAmount: prev.homePrice * (Number(e.target.value) / 100)
-                  }))}
-                />
+                <div className="relative w-32">
+                  <input
+                    type="number"
+                    className="w-full px-3 py-2 border rounded-md pr-8"
+                    value={Math.round(inputs.downPaymentPercent)}
+                    onChange={(e) => handleDownPaymentPercentChange(Number(e.target.value))}
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                </div>
               </div>
             </div>
 
@@ -139,16 +155,16 @@ export default function MortgageCalculator({ propertyPrice = 0 }: MortgageCalcul
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span>Mortgage Payment:</span>
-                  <span className="font-medium">${calculations.mortgagePayment.toFixed(0)}</span>
+                  <span className="font-medium">${Math.round(calculations.mortgagePayment)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Total Monthly Payment:</span>
-                  <span className="font-medium">${calculations.monthlyPayment.toFixed(0)}</span>
+                  <span className="font-medium">${Math.round(calculations.monthlyPayment)}</span>
                 </div>
                 <div className="flex justify-between text-lg font-semibold mt-2">
                   <span>Monthly Cash Flow:</span>
                   <span className={calculations.cashFlow >= 0 ? 'text-green-600' : 'text-red-600'}>
-                    ${calculations.cashFlow.toFixed(0)}
+                    ${Math.round(calculations.cashFlow)}
                   </span>
                 </div>
               </div>

@@ -10,6 +10,7 @@ import MediaGallery from '@/components/MediaGallery';
 import ListingHistory from '@/components/ListingHistory';
 import ListingContactDialog from '@/components/ListingContactDialog';
 import MortgageCalculator from '@/app/components/MortgageCalculator';
+import Schools from '@/components/Schools';
 
 interface Room {
   RoomKey?: string;
@@ -48,6 +49,10 @@ interface Property {
     event: string;
     listingId: string;
   }[];
+  TaxAnnualAmount?: number;
+  Latitude?: number;
+  Longitude?: number;
+  PostalCode?: string;
 }
 
 export default function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
@@ -85,6 +90,7 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
   if (!property) return <div>Property not found</div>;
 
   console.log('Property Media Data:', property.media);
+  console.log('Property postal code:', property?.PostalCode);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -149,7 +155,7 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
               </div>
               <div>
                 <p className="text-gray-600">Annual Property Taxes</p>
-                <p>${property.AnnualTaxes?.toLocaleString()}</p>
+                <p>{property.TaxAnnualAmount ? `$${property.TaxAnnualAmount.toLocaleString()}` : 'Not Available'}</p>
               </div>
               <div>
                 <p className="text-gray-600">Total Parking Spaces</p>
@@ -253,7 +259,18 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
         </div>
       </div>
 
-      <MortgageCalculator propertyPrice={property.ListPrice} />
+      <MortgageCalculator 
+        propertyPrice={property.ListPrice} 
+        annualPropertyTax={property.TaxAnnualAmount}
+      />
+
+      <div className="mt-6">
+        {property?.PostalCode && (
+          <Schools 
+            postalCode={property.PostalCode.replace(/\s+/g, '')} 
+          />
+        )}
+      </div>
     </div>
   );
 }
