@@ -11,6 +11,7 @@ import ListingHistory from '@/components/ListingHistory';
 import ListingContactDialog from '@/components/ListingContactDialog';
 import MortgageCalculator from '@/app/components/MortgageCalculator';
 import Schools from '@/components/Schools';
+import ComparableProperties from '@/components/ComparableProperties';
 
 interface Room {
   RoomKey?: string;
@@ -80,6 +81,8 @@ interface Property {
   Heating?: string;
   ParkingFeatures?: string[];
   PropertyFeatures?: string[];
+  CityRegion?: string;
+  PropertySubType?: string;
 }
 
 function calculateDaysOnMarket(originalEntryTimestamp: string | undefined): number {
@@ -371,6 +374,12 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
           </div>
         </div>
       </div>
+
+      <ComparableProperties
+        CityRegion={property.CityRegion || ''}
+        PropertySubType={property.PropertySubType || ''}
+        BedroomsAboveGrade={property.BedroomsAboveGrade}
+      />
 
       <MortgageCalculator 
         propertyPrice={property.ListPrice} 

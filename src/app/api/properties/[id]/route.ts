@@ -12,7 +12,7 @@ export async function GET(
     const baseUrl = 'https://query.ampre.ca/odata';
 
     // Fetch property details
-    const propertyUrl = `${baseUrl}/Property?$filter=ListingKey eq '${params.id}'`;
+    const propertyUrl = `${baseUrl}/Property?$filter=ListingKey eq '${params.id}'&$select=ListingKey,ListPrice,CityRegion,PropertySubType,UnparsedAddress,BedroomsTotal,BathroomsTotalInteger,ListOfficeName,PublicRemarks,TransactionType,TaxAnnualAmount,BedroomsAboveGrade,BedroomsBelowGrade,CoveredSpaces,OriginalEntryTimestamp`;
     
     // Fetch rooms data using the correct endpoint
     const roomsUrl = `${baseUrl}/PropertyRooms?$filter=ListingKey eq '${params.id}'`;
