@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 export default function CommissionCalculator() {
-  const [price, setPrice] = useState(300000);
+  const [price, setPrice] = useState(1050000);
   const maxPrice = 2000000;
 
   const calculateSavings = (price: number) => {

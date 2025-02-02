@@ -69,21 +69,24 @@ export default function PropertyCard({ property }: PropertyCardProps) {
   return (
     <Link href={`/listings/${property.ListingKey}`}>
       <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
-        <div className="relative h-48 w-full">
+        <div className="relative w-full aspect-[4/3]">
           <Image
             src={getImageUrl(property.images?.[0]?.MediaURL || '')}
             alt={`Property at ${property.UnparsedAddress || 'Unknown location'}`}
             fill
+            className="transition-transform duration-300 hover:scale-105"
             style={{ objectFit: 'cover' }}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            priority={false}
+            quality={75}
           />
-          <div className="absolute top-2 left-2 px-3 py-1 rounded-full bg-white/90">
+          <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/90 shadow-sm">
             <span className={`font-semibold ${property.MlsStatus === 'Sold' ? 'text-red-600' : 'text-blue-600'}`}>
               {property.MlsStatus}
             </span>
           </div>
           <button 
-            className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white"
+            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 shadow-sm hover:bg-white"
             onClick={(e) => {
               e.preventDefault();
             }}
@@ -91,37 +94,37 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             <FaHeart className="text-gray-400 hover:text-red-500" />
           </button>
         </div>
-        <div className="p-4">
-          <div className="flex flex-col mb-2">
+        <div className="p-5">
+          <div className="flex flex-col mb-3">
             {isSoldOrLeased ? (
               <>
                 <div className="text-gray-500 line-through text-sm">
                   CA${property.ListPrice.toLocaleString()}
                 </div>
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-blue-600">
+                  <h3 className="text-2xl font-bold text-blue-600">
                     CA${property.ClosePrice?.toLocaleString()}
                   </h3>
                   {property.CloseDate && (
-                    <span className="text-gray-600">
+                    <span className="text-gray-600 text-sm">
                       {formatDaysAgo(property.CloseDate)}
                     </span>
                   )}
                 </div>
               </>
             ) : (
-              <h3 className="text-xl font-bold text-blue-600">
+              <h3 className="text-2xl font-bold text-blue-600">
                 CA${property.ListPrice.toLocaleString()}
               </h3>
             )}
           </div>
           
-          <p className="text-gray-600 mb-2">{property.UnparsedAddress}</p>
+          <p className="text-gray-600 mb-3 font-medium">{property.UnparsedAddress}</p>
           
-          <div className="flex items-center gap-4 text-gray-600">
+          <div className="flex items-center gap-6 text-gray-600 mb-3">
             {(property.BedroomsAboveGrade != null || property.BedroomsBelowGrade != null) && (
-              <div className="flex items-center gap-1">
-                <FaBed />
+              <div className="flex items-center gap-2">
+                <FaBed className="text-gray-400" />
                 <span>
                   {property.BedroomsAboveGrade || 0}
                   {property.BedroomsBelowGrade ? ` + ${property.BedroomsBelowGrade}` : ''}
@@ -130,18 +133,18 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               </div>
             )}
             {property.BathroomsTotalInteger != null && (
-              <div className="flex items-center gap-1">
-                <FaBath />
+              <div className="flex items-center gap-2">
+                <FaBath className="text-gray-400" />
                 <span>{property.BathroomsTotalInteger} bath</span>
               </div>
             )}
           </div>
 
           {property.ListOfficeName && (
-            <div className="text-sm text-gray-500 space-y-1">
-              <div>{property.ListOfficeName}</div>
+            <div className="text-sm text-gray-500 space-y-1 border-t pt-3">
+              <div className="font-medium">{property.ListOfficeName}</div>
               {property.OriginalEntryTimestamp && (
-                <div>{getDaysAgo(property.OriginalEntryTimestamp)}</div>
+                <div className="text-gray-400">{getDaysAgo(property.OriginalEntryTimestamp)}</div>
               )}
             </div>
           )}
