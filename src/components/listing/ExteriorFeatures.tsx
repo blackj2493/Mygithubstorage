@@ -487,6 +487,8 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
     return (
       exteriorFeatures.PropertyType && 
       exteriorFeatures.PropertySubType &&
+      exteriorFeatures.CityRegion &&
+      typeof exteriorFeatures.CoveredSpaces === 'number' &&
       typeof exteriorFeatures.LinkYN === 'boolean' &&
       typeof exteriorFeatures.ParcelOfTiedLand === 'boolean' &&
       exteriorFeatures.ConstructionMaterials.length > 0 &&
@@ -650,9 +652,30 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
     'Shared'
   ];
 
-  // Add this near the top of the component
+  // Add handlers for CityRegion and CoveredSpaces
+  const handleCityRegionChange = (value: string) => {
+    console.log('Setting CityRegion to:', value);
+    const updatedFeatures = {
+      ...exteriorFeatures,
+      CityRegion: value
+    };
+    console.log('Updated features:', updatedFeatures);
+    onFeaturesChange(updatedFeatures);
+  };
+
+  const handleCoveredSpacesChange = (value: number) => {
+    console.log('Setting CoveredSpaces to:', value);
+    const updatedFeatures = {
+      ...exteriorFeatures,
+      CoveredSpaces: value
+    };
+    console.log('Updated features:', updatedFeatures);
+    onFeaturesChange(updatedFeatures);
+  };
+
+  // Add useEffect to debug the values
   useEffect(() => {
-    console.log('ExteriorFeatures current state:', exteriorFeatures);
+    console.log('Current exteriorFeatures state:', exteriorFeatures);
   }, [exteriorFeatures]);
 
   return (
@@ -1167,6 +1190,32 @@ const ExteriorFeatures: React.FC<ExteriorFeaturesProps> = ({
             </div>
           </div>
         </div>
+
+      {/* Add or modify the CityRegion input */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          City Region
+        </label>
+        <input
+          type="text"
+          value={exteriorFeatures.CityRegion || ''}
+          onChange={(e) => handleCityRegionChange(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        />
+      </div>
+
+      {/* Add or modify the CoveredSpaces input */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Covered Parking Spaces
+        </label>
+        <input
+          type="number"
+          value={exteriorFeatures.CoveredSpaces || 0}
+          onChange={(e) => handleCoveredSpacesChange(Number(e.target.value))}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+        />
+      </div>
 
       {/* Navigation */}
       <div className="flex justify-between mt-8">

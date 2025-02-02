@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLoadScript, GoogleMap, Autocomplete, MarkerF, Marker } from '@react-google-maps/api';
 import ImageUpload from '@/app/components/ui/ImageUpload';
@@ -139,7 +139,7 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
     });
   
     // Exterior Details State
-    const [exteriorDetails, setExteriorDetails] = useState({
+    const [exteriorFeatures, setExteriorFeatures] = useState({
       PropertyType: '',
       PropertySubType: '',
       LinkYN: false,
@@ -182,7 +182,8 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
       GarageType: '',
       ParkingFeatures: [],
       ParkingTotal: 0,
-      ParkingSpaces: 0
+      ParkingSpaces: 0,
+      CoveredSpaces: 0
     });
   
     // Property Description State
@@ -329,20 +330,20 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
         location: selectedLocation,
   
         // Property Details
-        propertyType: exteriorDetails.propertyType,
+        propertyType: exteriorFeatures.PropertyType,
         price: listingType === 'SALE' ? parseFloat(saleDetails.listPrice) : parseFloat(leaseDetails.leasePrice),
         bedrooms: parseInt(interiorDetails.numberOfBedrooms),
         bathrooms: interiorDetails.washrooms.reduce((total, washroom) => 
           total + (parseInt(washroom.number) || 0), 0),
-        squareFeet: parseFloat(exteriorDetails.approximateSquareFootage || '0'),
+        squareFeet: parseFloat(exteriorFeatures.approximateSquareFootage || '0'),
         description: propertyDescription.remarksForClients,
         features: [
-          ...exteriorDetails.exteriorFeatures,
+          ...exteriorFeatures.ExteriorFeatures,
           ...interiorDetails.interiorFeatures
         ],
   
         // Additional Details
-        exteriorDetails,
+        exteriorDetails: exteriorFeatures,
         interiorDetails,
         
         // Sale/Lease Specific Details
@@ -405,8 +406,8 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
         addressProvince: address?.province || '',
         addressPostalCode: address?.postalCode || '',
         addressUnit: address?.unitNumber || '',
-        propertyType: exteriorDetails.PropertyType,
-        propertyStyle: exteriorDetails.style || null,
+        propertyType: exteriorFeatures.PropertyType,
+        propertyStyle: exteriorFeatures.style || null,
         numberOfBedrooms: Number(interiorDetails.numberOfBedrooms),
         numberOfBathrooms: interiorDetails.washrooms.reduce(
           (total, washroom) => total + (Number(washroom.number) || 0), 
@@ -442,26 +443,28 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
   };
 
   const handleExteriorFeaturesChange = (features: any) => {
+    console.log('Create Page - Receiving exterior features update:', features);
+    
+    // Preserve existing values and merge with new ones
     const updatedFeatures = {
-      ...exteriorDetails,
-      ...features,
-      Area: features.Area || exteriorDetails.Area,
-      City: features.City || exteriorDetails.City,
-      CityRegion: features.CityRegion || exteriorDetails.CityRegion,
-      PropertyType: features.PropertyType || exteriorDetails.PropertyType,
-      PropertySubType: features.PropertySubType || exteriorDetails.PropertySubType,
-      LinkYN: features.LinkYN !== undefined ? features.LinkYN : exteriorDetails.LinkYN,
-      ParcelOfTiedLand: features.ParcelOfTiedLand !== undefined ? features.ParcelOfTiedLand : exteriorDetails.ParcelOfTiedLand,
-      ConstructionMaterials: features.ConstructionMaterials || exteriorDetails.ConstructionMaterials || [],
-      ExteriorFeatures: features.ExteriorFeatures || exteriorDetails.ExteriorFeatures || [],
+      ...exteriorFeatures, // Keep all existing values
+      ...features, // Merge new values
+      // Explicitly handle specific fields we care about
+      CityRegion: features.CityRegion !== undefined 
+        ? features.CityRegion 
+        : exteriorFeatures.CityRegion,
+      CoveredSpaces: features.CoveredSpaces !== undefined 
+        ? features.CoveredSpaces 
+        : exteriorFeatures.CoveredSpaces,
+      // Preserve nested objects
       Utilities: {
-        ...exteriorDetails.Utilities,
+        ...exteriorFeatures.Utilities,
         ...(features.Utilities || {})
       }
     };
 
-    console.log('Updating exterior details:', updatedFeatures);
-    setExteriorDetails(updatedFeatures);
+    console.log('Create Page - Updated exterior features:', updatedFeatures);
+    setExteriorFeatures(updatedFeatures);
   };
 
   // Loading States Check
@@ -597,9 +600,10 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
           case 3:
             return (
               <ExteriorFeatures
-                exteriorFeatures={exteriorDetails}
+                exteriorFeatures={exteriorFeatures}
                 onFeaturesChange={handleExteriorFeaturesChange}
                 onContinue={() => {
+                  console.log('Exterior features before moving to next step:', exteriorFeatures);
                   setCurrentStep(4);
                   markStepComplete(3);
                 }}
@@ -636,7 +640,9 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
           );
   
         case 5:
-          console.log('Case 5 exterior details:', exteriorDetails);
+          console.log('Case 5 - exteriorFeatures state:', exteriorFeatures);
+          console.log('Case 5 - interiorDetails state:', interiorDetails);
+          
           return (
             <PricingDetails
               listingType={listingType}
@@ -644,14 +650,14 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
               setLeaseDetails={setLeaseDetails}
               saleDetails={saleDetails}
               setSaleDetails={setSaleDetails}
-              exteriorDetails={exteriorDetails}
-              interiorDetails={interiorDetails}
-              address={address}
               onContinue={() => {
                 setCurrentStep(6);
                 markStepComplete(5);
               }}
               onBack={() => setCurrentStep(4)}
+              exteriorFeatures={exteriorFeatures}
+              interiorDetails={interiorDetails}
+              address={address}
             />
           );
   
@@ -669,7 +675,7 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
               propertyData={{
                 listingType,
                 selectedAddress: address,
-                exteriorFeatures: exteriorDetails,
+                exteriorFeatures: exteriorFeatures,
                 interiorFeatures: interiorDetails,
                 neighborhoodData: {
                   schools: [],
@@ -752,7 +758,7 @@ type PropertyType = 'Att/Row/Townhouse' | 'Cottage' | 'Detached' | 'Duplex' | 'F
             <ReviewListing
               listingType={listingType}
               address={address}
-              exteriorDetails={exteriorDetails}
+              exteriorDetails={exteriorFeatures}
               interiorDetails={interiorDetails}
               propertyDescription={propertyDescription}
               selectedImages={selectedImages}

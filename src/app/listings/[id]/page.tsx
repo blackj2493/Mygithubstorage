@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaBed, FaBath } from 'react-icons/fa';
+import { FaBed, FaBath, FaCar } from 'react-icons/fa';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import MediaGallery from '@/components/MediaGallery';
 import ListingHistory from '@/components/ListingHistory';
@@ -53,6 +53,44 @@ interface Property {
   Latitude?: number;
   Longitude?: number;
   PostalCode?: string;
+  ArchitecturalStyle?: string;
+  Basement?: string[];
+  DirectionFaces?: string;
+  OriginalEntryTimestamp?: string;
+  BedroomsAboveGrade?: number;
+  BedroomsBelowGrade?: number;
+  CoveredSpaces?: number;
+  KitchensTotal?: number;
+  KitchensAboveGrade?: number;
+  KitchensBelowGrade?: number;
+  RoomsAboveGrade?: number;
+  RoomsBelowGrade?: number;
+  InteriorFeatures?: string[];
+  ConstructionMaterials?: string[];
+  FoundationDetails?: string[];
+  Roof?: string[];
+  LotWidth?: number;
+  LotDepth?: number;
+  LotSizeUnits?: string;
+  LotSizeRangeAcres?: string;
+  HeatType?: string;
+  HeatSource?: string;
+  Sewer?: string[];
+  Cooling?: string[];
+  Heating?: string;
+  ParkingFeatures?: string[];
+  PropertyFeatures?: string[];
+}
+
+function calculateDaysOnMarket(originalEntryTimestamp: string | undefined): number {
+  if (!originalEntryTimestamp) return 0;
+  
+  const listingDate = new Date(originalEntryTimestamp);
+  const today = new Date();
+  const diffTime = Math.abs(today.getTime() - listingDate.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) - 1;
+  
+  return diffDays;
 }
 
 export default function PropertyPage({ params }: { params: Promise<{ id: string }> }) {
@@ -113,14 +151,21 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
         <div className="text-2xl font-bold text-blue-600 mt-2">
           ${property.ListPrice?.toLocaleString()}
         </div>
-        <div className="flex gap-4 mt-4">
+        <div className="flex gap-4 mt-4 text-lg">
           <div className="flex items-center gap-2">
-            <FaBed />
-            <span>{property.BedroomsTotal} beds</span>
+            <FaBed className="text-xl" />
+            <span>{property.BedroomsAboveGrade || 0}+{property.BedroomsBelowGrade || 0} beds</span>
           </div>
           <div className="flex items-center gap-2">
-            <FaBath />
+            <FaBath className="text-xl" />
             <span>{property.BathroomsTotalInteger} baths</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <FaCar className="text-xl" />
+            <span>{property.CoveredSpaces || 0} Garage</span>
+          </div>
+          <div className="text-gray-600 font-bold">
+            Listed {calculateDaysOnMarket(property.OriginalEntryTimestamp)} days ago
           </div>
         </div>
       </div>
@@ -150,6 +195,14 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
                 <p>Semi-detached</p>
               </div>
               <div>
+                <p className="text-gray-600">Building Style</p>
+                <p>{property.ArchitecturalStyle || 'Not Available'}</p>
+              </div>
+              <div>
+                <p className="text-gray-600">Days on Market</p>
+                <p>{calculateDaysOnMarket(property.OriginalEntryTimestamp)} days</p>
+              </div>
+              <div>
                 <p className="text-gray-600">Land Size</p>
                 <p>30 x 100 FT</p>
               </div>
@@ -160,6 +213,14 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
               <div>
                 <p className="text-gray-600">Total Parking Spaces</p>
                 <p>{property.ParkingTotal}</p>
+              </div>
+              <div>
+                <p className="text-gray-600">Basement</p>
+                <p>{property.Basement ? property.Basement.join(', ') : 'Not Available'}</p>
+              </div>
+              <div>
+                <p className="text-gray-600">Facing</p>
+                <p>{property.DirectionFaces || 'Not Available'}</p>
               </div>
             </div>
           </section>
@@ -173,81 +234,133 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
             />
           )}
 
-          {/* Building Features */}
+          {/* Details Card */}
           <section className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Building Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <p className="text-gray-600">Foundation Type</p>
-                <p>Brick, Concrete</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Architecture Style</p>
-                <p>Bungalow</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Heating Type</p>
-                <p>Forced air (Natural gas)</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Cooling</p>
-                <p>Central air conditioning</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Interior Features */}
-          <section className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Interior Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <p className="text-gray-600">Appliances Included</p>
-                <p>Blinds, Dryer, Refrigerator, Stove, Washer, Window Coverings</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Basement Features</p>
-                <p>Separate entrance</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Room Dimensions */}
-          <section className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Room Dimensions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {property.rooms?.map((room, index) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                  <h3 className="font-semibold">{room.RoomType}</h3>
-                  <p className="text-gray-600">
-                    {room.RoomDimensions || 'Measurements not available'}
-                  </p>
+            <h2 className="text-2xl font-bold mb-4">Details</h2>
+            
+            {/* Interior */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Interior Features</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <p className="text-gray-600">Kitchens</p>
+                  <p>{property.KitchensTotal} ({property.KitchensAboveGrade} above, {property.KitchensBelowGrade} below)</p>
                 </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Utilities */}
-          <section className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Utilities</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <p className="text-gray-600">Utility Sewer</p>
-                <p>Sanitary sewer</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Water</p>
-                <p>Municipal water</p>
+                <div>
+                  <p className="text-gray-600">Rooms</p>
+                  <p>{property.RoomsAboveGrade} above, {property.RoomsBelowGrade} below</p>
+                </div>
+                {property.InteriorFeatures && (
+                  <div>
+                    <p className="text-gray-600">Features</p>
+                    <p>{property.InteriorFeatures.join(', ')}</p>
+                  </div>
+                )}
               </div>
             </div>
-          </section>
 
-          {/* Neighbourhood Features */}
-          <section className="mt-8 bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-2xl font-bold mb-4">Neighbourhood Features</h2>
-            <div>
-              <p className="text-gray-600">Amenities Nearby</p>
-              <p>Hospital, Park, Schools</p>
+            {/* Construction */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Construction & Structure</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {property.ConstructionMaterials && (
+                  <div>
+                    <p className="text-gray-600">Materials</p>
+                    <p>{property.ConstructionMaterials.join(', ')}</p>
+                  </div>
+                )}
+                {property.FoundationDetails && (
+                  <div>
+                    <p className="text-gray-600">Foundation</p>
+                    <p>{property.FoundationDetails.join(', ')}</p>
+                  </div>
+                )}
+                {property.Roof && (
+                  <div>
+                    <p className="text-gray-600">Roof</p>
+                    <p>{property.Roof.join(', ')}</p>
+                  </div>
+                )}
+              </div>
             </div>
+
+            {/* Lot Details */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Lot Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div>
+                  <p className="text-gray-600">Lot Dimensions</p>
+                  <p>{property.LotWidth} x {property.LotDepth} {property.LotSizeUnits}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Lot Size Range</p>
+                  <p>{property.LotSizeRangeAcres}</p>
+                </div>
+                <div>
+                  <p className="text-gray-600">Direction Faces</p>
+                  <p>{property.DirectionFaces}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Systems & Utilities */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Systems & Utilities</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {property.Cooling && (
+                  <div>
+                    <p className="text-gray-600">Cooling</p>
+                    <p>{property.Cooling.join(', ')}</p>
+                  </div>
+                )}
+                <div>
+                  <p className="text-gray-600">Heating</p>
+                  <p>{property.HeatType} ({property.HeatSource})</p>
+                </div>
+                {property.Sewer && (
+                  <div>
+                    <p className="text-gray-600">Sewer</p>
+                    <p>{property.Sewer.join(', ')}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Parking & Exterior */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold mb-3">Parking & Exterior</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {property.ParkingFeatures && (
+                  <div>
+                    <p className="text-gray-600">Parking Features</p>
+                    <p>{property.ParkingFeatures.join(', ')}</p>
+                  </div>
+                )}
+                <div>
+                  <p className="text-gray-600">Total Parking Spaces</p>
+                  <p>{property.ParkingTotal}</p>
+                </div>
+                {property.ExteriorFeatures && (
+                  <div>
+                    <p className="text-gray-600">Exterior Features</p>
+                    <p>{property.ExteriorFeatures.join(', ')}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Property Features */}
+            {property.PropertyFeatures && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold mb-3">Property Features</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div>
+                    <p className="text-gray-600">Nearby</p>
+                    <p>{property.PropertyFeatures.join(', ')}</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </section>
         </div>
 

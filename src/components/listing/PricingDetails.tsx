@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/AllCard';
 import PropertyCard from '@/components/PropertyCard';
@@ -11,7 +11,27 @@ interface PricingDetailsProps {
   setSaleDetails: (details: SaleDetails) => void;
   onContinue: () => void;
   onBack: () => void;
-  exteriorFeatures: ExteriorFeatures;
+  exteriorFeatures: {
+    PropertyType: string;
+    PropertySubType: string;
+    LinkYN: boolean;
+    ParcelOfTiedLand: boolean;
+    ConstructionMaterials: string[];
+    ExteriorFeatures: string[];
+    Utilities: {
+      Water: string;
+      Sewers: string;
+      Pool: string;
+    };
+    Area: string;
+    City: string;
+    CityRegion: string;
+    GarageType: string;
+    ParkingFeatures: string[];
+    ParkingTotal: number;
+    ParkingSpaces: number;
+    CoveredSpaces: number;
+  };
   interiorDetails: InteriorDetails;
   address: Address;
 }
@@ -49,39 +69,28 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
     basePrice: number;
   } | null>(null);
   const [isEstimating, setIsEstimating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [totalProperties, setTotalProperties] = useState(0);
 
-  // Add debug logging
-  React.useEffect(() => {
-    console.log('PricingDetails received exteriorFeatures:', exteriorFeatures);
-  }, [exteriorFeatures]);
+  useEffect(() => {
+    console.log('PricingDetails - Component mounted');
+    console.log('exteriorFeatures received:', exteriorFeatures);
+    console.log('interiorDetails received:', interiorDetails);
+  }, []);
 
   const fetchSimilarProperties = async () => {
     try {
       setIsLoading(true);
-      
-      // Debug log the incoming data
-      console.log('Input data:', {
-        interiorDetails,
-        exteriorFeatures
-      });
+      setShowSimilarProperties(true);
       
       const propertyData = {
-        BedroomsAboveGrade: interiorDetails?.rooms?.bedrooms || 0,
+        BedroomsAboveGrade: interiorDetails?.rooms?.BedroomsAboveGrade || 0,
         CityRegion: exteriorFeatures?.CityRegion || '',
-        PropertyType: exteriorFeatures?.PropertyType || '',
+        PropertySubType: exteriorFeatures?.PropertyType || '',
         CoveredSpaces: exteriorFeatures?.CoveredSpaces || 0
       };
 
-      // Remove empty or zero values
-      const cleanedPropertyData = {};
-      Object.entries(propertyData).forEach(([key, value]) => {
-        if (value !== '' && value !== 0) {
-          cleanedPropertyData[key] = value;
-        }
-      });
-
-      // Log the cleaned data being sent
-      console.log('Sending propertyData:', cleanedPropertyData);
+      console.log('PropertyData to be sent:', propertyData);
 
       const response = await fetch('/api/properties/similar', {
         method: 'POST',
@@ -89,26 +98,45 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          propertyData: cleanedPropertyData,
+          propertyData,
           listingType
         })
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch similar properties');
+      const data = await response.json();
+      console.log('Similar properties response:', data);
+
+      // Check if we have properties array in the response
+      if (Array.isArray(data.properties)) {
+        setSimilarProperties(data.properties);
+        setTotalProperties(data.totalProperties || data.properties.length);
+        setError(null);
+        console.log('Set similar properties:', data.properties.length);
+      } else {
+        // If no properties array, check if the data itself is an array
+        if (Array.isArray(data)) {
+          setSimilarProperties(data);
+          setTotalProperties(data.length);
+          setError(null);
+          console.log('Set similar properties:', data.length);
+        } else {
+          throw new Error('Invalid response format');
+        }
       }
 
-      const data = await response.json();
-      console.log('API Response:', data);
-      setSimilarProperties(data.properties);
-      setShowSimilarProperties(true);
     } catch (error) {
-      console.error('Error fetching similar properties:', error);
-      alert('Unable to fetch similar properties. Please try again later.');
+      console.error('Error in fetchSimilarProperties:', error);
+      setError(error instanceof Error ? error.message : 'Failed to fetch similar properties');
+      setSimilarProperties([]);
+      setTotalProperties(0);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log('Similar properties state updated:', similarProperties?.length || 0);
+  }, [similarProperties]);
 
   const getPriceEstimate = async () => {
     try {
@@ -362,7 +390,7 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
               </div>
             </div>
 
-            {/* Similar properties button - show for both SALE and RENT */}
+            {/* Similar properties button and container */}
             <div className="mt-6">
               <button
                 onClick={fetchSimilarProperties}
@@ -373,24 +401,28 @@ export const PricingDetails: React.FC<PricingDetailsProps> = ({
               </button>
 
               {showSimilarProperties && (
-                <div className="mt-4">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                    Similar Properties
-                  </h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {similarProperties.map((property) => (
-                      <PropertyCard
-                        key={property.MlsNumber}
-                        property={property}
-                      />
-                    ))}
-                  </div>
-
-                  {similarProperties.length === 0 && (
-                    <p className="text-gray-700 text-center py-4">
-                      No similar properties found in your area with the specified criteria.
-                    </p>
+                <div className="mt-6">
+                  {isLoading ? (
+                    <div className="text-center py-4">Loading similar properties...</div>
+                  ) : error ? (
+                    <div className="text-red-500 py-4">{error}</div>
+                  ) : similarProperties?.length > 0 ? (
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold">
+                        Similar Properties ({totalProperties})
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {similarProperties.map((property) => (
+                          <PropertyCard
+                            key={property.ListingKey || property.id}
+                            property={property}
+                            showFavorite={false}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-4">No similar properties found</div>
                   )}
                 </div>
               )}

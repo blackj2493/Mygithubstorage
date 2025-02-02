@@ -21,6 +21,7 @@ interface PropertyCardProps {
       Order: number;
     }>;
     officeLogo?: string;
+    PurchaseContractDate?: string;
   };
 }
 const getImageUrl = (imageUrl: string) => {
@@ -34,6 +35,12 @@ const formatDaysAgo = (purchaseDate: string): string => {
   const daysDiff = Math.abs(Math.round(timeDiff / (1000 * 60 * 60 * 24)));
   return `${daysDiff} days ago`;
 };
+function getDaysAgo(purchaseDate: string): number {
+  const purchase = new Date(purchaseDate);
+  const today = new Date();
+  const diffTime = Math.abs(today.getTime() - purchase.getTime());
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
 export default function PropertyCard({ property }: PropertyCardProps) {
   const imageUrl = property.images?.[0]?.MediaURL || '/placeholder-property.jpg';
   
@@ -46,6 +53,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     }).format(price);
   };
   const isSoldOrLeased = property.MlsStatus === 'Sold' || property.MlsStatus === 'Leased';
+  const daysAgo = getDaysAgo(property.PurchaseContractDate);
   return (
     <Link href={`/listings/${property.ListingKey}`}>
       <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
@@ -122,6 +130,10 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               <p className="text-sm text-gray-500">{property.ListOfficeName}</p>
             </div>
           )}
+
+          <div className="text-sm text-gray-500">
+            {daysAgo} days ago
+          </div>
         </div>
       </div>
     </Link>
