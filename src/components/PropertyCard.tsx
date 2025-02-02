@@ -22,6 +22,7 @@ interface PropertyCardProps {
     }>;
     officeLogo?: string;
     PurchaseContractDate?: string;
+    OriginalEntryTimestamp?: string;
   };
 }
 const getImageUrl = (imageUrl: string) => {
@@ -35,11 +36,21 @@ const formatDaysAgo = (purchaseDate: string): string => {
   const daysDiff = Math.abs(Math.round(timeDiff / (1000 * 60 * 60 * 24)));
   return `${daysDiff} days ago`;
 };
-function getDaysAgo(purchaseDate: string): number {
-  const purchase = new Date(purchaseDate);
-  const today = new Date();
-  const diffTime = Math.abs(today.getTime() - purchase.getTime());
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+function getDaysAgo(timestamp: string | undefined) {
+  if (!timestamp) return 'New';
+  
+  try {
+    const entryDate = new Date(timestamp);
+    const today = new Date();
+    const diffTime = Math.abs(today.getTime() - entryDate.getTime());
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 0) return 'New';
+    return diffDays === 1 ? '1 day ago' : `${diffDays} days ago`;
+  } catch (error) {
+    console.error('Error parsing date:', error);
+    return 'New';
+  }
 }
 export default function PropertyCard({ property }: PropertyCardProps) {
   const imageUrl = property.images?.[0]?.MediaURL || '/placeholder-property.jpg';
@@ -54,6 +65,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
   };
   const isSoldOrLeased = property.MlsStatus === 'Sold' || property.MlsStatus === 'Leased';
   const daysAgo = getDaysAgo(property.PurchaseContractDate);
+
   return (
     <Link href={`/listings/${property.ListingKey}`}>
       <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
@@ -126,14 +138,13 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           </div>
 
           {property.ListOfficeName && (
-            <div className="mt-2 pt-2 border-t border-gray-200">
-              <p className="text-sm text-gray-500">{property.ListOfficeName}</p>
+            <div className="text-sm text-gray-500 space-y-1">
+              <div>{property.ListOfficeName}</div>
+              {property.OriginalEntryTimestamp && (
+                <div>{getDaysAgo(property.OriginalEntryTimestamp)}</div>
+              )}
             </div>
           )}
-
-          <div className="text-sm text-gray-500">
-            {daysAgo} days ago
-          </div>
         </div>
       </div>
     </Link>

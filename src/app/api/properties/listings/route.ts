@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 
-// Helper function to capitalize first letter
+// Helper function to capitalize first letter of each word
 function capitalizeFirstLetter(string: string) {
     if (!string) return string;
-    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    return string
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
 }
 
 // Add this type at the top of your file
@@ -105,7 +108,7 @@ export async function GET(request: Request) {
     // Add other filters with capitalized city name
     if (city) {
         const capitalizedCity = capitalizeFirstLetter(city);
-        filters.push(`City eq '${capitalizedCity}'`);
+        filters.push(`contains(City, '${capitalizedCity}')`);
     }
 
     if (address) filters.push(`contains(UnparsedAddress, '${address}')`);

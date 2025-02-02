@@ -64,13 +64,38 @@ export default function ListingsPage() {
   const fetchProperties = async () => {
     try {
       setLoading(true);
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams();
+      
+      // Copy all existing params except city
+      searchParams.forEach((value, key) => {
+        if (key !== 'city') {
+          params.set(key, value);
+        }
+      });
+      
+      // Handle city parameter separately
+      const city = searchParams.get('city');
+      if (city) {
+        // First decode the city name in case it's already encoded
+        const decodedCity = decodeURIComponent(city);
+        // Then format it exactly as expected: "Richmond Hill"
+        const formattedCity = decodedCity
+          .replace(/\+/g, ' ') // Replace any + with spaces
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(' ');
+        
+        console.log('Formatted city:', formattedCity); // Debug log
+        params.set('city', formattedCity);
+      }
+
       params.set('page', page.toString());
       params.set('limit', '50');
 
-      console.log('Fetching with params:', params.toString()); // Debug log
+      const queryString = params.toString();
+      console.log('Final query string:', queryString); // Debug log
 
-      const response = await fetch(`/api/properties/listings?${params}`);
+      const response = await fetch(`/api/properties/listings?${queryString}`);
       if (!response.ok) {
         throw new Error('Failed to fetch properties');
       }
@@ -78,15 +103,16 @@ export default function ListingsPage() {
       const data = await response.json();
       console.log('Received properties:', data.listings); // Debug log
       
+      // Add debug log to check the total number of properties
+      console.log('Total properties:', data.pagination?.total || 'N/A');
+      
       if (page === 1) {
-        // Replace all properties when it's the first page
-        setProperties(data.listings);
+        setProperties(data.listings || []);
       } else {
-        // Append properties for subsequent pages
-        setProperties(prev => [...prev, ...data.listings]);
+        setProperties(prev => [...prev, ...(data.listings || [])]);
       }
       
-      setHasMore(data.pagination.hasMore);
+      setHasMore(data.pagination?.hasMore ?? false);
       setError(null);
     } catch (err) {
       console.error('Error fetching properties:', err);

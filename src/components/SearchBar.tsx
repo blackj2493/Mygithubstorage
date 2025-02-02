@@ -66,7 +66,11 @@ export default function SearchBar() {
       setIsLoading(true);
       try {
         // Capitalize first letter for the API query
-        const formattedQuery = query.charAt(0).toUpperCase() + query.slice(1).toLowerCase();
+        const formattedQuery = query
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(' ');
+        
         const response = await fetch(`/api/properties/search?q=${encodeURIComponent(formattedQuery)}`);
         const data = await response.json();
         
@@ -74,10 +78,16 @@ export default function SearchBar() {
         const formattedSuggestions = data.suggestions.map((suggestion: Suggestion) => ({
           ...suggestion,
           value: suggestion.type === 'city' 
-            ? suggestion.value.charAt(0).toUpperCase() + suggestion.value.slice(1).toLowerCase()
+            ? suggestion.value
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ')
             : suggestion.value,
           display: suggestion.type === 'city'
-            ? suggestion.display.charAt(0).toUpperCase() + suggestion.display.slice(1).toLowerCase()
+            ? suggestion.display
+                .split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ')
             : suggestion.display
         }));
         
@@ -96,7 +106,11 @@ export default function SearchBar() {
   const handleSelect = (suggestion: Suggestion) => {
     // Ensure proper capitalization when selecting a city
     const formattedValue = suggestion.type === 'city'
-      ? suggestion.value.charAt(0).toUpperCase() + suggestion.value.slice(1).toLowerCase()
+      ? suggestion.value
+          .replace(/\+/g, ' ') // Replace any + with spaces
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+          .join(' ')
       : suggestion.value;
     
     setQuery(suggestion.display);
@@ -104,6 +118,7 @@ export default function SearchBar() {
 
     switch (suggestion.type) {
       case 'city':
+        // Use encodeURIComponent to properly encode the space
         router.push(`/listings?city=${encodeURIComponent(formattedValue)}`);
         break;
       case 'mls':

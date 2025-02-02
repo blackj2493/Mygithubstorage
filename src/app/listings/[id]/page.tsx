@@ -228,15 +228,6 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
             </div>
           </section>
 
-          {/* Listing History */}
-          {property.listingHistory && property.listingHistory.length > 0 && (
-            <ListingHistory 
-              history={property.listingHistory}
-              address={property.UnparsedAddress || ''}
-              propertyType={property.PropertyType || 'Unknown'}
-            />
-          )}
-
           {/* Details Card */}
           <section className="mt-8 bg-white rounded-lg shadow-md p-6">
             <h2 className="text-2xl font-bold mb-4">Details</h2>
@@ -365,6 +356,21 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
               </div>
             )}
           </section>
+
+          {/* Listed By Card */}
+          <section className="mt-8 bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Listed By</h3>
+            <p className="text-gray-700">{property.ListOfficeName || 'Office information not available'}</p>
+          </section>
+
+          {/* Listing History */}
+          {property.listingHistory && property.listingHistory.length > 0 && (
+            <ListingHistory 
+              history={property.listingHistory}
+              address={property.UnparsedAddress || ''}
+              propertyType={property.PropertyType || 'Unknown'}
+            />
+          )}
         </div>
 
         {/* Right Column - Contact Dialog */}
