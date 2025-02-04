@@ -161,7 +161,7 @@ const faqData: FAQItem[] = [
         </p>
 
         <p className="text-2xl text-gray-700">
-          <span className="font-semibold">🔒 Result:</span> Everything is handled 
+          <span className="font-semibold">🔒 Result:</span> Everything is handled{' '}
           <span className="text-green-600 font-semibold">professionally and securely</span>.
         </p>
       </div>

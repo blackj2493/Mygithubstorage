@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FaSearch, FaMapMarkerAlt } from 'react-icons/fa';
+import { MapPin, X } from 'lucide-react';
 
 interface Suggestion {
   type: 'city' | 'address' | 'mls';
@@ -13,13 +14,20 @@ interface Suggestion {
 // Add popular cities array
 const POPULAR_CITIES = [
   'Toronto',
+  'Ottawa',
   'Mississauga',
+  'Hamilton',
   'Brampton',
-  'Vaughan',
-  'Richmond Hill',
+  'London',
   'Markham',
+  'Vaughan',
+  'Burlington',
   'Oakville',
-  'Milton',
+  'Richmond Hill',
+  'Kitchener',
+  'Windsor',
+  'Oshawa',
+  'Waterloo',
   'Ajax',
   'Pickering'
 ];
@@ -33,6 +41,8 @@ export default function SearchBar() {
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const searchBarRef = useRef<HTMLDivElement>(null);
 
   // Initialize search bar with any existing search params
   useEffect(() => {
@@ -144,70 +154,112 @@ export default function SearchBar() {
     setQuery(city);
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="relative w-full max-w-2xl mx-auto">
-      <div className="relative">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setShowSuggestions(true);
-          }}
-          onFocus={() => {
-            setIsFocused(true);
-            setShowSuggestions(true);
-          }}
-          placeholder="City, Neighbourhood, Address or MLS® number"
-          className="w-full px-4 py-3 pl-12 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
-        />
-        <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-      </div>
+  // Modified click outside handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        // If suggestions are showing, also close them
+        setSuggestions([]);
+      }
+    };
 
-      {/* Show either search suggestions or popular cities */}
-      {showSuggestions && (
-        <div className="absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200">
-          {suggestions.length > 0 ? (
-            // Show search suggestions if there are any
-            suggestions.map((suggestion, index) => (
-              <div
-                key={`${suggestion.type}-${index}`}
-                onClick={() => handleSelect(suggestion)}
-                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              >
-                <div className="text-sm">
-                  {suggestion.type === 'mls' && <span className="text-blue-600">MLS® </span>}
-                  {suggestion.display}
+    // Add the event listener to the document
+    document.addEventListener('click', handleClickOutside);
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchBarClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent click from immediately triggering the document click handler
+    setIsOpen(true);
+  };
+
+  return (
+    <div ref={searchBarRef} className="relative">
+      <form onSubmit={handleSubmit} className="relative w-full max-w-2xl mx-auto">
+        <div 
+          className="relative"
+          onClick={handleSearchBarClick}
+        >
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setShowSuggestions(true);
+            }}
+            onFocus={() => {
+              setIsFocused(true);
+              setShowSuggestions(true);
+            }}
+            placeholder="City, Neighbourhood, Address or MLS® number"
+            className="w-full px-4 py-3 pl-12 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500"
+          />
+          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        </div>
+
+        {/* Show either search suggestions or popular cities */}
+        {showSuggestions && (
+          <div className="absolute z-50 w-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200">
+            {suggestions.length > 0 ? (
+              // Show search suggestions if there are any
+              suggestions.map((suggestion, index) => (
+                <div
+                  key={`${suggestion.type}-${index}`}
+                  onClick={() => handleSelect(suggestion)}
+                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  <div className="text-sm">
+                    {suggestion.type === 'mls' && <span className="text-blue-600">MLS® </span>}
+                    {suggestion.display}
+                  </div>
+                  <div className="text-xs text-gray-500 capitalize">
+                    {suggestion.type}
+                  </div>
                 </div>
-                <div className="text-xs text-gray-500 capitalize">
-                  {suggestion.type}
-                </div>
-              </div>
-            ))
-          ) : (
-            // Show popular cities if no search suggestions and input is empty
-            query.length === 0 && (
-              <div>
-                <div className="px-4 py-2 text-sm font-semibold text-gray-600 border-b">
-                  Popular Searches
-                </div>
-                {POPULAR_CITIES.map((city) => (
-                  <div
-                    key={city}
-                    onClick={() => handlePopularCityClick(city)}
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center"
+              ))
+            ) : (
+              // Show popular cities if no search suggestions and input is empty
+              query.length === 0 && (
+                <div className="relative">
+                  {/* Close button in the top-right corner */}
+                  <button 
+                    onClick={() => setShowSuggestions(false)}
+                    className="absolute top-2 right-2 p-1 hover:bg-gray-100 rounded-full"
                   >
-                    <FaMapMarkerAlt className="text-gray-400 mr-2" />
-                    <div>
-                      <div className="text-sm">Search for homes in {city}</div>
+                    <X className="w-4 h-4 text-gray-400" />
+                  </button>
+
+                  <div className="px-4 py-2 text-sm font-semibold text-gray-600 border-b">
+                    Popular Searches
+                  </div>
+                  <div className="mt-2">
+                    <div className="space-y-2">
+                      {POPULAR_CITIES.map((city) => (
+                        <div 
+                          key={city}
+                          className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-2 rounded text-[1.2em]"
+                          onClick={() => {
+                            handleSelect({ type: 'city', value: city });
+                            setShowSuggestions(false);
+                          }}
+                        >
+                          <MapPin className="w-5 h-5 text-gray-400" />
+                          <span>Search for homes in {city}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                ))}
-              </div>
-            )
-          )}
-        </div>
-      )}
-    </form>
+                </div>
+              )
+            )}
+          </div>
+        )}
+      </form>
+    </div>
   );
 } 

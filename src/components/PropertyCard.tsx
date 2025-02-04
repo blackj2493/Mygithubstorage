@@ -119,7 +119,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             )}
           </div>
           
-          <p className="text-gray-600 mb-3 font-medium">{property.UnparsedAddress}</p>
+          <p className="text-gray-600 mb-3 font-medium text-[1.2em]">{property.UnparsedAddress}</p>
           
           <div className="flex items-center gap-6 text-gray-600 mb-3">
             {(property.BedroomsAboveGrade != null || property.BedroomsBelowGrade != null) && (
@@ -142,10 +142,12 @@ export default function PropertyCard({ property }: PropertyCardProps) {
 
           {property.ListOfficeName && (
             <div className="text-sm text-gray-500 space-y-1 border-t pt-3">
-              <div className="font-medium">{property.ListOfficeName}</div>
-              {property.OriginalEntryTimestamp && (
-                <div className="text-gray-400">{getDaysAgo(property.OriginalEntryTimestamp)}</div>
-              )}
+              <div className="flex justify-between items-center text-[0.9em]">
+                <div className="font-medium">{property.ListOfficeName}</div>
+                {property.OriginalEntryTimestamp && (
+                  <div className="text-gray-400">{getDaysAgo(property.OriginalEntryTimestamp)}</div>
+                )}
+              </div>
             </div>
           )}
         </div>
