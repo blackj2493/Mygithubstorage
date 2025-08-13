@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <!-- Circle with Arrow -->
+    <g transform="translate(10, 10)">
+        <!-- Circle -->
+        <circle cx="40" cy="40" r="35" 
+                fill="none" 
+                stroke="#2563EB" 
+                stroke-width="3"/>
+        
+        <!-- Arrow -->
+        <path d="M40 60 L40 20 M25 35 L40 20 L55 35" 
+              fill="none" 
+              stroke="#2563EB" 
+              stroke-width="3" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"/>
+    </g>
+</svg> 

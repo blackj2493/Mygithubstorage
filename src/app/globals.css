@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-100: #3F51B5;
+  --primary-200: #757de8;
+  --primary-300: #dedeff;
+  --accent-100: #FF9800;
+  --accent-200: #8f3d00;
+  --text-100: #333333;
+  --text-200: #5c5c5c;
+  --bg-100: #F5F5F5;
+  --bg-200: #ebebeb;
+  --bg-300: #c2c2c2;
+}
+
+/* Base styles using the color palette */
+body {
+  background-color: var(--bg-100);
+  color: var(--text-100);
+  @apply antialiased;
+}
+
+/* Common elements */
+a {
+  color: var(--primary-100);
+}
+
+a:hover {
+  color: var(--primary-200);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c5c5c5;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Input focus styles */
+input:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-opacity-50;
+}
+
+/* Leaflet map fixes */
+.leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+  z-index: 1;
+}
+
+.leaflet-control-container {
+  z-index: 1000;
+}
+
+/* Prevent map container initialization conflicts */
+.map-container {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Fix for map tiles not loading properly */
+.leaflet-tile-pane {
+  opacity: 1;
+}
+
+.leaflet-tile {
+  max-width: none !important;
+  max-height: none !important;
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Geocoding</title>
+</head>
+<body>
+    <h1>Test Geocoding</h1>
+    <div id="results"></div>
+    
+    <script>
+        // Test postal codes
+        const testPostalCodes = ['K2P 0A5', 'K2P 1B3', 'K2P 0C7', 'K2P 1D9'];
+        
+        // Simulate the geocoding function
+        const postalCodeFallbacks = {
+            'K2P 0A': { lat: 45.4215, lon: -75.6972 },
+            'K2P 0B': { lat: 45.4205, lon: -75.6962 },
+            'K2P 0C': { lat: 45.4225, lon: -75.6982 },
+            'K2P 0D': { lat: 45.4235, lon: -75.6952 },
+            'K2P 1A': { lat: 45.4220, lon: -75.6960 },
+            'K2P 1B': { lat: 45.4210, lon: -75.6950 },
+            'K2P 1C': { lat: 45.4230, lon: -75.6970 },
+            'K2P 1D': { lat: 45.4240, lon: -75.6940 },
+            'K2P0A': { lat: 45.4215, lon: -75.6972 },
+            'K2P0B': { lat: 45.4205, lon: -75.6962 },
+            'K2P0C': { lat: 45.4225, lon: -75.6982 },
+            'K2P0D': { lat: 45.4235, lon: -75.6952 },
+            'K2P1A': { lat: 45.4220, lon: -75.6960 },
+            'K2P1B': { lat: 45.4210, lon: -75.6950 },
+            'K2P1C': { lat: 45.4230, lon: -75.6970 },
+            'K2P1D': { lat: 45.4240, lon: -75.6940 },
+            'K2P': { lat: 45.4215, lon: -75.6972 }
+        };
+        
+        function testGeocode(postalCode) {
+            const cleanPostalCode = postalCode.replace(/\s+/g, ' ').trim().toUpperCase();
+            console.log(`Testing: "${postalCode}" -> cleaned: "${cleanPostalCode}"`);
+            
+            // Try first 6 characters (e.g., "K2P 0A")
+            const firstSix = cleanPostalCode.substring(0, 6);
+            console.log(`  Trying first 6: "${firstSix}"`);
+            if (postalCodeFallbacks[firstSix]) {
+                return { method: 'first6', key: firstSix, coords: postalCodeFallbacks[firstSix] };
+            }
+            
+            // Try first 4 without space
+            const firstFourNoSpace = cleanPostalCode.replace(' ', '').substring(0, 4);
+            console.log(`  Trying first 4 no space: "${firstFourNoSpace}"`);
+            if (postalCodeFallbacks[firstFourNoSpace]) {
+                return { method: 'first4NoSpace', key: firstFourNoSpace, coords: postalCodeFallbacks[firstFourNoSpace] };
+            }
+            
+            // Try prefix
+            const prefix = cleanPostalCode.substring(0, 3);
+            console.log(`  Trying prefix: "${prefix}"`);
+            if (postalCodeFallbacks[prefix]) {
+                return { method: 'prefix', key: prefix, coords: postalCodeFallbacks[prefix] };
+            }
+            
+            return null;
+        }
+        
+        const resultsDiv = document.getElementById('results');
+        testPostalCodes.forEach(postalCode => {
+            const result = testGeocode(postalCode);
+            const div = document.createElement('div');
+            div.innerHTML = `<strong>${postalCode}</strong>: ${result ? `${result.method} (${result.key}) -> [${result.coords.lat}, ${result.coords.lon}]` : 'NO MATCH'}`;
+            resultsDiv.appendChild(div);
+        });
+    </script>
+</body>
+</html>
