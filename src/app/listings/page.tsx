@@ -504,8 +504,8 @@ export default function ListingsPage() {
   const displayProperties = visibleProperties.length > 0 ? visibleProperties : properties;
 
   return (
-    <div className="flex flex-col h-screen">
-      {/* Header Section - Fixed at top */}
+    <div className="flex flex-col">
+      {/* Header Section - Dynamic height */}
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-4">
         <div className="container mx-auto">
           <div className="mb-4">
@@ -538,16 +538,16 @@ export default function ListingsPage() {
         </div>
       </div>
 
-      {/* Main Content - Takes remaining height */}
+      {/* Main Content - Uses viewport height minus navbar and footer */}
       {error ? (
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 300px)' }}>
           <div className="text-red-500 text-center py-4">
             {error}
           </div>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-          {/* Properties Panel on the left - full height scrollable */}
+        <div className="flex flex-col lg:flex-row" style={{ minHeight: 'calc(100vh - 300px)' }}>
+          {/* Properties Panel on the left - scrollable content */}
           <div className="w-full lg:w-1/2 flex flex-col bg-white border-r border-gray-200">
             <div className="flex-shrink-0 p-4 border-b border-gray-200">
               <div className="mb-2 p-2 bg-green-50 border border-green-200 rounded text-sm">
@@ -614,8 +614,8 @@ export default function ListingsPage() {
             </div>
           </div>
 
-          {/* Map on the right - takes full remaining height */}
-          <div className="w-full lg:w-1/2 flex flex-col">
+          {/* Map on the right - sticky and fixed */}
+          <div className="w-full lg:w-1/2 flex flex-col lg:sticky lg:top-0" style={{ height: 'calc(100vh - 140px)' }}>
             {/* Interactive React-Leaflet Map - stretches to bottom */}
             <div className="relative w-full h-full">
               <ReactLeafletMap

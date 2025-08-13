@@ -64,6 +64,11 @@ export default function RootLayout({
                         </a>
                       </li>
                       <li>
+                        <a href="/pricing" className="text-gray-300 hover:text-white">
+                          Pricing
+                        </a>
+                      </li>
+                      <li>
                         <a href="/listings/create" className="text-gray-300 hover:text-white">
                           List Property
                         </a>

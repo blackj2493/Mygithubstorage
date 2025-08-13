@@ -59,6 +59,26 @@ export default function Navbar() {
             >
               Browse Listings
             </Link>
+            <Link
+              href="/professionals"
+              className={`text-xl font-semibold transition-colors ${
+                pathname.startsWith('/professionals')
+                  ? 'text-blue-600'
+                  : 'text-gray-700 hover:text-blue-600'
+              }`}
+            >
+              Professionals
+            </Link>
+            <Link
+              href="/pricing"
+              className={`text-xl font-semibold transition-colors ${
+                isActive('/pricing')
+                  ? 'text-blue-600'
+                  : 'text-gray-700 hover:text-blue-600'
+              }`}
+            >
+              Pricing
+            </Link>
             
             {!isLoading && (user ? (
               <>
