@@ -25,9 +25,10 @@ interface MapWrapperProps {
   markers: MarkerData[];
   onMarkerClick?: (listingKey: string) => void;
   onBoundsChange?: (bounds: { north: number; south: number; east: number; west: number }) => void;
+  currentFilters?: string; // Current filter parameters to preserve
 }
 
-export default function MapWrapper({ markers, onMarkerClick, onBoundsChange }: MapWrapperProps) {
+export default function MapWrapper({ markers, onMarkerClick, onBoundsChange, currentFilters }: MapWrapperProps) {
   const router = useRouter();
   const mapRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,7 +46,10 @@ export default function MapWrapper({ markers, onMarkerClick, onBoundsChange }: M
   // Navigation function for property clicks
   const navigateToListing = (listingKey: string) => {
     if (listingKey) {
-      router.push(`/listings/${listingKey}`);
+      const url = currentFilters
+        ? `/listings/${listingKey}?returnTo=${encodeURIComponent(currentFilters)}`
+        : `/listings/${listingKey}`;
+      router.push(url);
     }
   };
 

@@ -79,6 +79,17 @@ export async function GET(request: Request) {
     const BathroomsTotalInteger = searchParams.get('BathroomsTotalInteger');
     const basementFeatures = searchParams.get('basementFeatures');
 
+    console.log('📋 Filter parameters received:', {
+      city,
+      postalCode,
+      propertyType,
+      transactionType,
+      minPrice,
+      maxPrice,
+      BedroomsTotal,
+      BathroomsTotalInteger
+    });
+
     // Build filter string
     let filters = ["StandardStatus eq 'Active'"]; // Keep default active filter
 
@@ -115,14 +126,32 @@ export async function GET(request: Request) {
       const typeFilters = types.map((type: string) => `PropertyType eq '${type}'`);
       filters.push(`(${typeFilters.join(' or ')})`);
     } else if (propertyType) {
-      // Handle single property type (Commercial case)
-      filters.push(`PropertyType eq '${propertyType}'`);
+      // Handle property type from horizontal filter bar (comma-separated or single)
+      if (propertyType.includes(',')) {
+        // Multiple types (e.g., "Residential Condo & Other,Residential Freehold")
+        const types = propertyType.split(',').map(t => t.trim());
+        const typeFilters = types.map((type: string) => `PropertyType eq '${type}'`);
+        filters.push(`(${typeFilters.join(' or ')})`);
+      } else {
+        // Single property type (Commercial case)
+        filters.push(`PropertyType eq '${propertyType}'`);
+      }
     }
 
     // Add PropertySubType filter if provided
     if (propertySubType) {
       try {
-        const subTypes = JSON.parse(propertySubType);
+        let subTypes: string[];
+
+        // Handle both single string and JSON array formats
+        if (propertySubType.startsWith('[')) {
+          // JSON array format
+          subTypes = JSON.parse(propertySubType);
+        } else {
+          // Single string format
+          subTypes = [propertySubType];
+        }
+
         if (subTypes.length > 0) {
           const subTypeFilters = subTypes.map((type: string) => {
             // First decode the type to handle any URL encoding
@@ -130,9 +159,11 @@ export async function GET(request: Request) {
             // Use the mapping if it exists, otherwise use the original type
             const mappedType = PROPERTY_SUBTYPE_MAPPING[decodedType] || decodedType;
             // Add logging to debug the mapping
-            console.log('Original type:', type);
-            console.log('Decoded type:', decodedType);
-            console.log('Mapped type:', mappedType);
+            console.log('🏠 PropertySubType mapping:', {
+              original: type,
+              decoded: decodedType,
+              mapped: mappedType
+            });
             return `PropertySubType eq '${mappedType}'`;
           });
           filters.push(`(${subTypeFilters.join(' or ')})`);
@@ -153,9 +184,14 @@ export async function GET(request: Request) {
     if (mls) filters.push(`ListingKey eq '${mls}'`);
     if (minPrice) filters.push(`ListPrice ge ${minPrice}`);
     if (maxPrice) filters.push(`ListPrice le ${maxPrice}`);
-    if (transactionType === 'Lease') {
+    if (transactionType === 'For Lease') {
+        console.log('🏠 Adding For Lease filter');
         filters.push("TransactionType eq 'For Lease'");
+    } else if (transactionType === 'For Sale') {
+        console.log('🏠 Adding For Sale filter');
+        filters.push("TransactionType eq 'For Sale'");
     } else {
+        console.log('🏠 No transaction type specified, defaulting to For Sale');
         filters.push("TransactionType eq 'For Sale'");
     }
 
@@ -296,7 +332,7 @@ export async function GET(request: Request) {
           const mediaData = await mediaResponse.json();
           return mediaData.value || [];
         } catch (error) {
-          console.warn(`Failed to fetch media for property ${property.ListingKey}:`, error.message);
+          console.warn(`Failed to fetch media for property ${property.ListingKey}:`, error instanceof Error ? error.message : 'Unknown error');
           return [];
         }
       })
@@ -359,9 +395,23 @@ export async function GET(request: Request) {
       };
     });
 
+    // Deduplicate properties by ListingKey to prevent React key conflicts
+    const uniqueProperties = propertiesWithImages.reduce((acc: any[], current: any) => {
+      const existingIndex = acc.findIndex(item => item.ListingKey === current.ListingKey);
+      if (existingIndex === -1) {
+        acc.push(current);
+      } else {
+        // Keep the most recent one (assuming later in array is more recent)
+        acc[existingIndex] = current;
+      }
+      return acc;
+    }, []);
+
+    console.log(`🔍 Original properties: ${propertiesWithImages.length}, After deduplication: ${uniqueProperties.length}`);
+
     // Start background image downloading with smart freshness checking
     // Process all properties (not just first 20) but with intelligent skipping
-    const propertiesToDownload = propertiesWithImages.filter((p: any) => p.images && p.images.length > 0);
+    const propertiesToDownload = uniqueProperties.filter((p: any) => p.images && p.images.length > 0);
 
     if (propertiesToDownload.length > 0) {
       // Start background download (don't wait for completion)
@@ -402,7 +452,7 @@ export async function GET(request: Request) {
     console.log('Final URL:', propertiesUrl);
 
     return NextResponse.json({
-      listings: propertiesWithImages,
+      listings: uniqueProperties,
       pagination: {
         currentPage: page,
         totalPages,

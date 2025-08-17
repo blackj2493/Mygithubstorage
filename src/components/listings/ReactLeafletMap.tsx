@@ -20,6 +20,7 @@ interface ReactLeafletMapProps {
   onBoundsChange?: (bounds: { north: number; south: number; east: number; west: number }) => void;
   className?: string;
   style?: React.CSSProperties;
+  currentFilters?: string; // Current filter parameters to preserve
 }
 
 interface MarkerData {
@@ -58,7 +59,8 @@ export default function ReactLeafletMap({
   onMarkerClick,
   onBoundsChange,
   className = '',
-  style = {}
+  style = {},
+  currentFilters
 }: ReactLeafletMapProps) {
   const [isClient, setIsClient] = useState(false);
   const [markers, setMarkers] = useState<MarkerData[]>([]);
@@ -262,6 +264,7 @@ export default function ReactLeafletMap({
           markers={markers}
           onMarkerClick={handleMarkerClick}
           onBoundsChange={handleBoundsChange}
+          currentFilters={currentFilters}
         />
       </div>
     </div>

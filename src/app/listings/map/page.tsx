@@ -233,6 +233,7 @@ export default function MapViewPage() {
           onMarkerClick={handleMarkerClick}
           onBoundsChange={handleMapBoundsChange}
           className="w-full h-full"
+          currentFilters={searchParams?.toString()}
         />
         
         {/* Map Controls Overlay */}

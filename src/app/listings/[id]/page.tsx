@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { use } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaBed, FaBath, FaCar } from 'react-icons/fa';
@@ -100,6 +101,7 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
   const resolvedParams = use(params);
   const [property, setProperty] = useState<Property | null>(null);
   const [loading, setLoading] = useState(true);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -133,9 +135,13 @@ export default function PropertyPage({ params }: { params: Promise<{ id: string 
   console.log('Property Media Data:', property.media);
   console.log('Property postal code:', property?.PostalCode);
 
+  // Get the returnTo parameter to preserve filter state
+  const returnTo = searchParams?.get('returnTo');
+  const backUrl = returnTo ? `/listings?${returnTo}` : '/listings';
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
-      <Link href="/listings" className="text-blue-600 hover:text-blue-800 mb-4 inline-block">
+      <Link href={backUrl} className="text-blue-600 hover:text-blue-800 mb-4 inline-block">
         ← Back to Listings
       </Link>
 

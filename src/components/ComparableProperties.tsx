@@ -115,8 +115,8 @@ export default function ComparableProperties({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {properties[activeTab]
             .slice(0, visibleCount)
-            .map((property) => (
-              <PropertyCard key={property.ListingKey} property={property} />
+            .map((property, index) => (
+              <PropertyCard key={`${property.ListingKey}-${index}`} property={property} />
             ))}
         </div>
         

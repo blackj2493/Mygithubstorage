@@ -71,9 +71,9 @@ export default function FallbackMap({
             <div className="w-full max-w-2xl">
               <h5 className="text-lg font-medium text-gray-700 mb-3">Properties in Area:</h5>
               <div className="max-h-64 overflow-y-auto space-y-2">
-                {listings.slice(0, 10).map((listing) => (
+                {listings.slice(0, 10).map((listing, index) => (
                   <div
-                    key={listing.ListingKey}
+                    key={`${listing.ListingKey}-${index}`}
                     onClick={() => handleListingClick(listing)}
                     className="bg-white p-3 rounded-lg border border-gray-200 hover:border-green-400 hover:shadow-md cursor-pointer transition-all"
                   >

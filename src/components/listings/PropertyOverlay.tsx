@@ -22,9 +22,10 @@ interface PropertyOverlayProps {
   listing: Listing | null;
   isOpen: boolean;
   onClose: () => void;
+  currentFilters?: string; // Current filter parameters to preserve
 }
 
-export default function PropertyOverlay({ listing, isOpen, onClose }: PropertyOverlayProps) {
+export default function PropertyOverlay({ listing, isOpen, onClose, currentFilters }: PropertyOverlayProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!isOpen || !listing) return null;
@@ -156,7 +157,7 @@ export default function PropertyOverlay({ listing, isOpen, onClose }: PropertyOv
           {/* Action Buttons */}
           <div className="flex gap-3">
             <Link
-              href={`/listings/${listing.ListingKey}`}
+              href={`/listings/${listing.ListingKey}${currentFilters ? `?returnTo=${encodeURIComponent(currentFilters)}` : ''}`}
               className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg font-semibold transition-colors"
             >
               View Full Details

@@ -5,12 +5,34 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import PropertyCard from '@/components/PropertyCard';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import SearchBar from '@/components/SearchBar';
-import PropertyFilters from '@/components/PropertyFilters';
-import { Property } from '@/types/property';
-import ZoloFilterBar from '@/components/listings/ZoloFilterBar';
 import PropertyOverlay from '@/components/listings/PropertyOverlay';
 import SponsoredListings from '@/components/listings/SponsoredListings';
+import HorizontalFilterBar from '@/components/listings/HorizontalFilterBar';
 import { Map, LayoutGrid } from 'lucide-react';
+
+interface Property {
+  ListingKey: string;
+  ListPrice: number;
+  ClosePrice?: number;
+  MlsStatus?: string;
+  CloseDate?: string;
+  UnparsedAddress?: string;
+  City?: string;
+  BedroomsAboveGrade?: number;
+  BedroomsBelowGrade?: number;
+  BathroomsTotalInteger?: number;
+  ListOfficeName?: string;
+  images: Array<{
+    MediaURL: string;
+    Order: number;
+  }>;
+  officeLogo?: string;
+  PurchaseContractDate?: string;
+  OriginalEntryTimestamp?: string;
+  PublicRemarks?: string;
+  TransactionType?: string;
+  [key: string]: any; // For other PropTx fields
+}
 
 export default function ListingsPage() {
   const searchParams = useSearchParams();
@@ -195,12 +217,11 @@ export default function ListingsPage() {
             </div>
           )}
 
-          {/* Zolo-style Filter Bar */}
-          <ZoloFilterBar onFilterChange={(filters) => console.log('Zolo filters:', filters)} />
-
-          {isSearchActive && (
-            <PropertyFilters onFilterChange={handleFilterChange} />
-          )}
+          {/* New Horizontal Filter Bar */}
+          <HorizontalFilterBar
+            onFilterChange={handleFilterChange}
+            resultsCount={properties.length}
+          />
         </div>
       </div>
 
@@ -241,9 +262,9 @@ export default function ListingsPage() {
             {/* Scrollable properties container */}
             <div className="flex-1 overflow-y-auto p-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {properties.map((property) => (
+                {properties.map((property, index) => (
                   <div
-                    key={property.ListingKey}
+                    key={`${property.ListingKey}-${index}`}
                     onClick={() => handlePropertyClick(property)}
                     className="cursor-pointer transition-all duration-200 hover:shadow-lg"
                   >
@@ -291,6 +312,7 @@ export default function ListingsPage() {
         listing={selectedProperty}
         isOpen={!!selectedProperty}
         onClose={closePropertyOverlay}
+        currentFilters={searchParams?.toString()}
       />
     </div>
   );
