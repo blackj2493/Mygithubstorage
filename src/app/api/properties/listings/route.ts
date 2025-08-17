@@ -44,8 +44,8 @@ export async function GET(request: Request) {
     // Determine query type and set appropriate limit
     const isBoundsQuery = north && south && east && west;
     const limitParam = searchParams.get('limit');
-    // If no limit specified, use a very high number to get all properties
-    const limit = limitParam ? parseInt(limitParam) : 10000; // Show all properties by default
+    // Default to 50 properties per page for optimal performance
+    const limit = limitParam ? parseInt(limitParam) : 50;
     const skip = (page - 1) * limit;
 
     console.log('🔢 Limit calculation:', {
@@ -304,35 +304,40 @@ export async function GET(request: Request) {
       results.map(result => result.status === 'fulfilled' ? result.value : [])
     );
 
-    // Fetch office logos with better error handling
-    const uniqueOfficeKeys = [...new Set(properties.map((p: any) => p.ListOfficeKey).filter(Boolean))];
-    const officeLogos = await Promise.allSettled(
-      uniqueOfficeKeys.map(async (officeKey: string) => {
-        const logoUrl = `${baseUrl}/Media?$filter=ResourceRecordKey eq '${officeKey}' and ResourceName eq 'Office' and ImageSizeDescription eq 'Large'&$top=1`;
+    // Skip office logo fetching for large datasets to improve performance
+    const shouldFetchLogos = properties.length <= 100; // Only fetch logos for smaller datasets
+    let officeLogos: Array<{ officeKey: string; logo: any } | null> = [];
 
-        try {
-          const logoResponse = await fetch(logoUrl, {
-            headers: {
-              'Authorization': `Bearer ${process.env.PROPTX_IDX_TOKEN}`,
-              'Accept': 'application/json',
-            },
-            cache: 'no-store',
-            signal: AbortSignal.timeout(3000) // 3 second timeout per request
-          });
+    if (shouldFetchLogos) {
+      const uniqueOfficeKeys = [...new Set(properties.map((p: any) => p.ListOfficeKey).filter(Boolean))] as string[];
+      officeLogos = await Promise.allSettled(
+        uniqueOfficeKeys.map(async (officeKey: string) => {
+          const logoUrl = `${baseUrl}/Media?$filter=ResourceRecordKey eq '${officeKey}' and ResourceName eq 'Office' and ImageSizeDescription eq 'Large'&$top=1`;
 
-          if (!logoResponse.ok) return null;
+          try {
+            const logoResponse = await fetch(logoUrl, {
+              headers: {
+                'Authorization': `Bearer ${process.env.PROPTX_IDX_TOKEN}`,
+                'Accept': 'application/json',
+              },
+              cache: 'no-store',
+              signal: AbortSignal.timeout(1500) // Reduced to 1.5 second timeout
+            });
 
-          const logoData = await logoResponse.json();
-          const logo = logoData.value?.[0];
-          return logo ? { officeKey, logo } : null;
-        } catch (error) {
-          console.warn(`Failed to fetch logo for office ${officeKey}:`, error.message);
-          return null;
-        }
-      })
-    ).then(results =>
-      results.map(result => result.status === 'fulfilled' ? result.value : null).filter(Boolean)
-    );
+            if (!logoResponse.ok) return null;
+
+            const logoData = await logoResponse.json();
+            const logo = logoData.value?.[0];
+            return logo ? { officeKey, logo } : null;
+          } catch (error) {
+            // Silently fail for timeouts to avoid console spam
+            return null;
+          }
+        })
+      ).then(results =>
+        results.map(result => result.status === 'fulfilled' ? result.value : null).filter(Boolean)
+      );
+    }
 
     // Create a map of office keys to logos
     const officeLogoMap = Object.fromEntries(
@@ -340,15 +345,39 @@ export async function GET(request: Request) {
     );
 
     // Combine properties with their images and office logos
-    const propertiesWithImages = properties.map((property: any, index: number) => ({
-      ...property,
-      images: propertyImages[index]?.map((image: any) => ({
+    const propertiesWithImages = properties.map((property: any, index: number) => {
+      const images = propertyImages[index]?.map((image: any) => ({
         MediaURL: image.MediaURL,
         Order: image.Order
-      })) || [],
-      officeLogo: officeLogoMap[property.ListOfficeKey] || null,
-      address: property.UnparsedAddress
-    }));
+      })) || [];
+
+      return {
+        ...property,
+        images,
+        officeLogo: officeLogoMap[property.ListOfficeKey] || null,
+        address: property.UnparsedAddress
+      };
+    });
+
+    // Start background image downloading for the first batch of properties
+    // Only download for the first 20 properties to avoid overwhelming the system
+    const propertiesToDownload = propertiesWithImages.slice(0, 20).filter((p: any) => p.images && p.images.length > 0);
+
+    if (propertiesToDownload.length > 0) {
+      // Start background download (don't wait for completion)
+      fetch(`http://localhost:3001/api/images/batch-process`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          properties: propertiesToDownload.map((p: any) => ({
+            ListingKey: p.ListingKey,
+            images: p.images
+          }))
+        })
+      }).catch(error => {
+        console.warn('Failed to start background image processing:', error);
+      });
+    }
 
     // Get total count for pagination
     const countUrl = `${baseUrl}/Property?$count=true&$top=0${filterString}`;

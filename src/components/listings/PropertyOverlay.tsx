@@ -34,8 +34,7 @@ export default function PropertyOverlay({ listing, isOpen, onClose }: PropertyOv
 
   const getImageUrl = (url: string) => {
     if (!url) return '/placeholder-property.jpg';
-    if (url.startsWith('http')) return url;
-    return `/api/proxy-image?url=${encodeURIComponent(url)}`;
+    return `/api/images/serve?url=${encodeURIComponent(url)}&propertyId=${listing?.ListingKey || ''}`;
   };
 
   const formattedPrice = listing.ListPrice.toLocaleString('en-US', {

@@ -80,6 +80,11 @@ model Property {
   price             Float
   description       String   @db.Text
   images            String[]
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
+  propertyImages    PropertyImage[]
+  viewings          Viewing[]
+  messages          Message[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
@@ -92,6 +97,25 @@ model Image {
   isMain      Boolean   @default(false)
   order       Int       @default(0)
   createdAt   DateTime  @default(now())
+}
+
+// New model for tracking PropTx images
+model PropertyImage {
+  id           String   @id @default(uuid())
+  propertyId   String   // PropTx ListingKey
+  property     Property @relation(fields: [propertyId], references: [id])
+  originalUrl  String   // PropTx MediaURL
+  localUrl     String?  // Our stored URL
+  downloadedAt DateTime?
+  fileSize     Int?
+  status       String   @default("pending") // pending, downloaded, failed
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([propertyId, originalUrl])
+  @@index([propertyId])
+  @@index([status])
 }
 
 model Viewing {

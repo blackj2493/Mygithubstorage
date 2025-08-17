@@ -25,9 +25,11 @@ interface PropertyCardProps {
     OriginalEntryTimestamp?: string;
   };
 }
-const getImageUrl = (imageUrl: string) => {
+const getImageUrl = (imageUrl: string, propertyId?: string) => {
   if (!imageUrl) return '/placeholder-property.jpg';
-  return imageUrl.startsWith('https://') ? imageUrl : `https://${imageUrl}`;
+
+  // Use our image serving endpoint which will handle local/remote fallback
+  return `/api/images/serve?url=${encodeURIComponent(imageUrl)}&propertyId=${propertyId || ''}`;
 };
 const formatDaysAgo = (purchaseDate: string): string => {
   const today = new Date();
@@ -71,7 +73,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       <div className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow">
         <div className="relative w-full aspect-[4/3]">
           <Image
-            src={getImageUrl(property.images?.[0]?.MediaURL || '')}
+            src={getImageUrl(property.images?.[0]?.MediaURL || '', property.ListingKey)}
             alt={`Property at ${property.UnparsedAddress || 'Unknown location'}`}
             fill
             className="transition-transform duration-300 hover:scale-105"

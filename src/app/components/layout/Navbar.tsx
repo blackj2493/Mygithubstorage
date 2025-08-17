@@ -60,6 +60,16 @@ export default function Navbar() {
               Browse Listings
             </Link>
             <Link
+              href="/listings/map"
+              className={`text-xl font-semibold transition-colors ${
+                isActive('/listings/map')
+                  ? 'text-blue-600'
+                  : 'text-gray-700 hover:text-blue-600'
+              }`}
+            >
+              Map View
+            </Link>
+            <Link
               href="/professionals"
               className={`text-xl font-semibold transition-colors ${
                 pathname.startsWith('/professionals')

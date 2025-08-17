@@ -34,7 +34,7 @@ const POPULAR_CITIES = [
 
 export default function SearchBar() {
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState<string>('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -49,10 +49,11 @@ export default function SearchBar() {
     const city = searchParams.get('city');
     const address = searchParams.get('address');
     const mls = searchParams.get('mls');
-    
+
     if (city) setQuery(city);
     else if (address) setQuery(address);
     else if (mls) setQuery(`MLS® ${mls}`);
+    else setQuery(''); // Ensure query is always a string
   }, [searchParams]);
 
   useEffect(() => {
@@ -82,8 +83,21 @@ export default function SearchBar() {
           .join(' ');
         
         const response = await fetch(`/api/properties/search?q=${encodeURIComponent(formattedQuery)}`);
+
+        if (!response.ok) {
+          console.error('Search API error:', response.status, response.statusText);
+          setSuggestions([]);
+          return;
+        }
+
         const data = await response.json();
-        
+
+        // Check if data.suggestions exists and is an array
+        if (!data.suggestions || !Array.isArray(data.suggestions)) {
+          setSuggestions([]);
+          return;
+        }
+
         // Transform suggestions to ensure proper capitalization for cities
         const formattedSuggestions = data.suggestions.map((suggestion: Suggestion) => ({
           ...suggestion,
@@ -187,9 +201,9 @@ export default function SearchBar() {
         >
           <input
             type="text"
-            value={query}
+            value={query || ''}
             onChange={(e) => {
-              setQuery(e.target.value);
+              setQuery(e.target.value || '');
               setShowSuggestions(true);
             }}
             onFocus={() => {
