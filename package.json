@@ -9,7 +9,10 @@
     "lint": "next lint",
     "init-db": "tsx src/lib/db/init-db.ts",
     "setup-postal-codes": "node scripts/setup-postal-codes.js",
-    "test-postal-codes": "node scripts/test-postal-codes.js"
+    "test-postal-codes": "node scripts/test-postal-codes.js",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",

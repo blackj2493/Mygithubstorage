@@ -82,7 +82,7 @@ model Property {
   images            String[]
   user              User     @relation(fields: [userId], references: [id])
   userId            String
-  propertyImages    PropertyImage[]
+  legacyImages      Image[]
   viewings          Viewing[]
   messages          Message[]
   createdAt         DateTime @default(now())
@@ -102,8 +102,7 @@ model Image {
 // New model for tracking PropTx images
 model PropertyImage {
   id           String   @id @default(uuid())
-  propertyId   String   // PropTx ListingKey
-  property     Property @relation(fields: [propertyId], references: [id])
+  propertyId   String   // PropTx ListingKey (e.g., "X12258369")
   originalUrl  String   // PropTx MediaURL
   localUrl     String?  // Our stored URL
   downloadedAt DateTime?

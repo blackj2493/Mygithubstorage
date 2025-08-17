@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { imageService } from '@/lib/image-service';
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const originalUrl = searchParams.get('url');
     const propertyId = searchParams.get('propertyId');
+    const mediaChangeTimestamp = searchParams.get('mediaChangeTimestamp');
 
     if (!originalUrl) {
       return NextResponse.json(
@@ -13,12 +15,26 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // For now, we'll implement a simple fallback system
-    // TODO: Check database for local image first
-    
-    // If no local image found, serve the original PropTx URL temporarily
-    // This is a temporary measure during the transition period
-    
+    // Try to get local image URL from our service
+    if (propertyId) {
+      try {
+        const localUrl = await imageService.getImageUrl(
+          originalUrl,
+          propertyId,
+          0, // order - we don't have this info in the URL
+          mediaChangeTimestamp || undefined
+        );
+
+        // If we got a local URL (not placeholder), redirect to it
+        if (localUrl && localUrl !== '/placeholder-property.jpg' && localUrl.startsWith('https://')) {
+          return NextResponse.redirect(localUrl);
+        }
+      } catch (error) {
+        console.warn('Failed to get local image URL:', error);
+      }
+    }
+
+    // Fallback: Proxy the image from PropTx (temporary during transition)
     try {
       // Fetch the image from PropTx
       const response = await fetch(originalUrl, {
@@ -44,7 +60,7 @@ export async function GET(request: NextRequest) {
 
     } catch (error) {
       console.error('Failed to fetch image:', error);
-      
+
       // Return placeholder image
       return NextResponse.redirect('/placeholder-property.jpg');
     }

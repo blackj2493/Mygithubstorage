@@ -359,9 +359,9 @@ export async function GET(request: Request) {
       };
     });
 
-    // Start background image downloading for the first batch of properties
-    // Only download for the first 20 properties to avoid overwhelming the system
-    const propertiesToDownload = propertiesWithImages.slice(0, 20).filter((p: any) => p.images && p.images.length > 0);
+    // Start background image downloading with smart freshness checking
+    // Process all properties (not just first 20) but with intelligent skipping
+    const propertiesToDownload = propertiesWithImages.filter((p: any) => p.images && p.images.length > 0);
 
     if (propertiesToDownload.length > 0) {
       // Start background download (don't wait for completion)
@@ -371,7 +371,8 @@ export async function GET(request: Request) {
         body: JSON.stringify({
           properties: propertiesToDownload.map((p: any) => ({
             ListingKey: p.ListingKey,
-            images: p.images
+            images: p.images,
+            MediaChangeTimestamp: p.MediaChangeTimestamp // Include timestamp for freshness checking
           }))
         })
       }).catch(error => {
